@@ -36,6 +36,13 @@ ${cssParts.slice(4).join('\n')}
 `;
 write('dist/brolly.css', css);
 
+/* Single-file CSS: same stylesheet with the five woff2 files inlined. */
+const inlineCss = css.replace(/url\('\.\/fonts\/([^']+)'\)/g, (m, file) => {
+  const font = readFileSync(p('dist/fonts', file));
+  return `url(data:font/woff2;base64,${font.toString('base64')})`;
+});
+write('dist/brolly.inline.css', inlineCss);
+
 /* ── JS ─────────────────────────────────────────────────────────── */
 const jsBody = list('src/js/components').map((f) => read('src/js/components/' + f)).join('\n');
 const banner = `/* Brolly v${VERSION} — generated from src/js. Do not edit. */\n`;
@@ -168,6 +175,7 @@ write('dist/components.json', JSON.stringify({ version: VERSION, components }, n
 
 console.log(`Brolly v${VERSION}`);
 console.log(`  dist/brolly.css     ${(css.length / 1024).toFixed(1)} KB`);
+console.log(`  brolly.inline.css   ${(inlineCss.length / 1024).toFixed(1)} KB`);
 console.log(`  dist/brolly.js      ${(jsBody.length / 1024).toFixed(1)} KB body`);
 console.log(`  docs/previews       ${components.length} pages`);
 console.log(`  docs/index.html`);

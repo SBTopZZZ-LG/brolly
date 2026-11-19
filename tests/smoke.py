@@ -20,6 +20,11 @@ def keep(msg):
 
 def main():
     failures = []
+    inline = (ROOT / "dist" / "brolly.inline.css").read_text()
+    inline_ok = "url(data:font/woff2;base64," in inline and "url('./fonts/" not in inline
+    print(("ok   " if inline_ok else "FAIL ") + "inline css embeds fonts")
+    if not inline_ok:
+        failures.append(("inline-css", ["fonts"], inline[:80]))
     with sync_playwright() as p:
         browser = p.chromium.launch(**LAUNCH)
         page = browser.new_page()
