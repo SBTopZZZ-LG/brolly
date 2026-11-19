@@ -1,0 +1,23 @@
+.br-glass{position:relative;background:var(--glass);color:var(--ink);border-radius:var(--radius-lg);
+  -webkit-backdrop-filter:blur(var(--blur-md)) saturate(var(--sat-glass));backdrop-filter:blur(var(--blur-md)) saturate(var(--sat-glass));
+  box-shadow:var(--glow-rest);transition:box-shadow var(--dur-base) var(--ease-settle),transform var(--dur-base) var(--ease-spring)}
+.br-glass::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;pointer-events:none;
+  background:linear-gradient(135deg,var(--glass-edge) 0%,transparent 38%,transparent 62%,var(--glass-edge) 100%);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
+.br-glass--strong{background:var(--glass-strong);-webkit-backdrop-filter:blur(var(--blur-lg)) saturate(var(--sat-glass));backdrop-filter:blur(var(--blur-lg)) saturate(var(--sat-glass));box-shadow:var(--glow-float)}
+.br-glass--lift:hover{box-shadow:var(--glow-lift);transform:translateY(-2px)}
+.br-glass--pad{padding:var(--space-5)}
+.br-glass--sm{border-radius:var(--radius-sm)}.br-glass--md{border-radius:var(--radius-md)}.br-glass--xl{border-radius:var(--radius-xl)}
+
+/* squircle corners where the browser can draw them; plain radii elsewhere */
+@supports (corner-shape:squircle){
+  .br-glass,.br-field__input,.br-row,.br-tabs,.br-tabs__tab,.br-tabs__thumb,.br-cmd__panel,.br-bloom,.br-tile,.br-rail,.br-tip,.br-menu__item,.br-cmd__item,.br-key,.br-check__box,.br-cal__day{corner-shape:squircle}
+}
+
+/* the polite fallbacks: opaque glass when the user asks for less see-through, or more contrast */
+@media (prefers-reduced-transparency:reduce),(prefers-contrast:more){
+  .br-glass,.br-glass--strong,.br-row,.br-tile,.br-rail,.br-field__input,.br-tip,.br-cmd__panel,.br-bloom,.br-island,.br-bulk{background:var(--glass-strong)!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+  .br-glass,.br-row,.br-tile,.br-rail,.br-cmd__panel,.br-bloom,.br-island,.br-bulk,.br-tip{outline:1px solid var(--control-edge);outline-offset:-1px}
+}
+[data-br-contrast="more"] .br-glass,[data-br-contrast="more"] .br-row,[data-br-contrast="more"] .br-tile{background:var(--glass-strong)!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;outline:1px solid var(--control-edge);outline-offset:-1px}
+

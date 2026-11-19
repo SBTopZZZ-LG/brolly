@@ -1,0 +1,30 @@
+<!-- @dsCard group="Navigation" height=420 subtitle="One box for everything. Cmd/Ctrl+K." -->
+<!doctype html>
+<html><head>
+<link rel="stylesheet" href="../../dist/brolly.css">
+<script src="../../dist/brolly.js"></script>
+<script>try{var t=new URLSearchParams(location.search).get('theme');if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script><meta charset="utf-8"><style>html,body{margin:0}</style></head>
+<body>
+<div class="br-stage" style="min-height:100vh;padding:36px 32px">
+  <p class="br-body-lg" style="margin:0 0 16px">Navigate, create, search, run actions, change settings. All from one box.</p>
+  <button class="br-btn br-btn--primary" id="go">Open the command bar <span class="br-keys"><kbd class="br-key">⌘</kbd><kbd class="br-key">K</kbd></span></button>
+  <p class="br-wit" style="margin-top:16px">Type a few letters of anything. Fuzzy matching forgives you; arrow keys and Enter run it.</p>
+</div>
+<script>
+Brolly.init();
+var S=function(t){return function(){Brolly.toast({title:t,tone:'info'});};};
+Brolly.palette.set([
+ {id:'new',group:'Create',icon:'plus',title:'New task',hint:'Because the list was getting suspiciously short.',keys:'C',run:S('New task')},
+ {id:'proj',group:'Create',icon:'folder',title:'New project',hint:'Ambition, in folder form.',run:S('New project')},
+ {id:'today',group:'Go to',icon:'home',title:'Today',keys:'G T',run:S('Today')},
+ {id:'inbox',group:'Go to',icon:'inbox',title:'Inbox',keys:'G I',run:S('Inbox')},
+ {id:'plan',group:'Go to',icon:'calendar',title:'Planner',run:S('Planner')},
+ {id:'find',group:'Search',icon:'search',title:'Search tasks',hint:'Find the thing you swore you wrote down.',keys:'/',run:S('Search')},
+ {id:'sun',group:'Settings',icon:'sun',title:'Follow the sun',hint:'Theme shifts through dawn, noon, dusk and night.',run:S('Following the sun')},
+ {id:'mute',group:'Settings',icon:'mute',title:'Mute sounds',keywords:'quiet silence',run:function(){Brolly.Sensory.mute(true);Brolly.toast({title:'Muted',tone:'info'});}},
+ {id:'hints',group:'Actions',icon:'keyboard',title:'Show hints',hint:'Press F. Every clickable thing gets a letter.',keys:'F',run:function(){Brolly.hints.start();}},
+ {id:'del',group:'Actions',icon:'trash',title:'Empty the bin',hint:'Final. Hold to confirm, on the next screen.',run:S('Bin emptied')}
+]);
+document.getElementById('go').addEventListener('click',function(){Brolly.palette.open();});
+</script>
+</body></html>

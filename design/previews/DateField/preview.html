@@ -1,0 +1,23 @@
+<!-- @dsCard group="Inputs" height=360 subtitle="Type it like a person; the calendar is the fallback" -->
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>html,body{margin:0}.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}</style></head>
+<body>
+<div class="br-stage" style="min-height:100vh;padding:36px 32px">
+  <div style="max-width:480px">
+    <div id="d"></div>
+    <div class="chips" id="c"></div>
+    <p class="br-wit" style="margin-top:18px">Dates are read the British way round: 5/11 is the fifth of November, remember remember.</p>
+  </div>
+</div>
+<script>
+Brolly.init();
+document.getElementById('d').innerHTML=Brolly.DateField.html();
+var ex=['tomorrow 9am','next friday 3pm','in 2 weeks','5 nov','monday','eod'];
+var c=document.getElementById('c');
+c.innerHTML=ex.map(function(e){return '<button class="br-btn br-btn--sm" data-ex="'+e+'">'+e+'</button>';}).join('');
+Brolly.init();
+c.addEventListener('click',function(ev){var b=ev.target.closest('[data-ex]');if(!b)return;var i=document.querySelector('.br-date .br-field__input');i.value=b.getAttribute('data-ex');i.dispatchEvent(new Event('input'));i.focus();});
+document.getElementById('d').addEventListener('br-date',function(e){Brolly.toast({title:'Due date set',detail:e.detail.date.toDateString(),tone:'success'});});
+</script>
+</body></html>

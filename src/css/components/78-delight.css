@@ -1,0 +1,6 @@
+.br-greeting{display:flex;flex-direction:column;gap:var(--space-2)}
+.br-greeting__hi{margin:0;font:380 56px/58px var(--font-display);letter-spacing:-.02em}
+.br-greeting__hi em{font-style:italic;background:linear-gradient(110deg,var(--accent),var(--spark));-webkit-background-clip:text;background-clip:text;color:transparent}
+.br-confetti{position:fixed;inset:0;z-index:var(--z-island);pointer-events:none;width:100%;height:100%}
+.br-stage[data-idle="1"] .br-orb__ball{animation-duration:6s}
+.br-stage[data-idle="3"]{filter:saturate(.7) brightness(.96);transition:filter 2s var(--ease-settle)}

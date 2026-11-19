@@ -1,0 +1,26 @@
+<!-- @dsCard group="Foundations" height=340 subtitle="Drifts on its own; leans toward your cursor; changes mood" -->
+<!doctype html>
+<html><head>
+<link rel="stylesheet" href="../../dist/brolly.css">
+<script src="../../dist/brolly.js"></script>
+<script>try{var t=new URLSearchParams(location.search).get('theme');if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script><meta charset="utf-8">
+<style>html,body{margin:0}.row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}</style></head>
+<body>
+<div class="br-stage" style="min-height:100vh;padding:32px;display:flex;flex-direction:column;gap:20px;justify-content:center">
+  <div class="br-glass br-glass--pad" style="max-width:460px">
+    <div class="br-label">Aurora</div>
+    <h2 class="br-h2" style="margin:6px 0 8px">Move the cursor about.</h2>
+    <p class="br-small" style="margin:0 0 16px">The three glows drift on their own and lean a little toward you. Pick a mood and watch them sulk or beam.</p>
+    <div class="br-tabs" data-br="tabs" id="mood">
+      <button class="br-tabs__tab" data-id="calm" aria-selected="true">Calm</button>
+      <button class="br-tabs__tab" data-id="focus">Focus</button>
+      <button class="br-tabs__tab" data-id="joy">Joy</button>
+      <button class="br-tabs__tab" data-id="sulk">Sulk</button>
+    </div>
+  </div>
+</div>
+<script>
+Brolly.init();
+document.getElementById('mood').addEventListener('br-tab',function(e){Brolly.Aurora.mood(e.detail.id);});
+</script>
+</body></html>

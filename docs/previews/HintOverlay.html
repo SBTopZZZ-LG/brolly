@@ -1,0 +1,23 @@
+<!-- @dsCard group="Navigation" height=340 subtitle="Press F: every clickable thing gets a letter" -->
+<!doctype html>
+<html><head>
+<link rel="stylesheet" href="../../dist/brolly.css">
+<script src="../../dist/brolly.js"></script>
+<script>try{var t=new URLSearchParams(location.search).get('theme');if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script><meta charset="utf-8"><style>html,body{margin:0}.row{display:flex;gap:14px;flex-wrap:wrap;margin:22px 0}</style></head>
+<body>
+<div class="br-stage" style="min-height:100vh;padding:36px 32px">
+  <p class="br-body-lg" style="margin:0">Click in here, then press <kbd class="br-key">F</kbd>. Type the letters you see to click, focus or toggle that thing. <kbd class="br-key">Esc</kbd> to leave.</p>
+  <div class="row">
+    <button class="br-btn br-btn--primary" data-ping="Archived">Archive</button>
+    <button class="br-btn" data-ping="Snoozed">Snooze</button>
+    <button class="br-btn br-btn--ghost" data-ping="Pinned">Pin</button>
+    <label class="br-switch"><input type="checkbox" role="switch"/><span class="br-switch__track"><span class="br-switch__bead"></span></span><span>Sulk mode</span></label>
+  </div>
+  <label class="br-field" style="max-width:340px"><input class="br-field__input" placeholder=" "/><span class="br-field__label">Name a task</span></label>
+  <p class="br-wit" style="margin-top:16px">Past nine targets, labels become two letters. It is Vimium, but with manners.</p>
+</div>
+<script>
+Brolly.init();
+document.addEventListener('click',function(e){var b=e.target.closest('[data-ping]');if(b)Brolly.toast({title:b.getAttribute('data-ping')+'.',detail:'Reached without touching the mouse.',tone:'success'});});
+</script>
+</body></html>

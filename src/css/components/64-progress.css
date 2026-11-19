@@ -1,0 +1,12 @@
+.br-progress{display:block;width:100%}
+.br-progress__top{display:flex;justify-content:space-between;margin-bottom:8px;font:var(--br-ui);color:var(--ink-soft)}
+.br-progress__track{height:10px;border-radius:99px;background:var(--glass-strong);box-shadow:inset 0 0 0 1px var(--line);overflow:hidden}
+.br-progress__fill{display:block;height:100%;width:var(--p,0%);border-radius:inherit;background:linear-gradient(90deg,var(--grad-start),var(--grad-end));box-shadow:0 0 14px color-mix(in srgb,var(--grad-end) 45%,transparent);transition:width var(--dur-slow) var(--ease-spring)}
+.br-progress[data-indeterminate] .br-progress__fill{width:40%;animation:br-slide 1.8s var(--ease-settle) infinite}
+@keyframes br-slide{0%{transform:translateX(-110%)}100%{transform:translateX(280%)}}
+.br-ring{position:relative;display:inline-grid;place-items:center;width:84px;height:84px}
+.br-ring svg{position:absolute;inset:0;transform:rotate(-90deg)}
+.br-ring circle{fill:none;stroke-width:6;stroke-linecap:round}
+.br-ring .t{stroke:var(--line)}.br-ring .f{stroke:url(#br-ring-grad);stroke-dasharray:226.2;stroke-dashoffset:calc(226.2 * (1 - var(--p,0)));transition:stroke-dashoffset var(--dur-slow) var(--ease-spring);filter:drop-shadow(0 0 5px color-mix(in srgb,var(--grad-end) 55%,transparent))}
+.br-ring b{font:var(--br-data);font-weight:500}
+

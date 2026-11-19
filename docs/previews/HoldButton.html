@@ -1,0 +1,20 @@
+<!-- @dsCard group="Actions" height=260 subtitle="Hold to confirm: no dialogs, just intent" -->
+<!doctype html>
+<html><head>
+<link rel="stylesheet" href="../../dist/brolly.css">
+<script src="../../dist/brolly.js"></script>
+<script>try{var t=new URLSearchParams(location.search).get('theme');if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script><meta charset="utf-8">
+<style>html,body{margin:0}.row{display:flex;gap:18px;flex-wrap:wrap;align-items:center;margin:16px 0 0}</style></head>
+<body>
+<div class="br-stage" style="min-height:100vh;padding:32px">
+  <p class="br-body-lg" style="margin:0 0 4px">Press and hold. Let go early and it springs back, none the worse.</p>
+  <p class="br-small" style="margin:0">Keyboard: hold Enter or Space.</p>
+  <div class="row" id="h"></div>
+</div>
+<script>
+Brolly.init();
+var h=document.getElementById('h');
+h.innerHTML=Brolly.HoldButton.html({label:'Hold to delete'})+Brolly.HoldButton.html({label:'Hold to reset',size:'sm',ms:1400});
+h.addEventListener('br-confirm',function(){Brolly.toast('deleted');});
+</script>
+</body></html>

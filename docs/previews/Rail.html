@@ -1,0 +1,32 @@
+<!-- @dsCard group="Navigation" height=520 subtitle="Collapsible glass rail: hover to open, pin to keep" -->
+<!doctype html>
+<html><head>
+<link rel="stylesheet" href="../../dist/brolly.css">
+<script src="../../dist/brolly.js"></script>
+<script>try{var t=new URLSearchParams(location.search).get('theme');if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script><meta charset="utf-8"><style>html,body{margin:0}.app{display:flex;gap:20px;padding:20px;min-height:100vh}</style></head>
+<body>
+<div class="br-stage" style="min-height:100vh">
+  <div class="app">
+    <nav class="br-rail" aria-label="Main" data-pinned="false">
+      <div class="br-rail__brand"><span class="br-orb-mini"></span><span class="br-rail__label">Brolly</span></div>
+      <button class="br-rail__item" data-view="today" aria-current="page" data-br-tip="Today"><svg class="br-icon" viewBox="0 0 24 24"><path d="M4 11l8-7 8 7"/><path d="M6 10v9h12v-9"/><path d="M10 19v-5h4v5"/></svg><span class="br-rail__label">Today</span></button>
+      <button class="br-rail__item" data-view="inbox" data-br-tip="Inbox"><svg class="br-icon" viewBox="0 0 24 24"><path d="M4 13l2.5-7h11L20 13"/><path d="M4 13v5.5h16V13h-5l-1 2h-4l-1-2z"/></svg><span class="br-rail__label">Inbox</span><span class="br-rail__badge br-gem" data-tone="rose">3</span></button>
+      <button class="br-rail__item" data-view="plan" data-br-tip="Planner"><svg class="br-icon" viewBox="0 0 24 24"><rect x="4" y="5.5" width="16" height="14.5" rx="3"/><path d="M4 10h16M8.5 3.5v4M15.5 3.5v4"/></svg><span class="br-rail__label">Planner</span></button>
+      <button class="br-rail__item" data-view="stats" data-br-tip="Numbers"><svg class="br-icon" viewBox="0 0 24 24"><path d="M4 19h16"/><path d="M5.5 15l4-4.5 3 2.5 5.5-6.5"/></svg><span class="br-rail__label">Numbers</span></button>
+      <div class="br-rail__sep"></div>
+      <button class="br-rail__item" data-view="settings" data-br-tip="Settings"><svg class="br-icon" viewBox="0 0 24 24"><path d="M5 8h9M18 8h1M5 16h1M10 16h9"/><circle cx="16" cy="8" r="2"/><circle cx="8" cy="16" r="2"/></svg><span class="br-rail__label">Settings</span></button>
+      <div class="br-rail__spacer"></div>
+      <button class="br-rail__item" data-br-pin aria-pressed="false" data-br-tip="Pin the rail" data-br-keys="["><svg class="br-icon" viewBox="0 0 24 24"><path d="M9 4h6l-1 5 3 3H7l3-3zM12 12v8"/></svg><span class="br-rail__label">Pin open</span></button>
+    </nav>
+    <div style="flex:1;padding:24px">
+      <p class="br-label" style="margin:0">Current view</p>
+      <h2 class="br-display" id="v" style="margin:6px 0 10px">Today</h2>
+      <p class="br-wit br-body-lg" style="margin:0">Hover the rail to unfold it. Press <kbd class="br-key">[</kbd> to pin it. It will not hold a grudge.</p>
+    </div>
+  </div>
+</div>
+<script>
+Brolly.init();
+document.querySelector('.br-rail').addEventListener('br-nav',function(e){var v=e.detail.view;document.getElementById('v').textContent=v.charAt(0).toUpperCase()+v.slice(1);});
+</script>
+</body></html>

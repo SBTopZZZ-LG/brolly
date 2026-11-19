@@ -1,0 +1,14 @@
+::view-transition-group(br-morph){animation-duration:var(--dur-slow);animation-timing-function:var(--ease-spring)}
+::view-transition-old(br-morph),::view-transition-new(br-morph){height:100%;overflow:clip;animation-duration:var(--dur-slow)}
+html[data-br-nav="push"]::view-transition-old(root){animation:br-push-out var(--dur-slow) var(--ease-settle) both}
+html[data-br-nav="push"]::view-transition-new(root){animation:br-push-in var(--dur-slow) var(--ease-spring) both}
+html[data-br-nav="pop"]::view-transition-old(root){animation:br-pop-out var(--dur-slow) var(--ease-settle) both}
+html[data-br-nav="pop"]::view-transition-new(root){animation:br-pop-in var(--dur-slow) var(--ease-settle) both}
+@keyframes br-push-out{to{transform:scale(.94);opacity:0;filter:blur(8px)}}
+@keyframes br-push-in{from{transform:scale(1.06) translateY(14px);opacity:0;filter:blur(10px)}}
+@keyframes br-pop-out{to{transform:scale(1.06);opacity:0;filter:blur(10px)}}
+@keyframes br-pop-in{from{transform:scale(.94);opacity:0;filter:blur(8px)}}
+.br-view{animation:br-push-in var(--dur-slow) var(--ease-spring) both}
+.br-view[data-dir="back"]{animation-name:br-pop-in}
+.br-view.is-leaving{animation:br-push-out var(--dur-base) var(--ease-settle) both}
+

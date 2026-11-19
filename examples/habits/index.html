@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Habits — Brolly example</title>
+<link rel="stylesheet" href="../../dist/brolly.css">
+<link rel="stylesheet" href="../_shared.css">
+<style>
+  .habit-head, .habit-row { display: grid; grid-template-columns: minmax(150px, 1.5fr) repeat(7, minmax(36px, 1fr)) 40px; gap: 8px; align-items: center; }
+  .habit-head { margin-bottom: 8px; }
+  .habit-head span { text-align: center; font: var(--br-label); letter-spacing: .08em; color: var(--ink-muted); text-transform: uppercase; }
+  .habit-head span:first-child { text-align: left; }
+  .habit-row { padding: 8px; border-radius: var(--radius-md); }
+  .habit-row + .habit-row { margin-top: 6px; }
+  .habit-row:nth-child(odd) { background: color-mix(in srgb, var(--ink) 3%, transparent); }
+  .habit-name { display: flex; align-items: center; gap: 10px; min-width: 0; }
+  .habit-name b { font: var(--br-body); font-weight: 500; line-height: 1.25; }
+  .habit-cell {
+    height: 40px; border-radius: var(--radius-sm); border: 1px solid var(--line);
+    background: var(--glass); color: var(--ink-muted); cursor: pointer;
+    display: grid; place-items: center; transition: transform var(--dur-base) var(--ease-spring), background var(--dur-fast), box-shadow var(--dur-base);
+  }
+  .habit-cell:hover { background: var(--glass-strong); transform: translateY(-1px); }
+  .habit-cell[aria-pressed="true"] { background: color-mix(in srgb, var(--success) 26%, var(--glass-strong)); border-color: color-mix(in srgb, var(--success) 45%, transparent); color: var(--success); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--success) 35%, transparent); }
+  .habit-cell[data-today="true"] { outline: 1px dashed color-mix(in srgb, var(--accent) 55%, transparent); outline-offset: 2px; }
+  .habit-cell[disabled] { opacity: .35; cursor: not-allowed; }
+  .habit-cell .br-icon { width: 16px; height: 16px; }
+  .habit-del { opacity: 0; transition: opacity var(--dur-fast); }
+  .habit-row:hover .habit-del, .habit-del:focus-visible { opacity: 1; }
+  .habit-total { display: flex; align-items: flex-end; gap: 16px; }
+  .habit-total .ex-kpi { font-size: 56px; }
+  @media (max-width: 720px) {
+    .habit-head, .habit-row { grid-template-columns: minmax(100px, 1fr) repeat(7, minmax(26px, 1fr)) 34px; gap: 4px; }
+    .habit-cell { height: 34px; }
+  }
+</style>
+</head>
+<body>
+<div class="br-stage">
+  <div class="ex-shell">
+    <header class="ex-bar">
+      <div>
+        <a class="br-btn br-btn--ghost br-btn--sm ex-back" href="../index.html">← Examples</a>
+        <span class="ex-label" style="display:block;margin-top:12px">Small things, daily</span>
+        <h1 class="br-display" style="margin:6px 0 0">Habits.</h1>
+      </div>
+      <div class="ex-actions">
+        <button class="br-btn br-btn--ghost br-btn--sm" id="prev" aria-label="Previous week">← Week</button>
+        <span class="br-caption" id="week-label"></span>
+        <button class="br-btn br-btn--ghost br-btn--sm" id="next" aria-label="Next week">Week →</button>
+        <button class="br-btn br-btn--primary br-btn--sm" id="add">Add habit</button>
+        <button class="br-btn br-btn--ghost br-btn--icon br-btn--sm" data-ex-theme aria-label="Change theme"></button>
+      </div>
+    </header>
+
+    <div class="br-bento">
+      <section class="br-tile br-span-8">
+        <div class="ex-row" style="justify-content:space-between;margin-bottom:var(--space-4)">
+          <div>
+            <span class="ex-label">This week</span>
+            <h2 class="br-h2" style="margin:4px 0 0">Seven days, no lectures.</h2>
+          </div>
+          <span class="br-gem" data-tone="info" id="week-note">—</span>
+        </div>
+        <div class="habit-head" id="head"></div>
+        <div id="rows"></div>
+      </section>
+
+      <section class="br-tile br-span-4 ex-stack">
+        <span class="ex-label">Today</span>
+        <div class="habit-total">
+          <div id="ring"></div>
+          <div class="ex-kpi" id="today-count">0/0</div>
+        </div>
+        <p class="ex-wit" id="today-wit" style="margin:0">Nothing done yet. The day is young.</p>
+        <div class="ex-row" style="justify-content:space-between">
+          <span class="br-caption">Best current streak</span>
+          <span class="br-gem" data-tone="success" id="best-streak">0 days</span>
+        </div>
+        <div class="ex-row" style="justify-content:space-between">
+          <span class="br-caption">Week completion</span>
+          <span class="br-gem" data-tone="violet" id="week-pct">0%</span>
+        </div>
+      </section>
+
+      <section class="br-tile br-span-12" style="padding-bottom:0;overflow:hidden">
+        <div id="chart" style="margin:calc(var(--space-5) * -1)"></div>
+      </section>
+    </div>
+  </div>
+</div>
+<script src="../../dist/brolly.js"></script>
+<script src="../_shared.js"></script>
+<script>
+var HABITS = [
+  { id: 'h1', name: 'Water the plant' },
+  { id: 'h2', name: 'Walk outside, briefly' },
+  { id: 'h3', name: 'Read ten pages' },
+  { id: 'h4', name: 'No doomscrolling before noon' },
+  { id: 'h5', name: 'Tidy one small thing' }
+];
+var habits = EX.load('habits.items', HABITS);
+var log = EX.load('habits.log', null);
+var offset = 0;
+
+function monday(d) {
+  var x = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+  var day = (x.getDay() + 6) % 7;
+  x.setDate(x.getDate() - day);
+  return x;
+}
+function weekDays() { var start = EX.addDays(monday(new Date()), offset * 7); return Array.from({ length: 7 }, function (_, i) { return EX.addDays(start, i); }); }
+function done(id, d) { var key = EX.iso(d); return !!(log[key] && log[key].indexOf(id) >= 0); }
+function put(id, d, on) {
+  var key = EX.iso(d); log[key] = log[key] || [];
+  log[key] = log[key].filter(function (x) { return x !== id; });
+  if (on) log[key].push(id);
+  if (!log[key].length) delete log[key];
+  EX.save('habits.log', log);
+}
+function streak(id) {
+  var n = 0, d = new Date();
+  while (done(id, d)) { n++; d = EX.addDays(d, -1); }
+  return n;
+}
+function paint() {
+  var days = weekDays(), today = EX.iso(new Date());
+  var months = new Intl.DateTimeFormat('en-GB', { month: 'short' });
+  EX.byId('week-label').textContent = EX.shortDate(days[0]) + ' – ' + EX.shortDate(days[6]);
+  EX.byId('next').disabled = offset >= 0;
+  EX.byId('head').innerHTML = '<span>Habit</span>' + days.map(function (d) {
+    return '<span>' + new Intl.DateTimeFormat('en-GB', { weekday: 'short' }).format(d) + '<br><small>' + d.getDate() + '</small></span>';
+  }).join('') + '<span></span>';
+
+  EX.byId('rows').innerHTML = habits.map(function (h) {
+    var cells = days.map(function (d) {
+      var future = EX.iso(d) > today;
+      return '<button type="button" class="habit-cell" data-h="' + h.id + '" data-d="' + EX.iso(d) + '" data-today="' + (EX.iso(d) === today) + '" aria-pressed="' + done(h.id, d) + '" aria-label="' + EX.esc(h.name + ', ' + EX.longDate(d)) + '"' + (future ? ' disabled' : '') + '>' + (done(h.id, d) ? Brolly.icon('check') : '') + '</button>';
+    }).join('');
+    return '<div class="habit-row"><div class="habit-name"><b>' + EX.esc(h.name) + '</b>' + (streak(h.id) ? '<span class="br-gem" data-tone="success">' + streak(h.id) + 'd</span>' : '') + '</div>' + cells + '<button type="button" class="br-btn br-btn--ghost br-btn--icon br-btn--sm habit-del" data-del="' + h.id + '" aria-label="Remove ' + EX.esc(h.name) + '">' + Brolly.icon('x') + '</button></div>';
+  }).join('') || '<p class="ex-wit">No habits yet. Suspiciously serene.</p>';
+
+  var todayDone = habits.filter(function (h) { return done(h.id, new Date()); }).length;
+  var pct = habits.length ? Math.round(todayDone / habits.length * 100) : 0;
+  EX.byId('ring').innerHTML = Brolly.Progress.ring(pct);
+  EX.byId('today-count').textContent = todayDone + '/' + habits.length;
+  EX.byId('today-wit').textContent = !habits.length ? 'Add one, then.' : pct === 100 ? 'All done. Suspiciously competent.' : pct >= 50 ? 'More than half. The day is salvageable.' : 'Plenty of day left. Allegedly.';
+
+  var best = habits.reduce(function (m, h) { return Math.max(m, streak(h.id)); }, 0);
+  EX.byId('best-streak').textContent = best + (best === 1 ? ' day' : ' days');
+  var cells = habits.length * 7, hits = days.reduce(function (sum, d) { return sum + habits.filter(function (h) { return done(h.id, d); }).length; }, 0);
+  var weekPct = cells ? Math.round(hits / cells * 100) : 0;
+  EX.byId('week-pct').textContent = weekPct + '%';
+  EX.byId('week-note').textContent = offset === 0 ? 'In progress' : (offset < 0 ? 'Looking back' : 'Imaginary');
+
+  Brolly.Chart.line(EX.byId('chart'), {
+    title: 'Done per day', subtitle: 'Same week, counted honestly',
+    labels: days.map(function (d) { return new Intl.DateTimeFormat('en-GB', { weekday: 'short' }).format(d); }),
+    series: [
+      { name: 'Done', values: days.map(function (d) { return habits.filter(function (h) { return done(h.id, d); }).length; }) },
+      { name: 'Habits', values: days.map(function () { return habits.length; }) }
+    ]
+  });
+}
+function toggle(hid, key) {
+  var d = EX.fromISO(key);
+  if (EX.iso(d) > EX.iso(new Date())) return;
+  var on = !(log[key] && log[key].indexOf(hid) >= 0);
+  put(hid, d, on);
+  Brolly.sound.play(on ? 'pop' : 'tick');
+  paint();
+  if (on) {
+    var all = habits.length && habits.every(function (h) { return done(h.id, new Date()); });
+    if (all && EX.iso(d) === EX.iso(new Date())) {
+      Brolly.celebrate.burst();
+      Brolly.toast({ title: 'The lot.', detail: 'Do not let it go to your head.', tone: 'success' });
+    }
+  }
+}
+function addHabit() {
+  var panel = EX.el('<div><h2 class="br-h2 br-bloom__title">New habit</h2><p class="br-small" style="margin:0 0 16px">Small enough to do on a bad day.</p><label class="br-field"><input class="br-field__input" placeholder=" " autofocus/><span class="br-field__label">What is it?</span></label><div class="br-bloom__actions"><button class="br-btn br-btn--ghost" data-br-close>Never mind</button><button class="br-btn br-btn--primary" data-br-close="ok">Add it</button></div></div>');
+  Brolly.Bloom.open({ panel: panel, trigger: EX.byId('add'), onClose: function (r) {
+    if (r !== 'ok') return;
+    var name = panel.querySelector('input').value.trim();
+    if (!name) return Brolly.toast({ title: 'It needs a name.', tone: 'warning' });
+    habits.push({ id: EX.uid(), name: name });
+    EX.save('habits.items', habits); paint();
+    Brolly.toast('saved');
+  } });
+  setTimeout(function () { var i = panel.querySelector('input'); if (i) i.focus(); }, 80);
+}
+function removeHabit(id) {
+  var h = habits.filter(function (x) { return x.id === id; })[0]; if (!h) return;
+  EX.confirm('“' + h.name + '” and its history will go.', 'Remove this habit?').then(function (yes) {
+    if (!yes) return;
+    habits = habits.filter(function (x) { return x.id !== id; });
+    EX.save('habits.items', habits); paint();
+    Brolly.toast({ title: 'Removed.', detail: 'No judgement. Some judgement.', tone: 'info' });
+  });
+}
+
+EX.on(EX.byId('rows'), '.habit-cell', 'click', function (e, b) { if (!b.disabled) toggle(b.dataset.h, b.dataset.d); });
+EX.on(EX.byId('rows'), '[data-del]', 'click', function (e, b) { removeHabit(b.dataset.del); });
+EX.byId('prev').addEventListener('click', function () { offset--; paint(); });
+EX.byId('next').addEventListener('click', function () { if (offset < 0) { offset++; paint(); } });
+EX.byId('add').addEventListener('click', addHabit);
+
+EX.mountTheme();
+Brolly.init();
+if (!log) {
+  log = {};
+  habits.forEach(function (h, hi) {
+    for (var i = 1; i <= 20; i++) {
+      var d = EX.addDays(new Date(), -i);
+      if ((i + hi * 2) % 3 !== 0) put(h.id, d, true);
+    }
+  });
+  put(habits[0].id, new Date(), true);
+  put(habits[2].id, new Date(), true);
+}
+paint();
+
+EX.cmd([
+  { id: 'add', group: 'Habits', icon: 'plus', title: 'Add a habit', run: addHabit },
+  { id: 'today', group: 'Habits', icon: 'calendar', title: 'Back to this week', run: function () { offset = 0; paint(); } },
+  { id: 'prev', group: 'Habits', icon: 'chevron-left', title: 'Previous week', run: function () { offset--; paint(); } },
+  { id: 'next', group: 'Habits', icon: 'chevron-right', title: 'Next week', run: function () { if (offset < 0) { offset++; paint(); } } }
+].concat(EX.themeCommands()));
+</script>
+</body>
+</html>

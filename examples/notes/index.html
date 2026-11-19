@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Notes — Brolly example</title>
+<link rel="stylesheet" href="../../dist/brolly.css">
+<link rel="stylesheet" href="../_shared.css">
+<style>
+  .notes-side { width: 330px; flex: none; display: flex; flex-direction: column; gap: var(--space-4); }
+  .notes-side .ex-list { overflow: auto; max-height: calc(100vh - 260px); padding-right: 4px; }
+  .notes-main { display: flex; flex-direction: column; gap: var(--space-4); min-height: calc(100vh - 96px); }
+  .notes-body { flex: 1; display: flex; }
+  .notes-body textarea { min-height: 100%; height: 100%; font-size: 17px; line-height: 28px; }
+  .note-title .br-field__input { font: 420 30px/38px var(--font-display); padding-top: 24px; }
+  .note-meta { display: flex; align-items: center; gap: 12px; }
+  .note-tools { display: flex; align-items: center; gap: 6px; }
+  @media (max-width: 900px) {
+    .br-app { flex-direction: column; }
+    .notes-side { width: 100%; }
+    .notes-side .ex-list { max-height: 220px; }
+    .notes-main { min-height: 0; }
+  }
+</style>
+</head>
+<body>
+<div class="br-stage">
+  <div class="br-app">
+    <aside class="notes-side">
+      <div class="ex-row" style="justify-content:space-between">
+        <a class="br-btn br-btn--ghost br-btn--sm ex-back" href="../index.html">← Examples</a>
+        <button class="br-btn br-btn--ghost br-btn--icon br-btn--sm" data-ex-theme aria-label="Change theme"></button>
+      </div>
+      <div class="ex-row" style="justify-content:space-between">
+        <div>
+          <span class="ex-label">Notes</span>
+          <div class="br-caption" id="count">0 notes</div>
+        </div>
+        <button class="br-btn br-btn--primary br-btn--sm" id="new">New note</button>
+      </div>
+      <label class="br-field br-field--search">
+        <svg class="br-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4 4"/></svg>
+        <input class="br-field__input" id="q" placeholder=" " autocomplete="off">
+        <span class="br-field__label">Search notes</span>
+        <kbd class="br-key">/</kbd>
+      </label>
+      <div class="ex-list" id="list" aria-label="Notes"></div>
+      <p class="ex-wit" style="margin:0" id="side-wit">Everything is saved locally. Nothing is uploaded, which is the appeal.</p>
+    </aside>
+
+    <main class="notes-main br-main">
+      <header class="ex-bar" style="margin:0;align-items:center">
+        <div class="ex-fill note-title">
+          <label class="br-field">
+            <input class="br-field__input" id="title" placeholder=" " autocomplete="off">
+            <span class="br-field__label">Title</span>
+          </label>
+        </div>
+        <div class="note-tools">
+          <span class="br-caption" id="state" aria-live="polite">Saved.</span>
+          <button class="br-btn br-btn--ghost br-btn--icon br-btn--sm" id="del" aria-label="Delete note" data-tip="Delete">—</button>
+        </div>
+      </header>
+      <div class="notes-body">
+        <label class="br-field">
+          <textarea class="br-field__input" id="body" placeholder=" " spellcheck="true"></textarea>
+          <span class="br-field__label">Write something</span>
+        </label>
+      </div>
+      <footer class="ex-row" style="justify-content:space-between">
+        <div class="note-meta">
+          <span class="br-caption" id="words">0 words</span>
+          <span class="br-caption" id="updated"></span>
+        </div>
+        <span class="br-caption">⌘ S saves · ⌘ K commands</span>
+      </footer>
+    </main>
+  </div>
+</div>
+<script src="../../dist/brolly.js"></script>
+<script src="../_shared.js"></script>
+<script>
+var SEED = [
+  { id: 'n1', title: 'Things to do, eventually', body: 'Ring the dentist. The tooth has opinions.\n\nBook the train before the cheap seats become a rumour.\n\nFind the thing I wrote down about the other thing.', updated: Date.now() - 1000 * 60 * 60 * 26 },
+  { id: 'n2', title: 'Kettle log', body: 'Monday: four. Tuesday: five, but one was medicinal.\n\nConclusion: the kettle is the most-used appliance in this flat and deserves a raise.', updated: Date.now() - 1000 * 60 * 60 * 6 },
+  { id: 'n3', title: 'Ideas that seemed good at the time', body: 'A to-do app that guilt-trips you in iambic pentameter.\n\nA calendar that refuses meetings after 4pm on principle.\n\nTea subscription, but it is just a man knocking on the door with a bag.', updated: Date.now() - 1000 * 60 * 60 * 2 }
+];
+
+var notes = EX.load('notes.items', SEED);
+var active = EX.load('notes.active', notes[0] && notes[0].id);
+var query = '';
+var list = EX.byId('list'), title = EX.byId('title'), body = EX.byId('body');
+var timer = 0;
+
+function current() { return notes.filter(function (n) { return n.id === active; })[0] || notes[0]; }
+function touch() {
+  var n = current(); if (!n) return;
+  EX.byId('state').textContent = 'Saving…';
+  clearTimeout(timer);
+  timer = setTimeout(function () {
+    n.updated = Date.now(); EX.save('notes.items', notes); EX.save('notes.active', active);
+    EX.byId('state').textContent = 'Saved.';
+    EX.byId('updated').textContent = 'Edited ' + new Intl.DateTimeFormat('en-GB', { hour: '2-digit', minute: '2-digit' }).format(new Date(n.updated));
+    renderList(false);
+  }, 450);
+}
+
+function renderList(withEditor) {
+  var q = query.toLowerCase();
+  var shown = notes.filter(function (n) { return !q || (n.title + ' ' + n.body).toLowerCase().indexOf(q) >= 0; });
+  list.innerHTML = shown.map(function (n) {
+    var snippet = n.body.replace(/\s+/g, ' ').slice(0, 54);
+    return '<button type="button" class="ex-item" data-id="' + n.id + '" aria-current="' + (n.id === active) + '">' +
+      '<span class="ex-item__main"><span class="ex-item__title">' + EX.esc(n.title || 'Untitled') + '</span>' +
+      '<span class="ex-item__meta">' + EX.shortDate(new Date(n.updated)) + ' · ' + EX.esc(snippet) + '</span></span></button>';
+  }).join('');
+  if (!shown.length) {
+    list.innerHTML = '<div style="padding:8px 0">' + Brolly.EmptyState.html(q ? 'search' : 'tasks', q ? {} : { title: 'No notes. Unusual.', wit: 'Write one. It need not be good.', action: 'New note' }) + '</div>';
+    var act = list.querySelector('[data-br-act="empty"]');
+    if (act) act.addEventListener('click', function () {
+      if (q) { query = ''; EX.byId('q').value = ''; renderList(); }
+      else create();
+    });
+  }
+  EX.byId('count').textContent = notes.length + (notes.length === 1 ? ' note' : ' notes');
+  if (withEditor !== false) renderEditor();
+}
+
+function renderEditor() {
+  var n = current();
+  var empty = !n;
+  title.value = n ? n.title : '';
+  body.value = n ? n.body : '';
+  title.disabled = body.disabled = empty;
+  EX.byId('words').textContent = EX.words(body.value) + ' words';
+  EX.byId('updated').textContent = n ? 'Edited ' + new Intl.DateTimeFormat('en-GB', { hour: '2-digit', minute: '2-digit' }).format(new Date(n.updated)) : '';
+  EX.byId('state').textContent = empty ? '' : 'Saved.';
+  EX.byId('del').style.visibility = empty ? 'hidden' : 'visible';
+}
+
+function select(id) { active = id; EX.save('notes.active', id); renderList(); }
+
+function create() {
+  var n = { id: EX.uid(), title: 'Untitled note', body: '', updated: Date.now() };
+  notes.unshift(n); EX.save('notes.items', notes); EX.save('notes.active', n.id);
+  active = n.id; query = ''; EX.byId('q').value = ''; renderList();
+  title.focus(); title.select();
+  Brolly.toast({ title: 'A blank page.', detail: 'The pressure is on.', tone: 'info' });
+}
+
+function remove() {
+  var n = current(); if (!n) return;
+  EX.confirm('“' + (n.title || 'Untitled') + '” will be gone for good.', 'Delete this note?').then(function (yes) {
+    if (!yes) return;
+    notes = notes.filter(function (x) { return x.id !== n.id; });
+    active = notes[0] ? notes[0].id : null;
+    EX.save('notes.items', notes); EX.save('notes.active', active);
+    renderList();
+    Brolly.toast({ title: 'Deleted.', detail: 'It had a good run.', tone: 'info' });
+  });
+}
+
+EX.on(list, '.ex-item', 'click', function (e, row) { select(row.dataset.id); });
+title.addEventListener('input', function () { var n = current(); n.title = title.value; touch(); });
+body.addEventListener('input', function () { var n = current(); n.body = body.value; EX.byId('words').textContent = EX.words(body.value) + ' words'; touch(); });
+EX.byId('new').addEventListener('click', create);
+EX.byId('del').addEventListener('click', remove);
+EX.byId('q').addEventListener('input', function () { query = this.value.trim(); renderList(false); });
+
+EX.byId('del').innerHTML = Brolly.icon('trash');
+EX.mountTheme();
+Brolly.init();
+renderList();
+
+EX.cmd([
+  { id: 'new', group: 'Notes', icon: 'plus', title: 'New note', keys: 'N', run: create },
+  { id: 'search', group: 'Notes', icon: 'search', title: 'Search notes', keys: '/', run: function () { EX.byId('q').focus(); } },
+  { id: 'save', group: 'Notes', icon: 'check', title: 'Save now', keys: '⌘ S', run: function () { clearTimeout(timer); touch(); Brolly.toast('saved'); } },
+  { id: 'del', group: 'Notes', icon: 'trash', title: 'Delete this note', run: remove }
+].concat(EX.themeCommands()));
+Brolly.Keys.on('mod+s', function (e) { e.preventDefault(); clearTimeout(timer); if (current()) touch(); Brolly.toast('saved'); }, { inInputs: true });
+Brolly.Keys.on('/', function (e) { e.preventDefault(); EX.byId('q').focus(); });
+Brolly.Keys.on('n', function () { create(); });
+</script>
+</body>
+</html>

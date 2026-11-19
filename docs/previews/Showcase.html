@@ -1,0 +1,75 @@
+<!-- @dsCard group="Pages" height=860 page subtitle="Everything together: a small task app, fully behaved" -->
+<!doctype html>
+<html><head>
+<link rel="stylesheet" href="../../dist/brolly.css">
+<script src="../../dist/brolly.js"></script>
+<script>try{var t=new URLSearchParams(location.search).get('theme');if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script><meta charset="utf-8">
+<style>
+html,body{margin:0}
+.hd{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:var(--space-4)}
+.top{display:flex;gap:10px;align-items:center}
+.t{display:flex;flex-direction:column;gap:var(--space-3)}
+.statrow{display:flex;align-items:center;gap:var(--space-4)}
+.big{font:380 56px/56px var(--font-display);letter-spacing:-.02em}
+.quick{display:flex;gap:10px;align-items:flex-start}
+.quick .br-date{flex:1}
+</style></head>
+<body>
+<div class="br-stage" style="min-height:100vh">
+ <div class="br-app">
+  <nav class="br-rail" aria-label="Main">
+    <div class="br-rail__brand"><span class="br-orb-mini"></span><span class="br-rail__label">Brolly</span></div>
+    <button class="br-rail__item" data-view="today" aria-current="page" data-br-tip="Today"><svg class="br-icon" viewBox="0 0 24 24"><path d="M4 11l8-7 8 7"/><path d="M6 10v9h12v-9"/><path d="M10 19v-5h4v5"/></svg><span class="br-rail__label">Today</span></button>
+    <button class="br-rail__item" data-view="inbox" data-br-tip="Inbox"><svg class="br-icon" viewBox="0 0 24 24"><path d="M4 13l2.5-7h11L20 13"/><path d="M4 13v5.5h16V13h-5l-1 2h-4l-1-2z"/></svg><span class="br-rail__label">Inbox</span><span class="br-rail__badge br-gem" data-tone="rose">3</span></button>
+    <button class="br-rail__item" data-view="plan" data-br-tip="Planner"><svg class="br-icon" viewBox="0 0 24 24"><rect x="4" y="5.5" width="16" height="14.5" rx="3"/><path d="M4 10h16M8.5 3.5v4M15.5 3.5v4"/></svg><span class="br-rail__label">Planner</span></button>
+    <button class="br-rail__item" data-view="stats" data-br-tip="Numbers"><svg class="br-icon" viewBox="0 0 24 24"><path d="M4 19h16"/><path d="M5.5 15l4-4.5 3 2.5 5.5-6.5"/></svg><span class="br-rail__label">Numbers</span></button>
+    <div class="br-rail__spacer"></div>
+    <button class="br-rail__item" data-br-pin aria-pressed="false" data-br-tip="Pin the rail" data-br-keys="["><svg class="br-icon" viewBox="0 0 24 24"><path d="M9 4h6l-1 5 3 3H7l3-3zM12 12v8"/></svg><span class="br-rail__label">Pin open</span></button>
+  </nav>
+  <main class="br-main" id="main">
+   <div class="hd">
+     <div id="greet"></div>
+     <div class="top">
+       <button class="br-btn" id="cmd" data-br-tip="Command bar" data-br-wit="Everything, from one box. Very civilised." data-br-keys="⌘ K"><svg class="br-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4 4"/></svg><span>Search</span></button>
+       <button class="br-btn br-btn--primary" id="add"><svg class="br-icon" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg><span>Add a task</span></button>
+     </div>
+   </div>
+   <div class="br-bento">
+     <section class="br-tile br-span-8">
+       <div class="hd" style="margin-bottom:var(--space-3)"><h3 class="br-h2" style="margin:0">Today, roughly</h3><div class="br-tabs" data-br="tabs" id="filt"><button class="br-tabs__tab" aria-selected="true" data-id="all">All</button><button class="br-tabs__tab" data-id="open">Open</button><button class="br-tabs__tab" data-id="done">Done</button></div></div>
+       <div id="box" data-br="lasso" style="padding:6px;margin:-6px"><ul class="br-rows" id="rows" data-br="sortable"></ul></div>
+     </section>
+     <section class="br-tile br-span-4 t">
+       <div class="br-label">Weekly progress</div>
+       <div class="statrow"><div id="ring"></div><div><div class="big" id="pct">64</div><div class="br-wit">per cent, give or take</div></div></div>
+       <label class="br-slider"><span class="br-slider__top"><span>Pretend it moves</span><output></output></span><input type="range" id="sl" min="0" max="100" value="64" data-unit="%"/></label>
+     </section>
+     <section class="br-tile br-span-8"><div id="chart" style="margin:calc(var(--space-5) * -1)"></div></section>
+     <section class="br-tile br-span-4 t">
+       <div class="br-label">Quick add · type it like a person</div>
+       <div id="dt"></div>
+       <div class="br-orb br-orb--sm" data-br="orb" data-lines="Syncing, politely…|Counting the biscuits…"></div>
+     </section>
+   </div>
+  </main>
+ </div>
+</div>
+<script>
+var B=Brolly;
+var DATA=[['Write the thing','Due Friday, which is soon','warning','Due soon','alert',0],['Reply to the email','Third time of asking','danger','Overdue','x',0],['Book the dentist','Done. Teeth, one assumes, are fine.','success','Done','check',1],['Think about lunch','Pinned by popular demand','violet','Pinned','pin',0],['Water the plant','It has opinions','info','Chore','info',0]];
+var rows=document.getElementById('rows');
+function drawRows(f){rows.innerHTML=DATA.filter(function(d){return f==='all'||(f==='done'?d[5]:!d[5]);}).map(function(d,i){return B.Rows.html({id:'t'+i,title:d[0],meta:d[1],done:!!d[5],gem:B.Gem.html(d[3],d[2],d[4])});}).join('');if(!rows.children.length)rows.innerHTML='<li>'+B.EmptyState.html('tasks',{noAction:true})+'</li>';}
+drawRows('all');
+document.getElementById('greet').innerHTML=B.Delight.greeting('Reader',{left:4,done:2});
+document.getElementById('ring').innerHTML=B.Progress.ring(64);
+document.getElementById('dt').innerHTML=B.DateField.html();
+B.Chart.line(document.getElementById('chart'),{title:'Finished per week',subtitle:'Ten weeks',labels:['W36','W37','W38','W39','W40','W41','W42','W43','W44','W45'],series:[{name:'Done',values:[14,18,16,22,25,21,28,31,27,34]},{name:'Added',values:[20,19,24,21,26,30,27,29,33,31]}]});
+B.init();
+document.getElementById('filt').addEventListener('br-tab',function(e){drawRows(e.detail.id);});
+document.getElementById('sl').addEventListener('input',function(e){var v=+e.target.value;B.Progress.set(document.querySelector('.br-ring'),v);document.getElementById('pct').textContent=v;});
+rows.addEventListener('change',function(e){var c=e.target.closest('.br-check input');if(!c)return;var r=c.closest('.br-row');r.setAttribute('data-done',c.checked);if(c.checked)B.celebrate.done(c);});
+document.getElementById('add').onclick=function(e){B.Bloom.open({kind:'dialog',trigger:e.currentTarget,panel:'<div><h2 class="br-h2 br-bloom__title">New task</h2><label class="br-field" style="margin-top:16px"><input class="br-field__input" placeholder=" " autofocus/><span class="br-field__label">What needs doing?</span></label><div class="br-bloom__actions"><button class="br-btn br-btn--ghost" data-br-close>Never mind</button><button class="br-btn br-btn--primary" data-br-close="ok">Add it</button></div></div>',onClose:function(r){if(r==='ok')B.toast('saved');}});};
+document.getElementById('cmd').onclick=function(){B.palette.open();};
+B.palette.set([{id:'new',group:'Create',icon:'plus',title:'New task',keys:'C',run:function(){document.getElementById('add').click();}},{id:'sun',group:'Settings',icon:'sun',title:'Follow the sun',hint:'Theme shifts through the day.',run:function(){B.sun.start();}},{id:'cel',group:'Actions',icon:'sparkle',title:'Celebrate',run:function(){B.celebrate.burst();}},{id:'hints',group:'Actions',icon:'keyboard',title:'Show hints',keys:'F',run:function(){B.hints.start();}}]);
+</script>
+</body></html>

@@ -1,0 +1,191 @@
+/* Brolly — generated from tokens.json */
+:root, [data-theme="dawn"] {
+  --canvas: #f8eef6; /* Page ground under everything, and the base the aurora paints on. Text sits on it through `glass` panels, never bare on the aurora. */
+  --canvas-deep: #efdcec; /* Second stop of the page gradient and the colour behind modals and the rail. Decorative; carries no text. */
+  --aurora-violet: #c9b3f4; /* Aurora blob 1 (drifting glow). Painted by `Aurora` at no more than 50% strength, so text on glass stays above 7:1 in every theme. */
+  --aurora-sky: #bddaf6; /* Aurora blob 2 (powder-blue glow). Capped at 50% strength like its siblings. */
+  --aurora-rose: #f6b5d0; /* Aurora blob 3 (pink glow); also the colour the aurora leans towards on success moments and idle sulks. */
+  --glass: #ffffff99; /* Fill of resting panels, cards and rows. Translucent: put `ink`, `ink-soft` or `ink-muted` on it. Becomes opaque under reduced-transparency or high-contrast preferences. */
+  --glass-strong: #ffffffe0; /* Fill of anything that floats above other glass: command bar, menus, bloom dialogs, the island, tooltips. Near-opaque so text keeps its contrast over whatever is behind. */
+  --glass-edge: #ffffffe6; /* The bright 1px rim along the top and left of every glass surface. Decorative highlight; never the only thing that separates two surfaces. */
+  --line: #2a1d4524; /* Hairline dividers inside glass (table rules, row gaps, chart grid). Decorative; use `control-edge` for anything the user must find. */
+  --control-edge: #6d5a96; /* Border of inputs, checkboxes, switches and sliders at rest. At least 3:1 against every ground in every theme. */
+  --ink: #2a1d45; /* Primary text, on `canvas`, `glass`, `glass-strong`. 7:1 or better on all of them in every theme. */
+  --ink-soft: #4d3d6b; /* Secondary text (descriptions, wit lines, row meta) on `canvas`, `glass`, `glass-strong`. 7:1 or better. */
+  --ink-muted: #65577f; /* Tertiary text: placeholders, helper text, timestamps, on `canvas`, `glass`, `glass-strong`. At least 4.5:1. Never for anything required to act. */
+  --accent: #5b3bd1; /* Links, active nav glyphs, selected text, caret and focus tint, on `canvas` and glass. Text-safe (4.5:1 or better) in every theme. */
+  --spark: #b8206b; /* The hot-pink wink: highlights, counters, the idle-sulk tint. Text-safe on glass; use sparingly, one spark per view. */
+  --grad-start: #6a45e0; /* Left/top stop of the primary pill gradient and the hold-to-confirm ring. Pair with `grad-end`; text on it is `on-grad`. */
+  --grad-end: #c52a82; /* Right/bottom stop of the primary pill gradient. Pair with `grad-start`. */
+  --on-grad: #ffffff; /* Label and icon colour on the primary pill gradient (white in light themes, deep ink in dark ones). 4.5:1 or better on both gradient stops. */
+  --focus: #3a20b0; /* Focus ring, drawn solid at 2px with a 2px offset. At least 3:1 on every ground in every theme. */
+  --success: #0b6f63; /* Success text and glyphs, and the gem tint. Always paired with a word and a tick icon. Leans teal so it parts company with `danger` for red-green colour blindness. */
+  --warning: #8f5200; /* Warning text and glyphs, and the gem tint. Always paired with a word and a triangle icon. */
+  --danger: #b0213f; /* Error and destructive text and glyphs, and the gem tint. Always paired with a word and a cross icon. */
+  --info: #1f5bb0; /* Informational text and glyphs, and the gem tint. Always paired with a word and an info icon. */
+  --data-1: #6a45e0; /* Chart series 1 (violet). Marks and swatches only: labels stay in `ink`. Series colours follow the entity, in this order, never cycled. Checked as a set for colour-blind separation. */
+  --data-2: #b26400; /* Chart series 2 (amber). Marks and swatches only. Differs from `data-1` in lightness and hue for protan, deutan and tritan viewers. */
+  --data-3: #1c80c6; /* Chart series 3 (sky blue). Marks and swatches only. A fourth series folds into "Other" or a small multiple. */
+  --scrim: #2a1d4566; /* Dimmer behind modals and the command bar, under the blur. Decorative. */
+  --glow-rest: 0 1px 0 #ffffffcc inset, 0 8px 28px #7a55e826; /* Resting glass panels and rows. */
+  --glow-lift: 0 1px 0 #ffffffe6 inset, 0 18px 44px #7a55e83d; /* Hovered cards, dragged rows (lift & shuffle), pressed-and-held items. */
+  --glow-float: 0 1px 0 #fffffff2 inset, 0 28px 70px #4a2fa854; /* Overlays: command bar, bloom dialogs, the island, tooltips. */
+  --halo-pill: 0 6px 22px #c52a8247, 0 0 0 1px #ffffff66 inset; /* The halo under the glowing gradient primary pill. */
+  --rim: 0 0 0 1px #ffffffb3 inset; /* A luminous 1px rim for glass buttons and chips. */
+}
+[data-theme="noon"] {
+  --canvas: #f2f0fc;
+  --canvas-deep: #e2defa;
+  --aurora-violet: #cdbdf8;
+  --aurora-sky: #b5d9f8;
+  --aurora-rose: #f8bfda;
+  --glass: #ffffff99;
+  --glass-strong: #ffffffe0;
+  --glass-edge: #ffffffe6;
+  --line: #2a1d4524;
+  --control-edge: #66559a;
+  --ink: #231a4a;
+  --ink-soft: #443a78;
+  --ink-muted: #5a5088;
+  --accent: #4f34d0;
+  --spark: #b8206b;
+  --grad-start: #6340dc;
+  --grad-end: #c2287f;
+  --on-grad: #ffffff;
+  --focus: #3a20b0;
+  --success: #0b6f63;
+  --warning: #8f5200;
+  --danger: #b0213f;
+  --info: #1f5bb0;
+  --data-1: #6a45e0;
+  --data-2: #b26400;
+  --data-3: #1c80c6;
+  --scrim: #2a1d4566;
+  --glow-rest: 0 1px 0 #ffffffcc inset, 0 8px 28px #5b3bd129;
+  --glow-lift: 0 1px 0 #ffffffe6 inset, 0 18px 44px #5b3bd13d;
+  --glow-float: 0 1px 0 #fffffff2 inset, 0 28px 70px #3f27a854;
+  --halo-pill: 0 6px 22px #c2287f47, 0 0 0 1px #ffffff66 inset;
+  --rim: 0 0 0 1px #ffffffb3 inset;
+}
+[data-theme="dusk"] {
+  --canvas: #2b2152;
+  --canvas-deep: #1d1640;
+  --aurora-violet: #4a3592;
+  --aurora-sky: #284e85;
+  --aurora-rose: #7d2f5c;
+  --glass: #ffffff1a;
+  --glass-strong: #3a2f68f0;
+  --glass-edge: #ffffff40;
+  --line: #ffffff2e;
+  --control-edge: #b3a5e0;
+  --ink: #f7f1ff;
+  --ink-soft: #f3eefc;
+  --ink-muted: #cfc3ee;
+  --accent: #cfbfff;
+  --spark: #ffaed4;
+  --grad-start: #b79cff;
+  --grad-end: #ff8fc4;
+  --on-grad: #1b1036;
+  --focus: #ffe3f1;
+  --success: #62d7c2;
+  --warning: #ffc761;
+  --danger: #ffb0be;
+  --info: #a8d1ff;
+  --data-1: #9372f0;
+  --data-2: #c9831a;
+  --data-3: #2a8fd0;
+  --scrim: #0a061ab3;
+  --glow-rest: 0 1px 0 #ffffff29 inset, 0 10px 32px #0a061a66;
+  --glow-lift: 0 1px 0 #ffffff33 inset, 0 20px 48px #0a061a8c, 0 0 28px #9372f033;
+  --glow-float: 0 1px 0 #ffffff40 inset, 0 30px 80px #05030fb3, 0 0 40px #9372f040;
+  --halo-pill: 0 6px 26px #ff86bd4d, 0 0 0 1px #ffffff40 inset;
+  --rim: 0 0 0 1px #ffffff33 inset;
+}
+[data-theme="night"] {
+  --canvas: #130f28;
+  --canvas-deep: #0b081a;
+  --aurora-violet: #3f2896;
+  --aurora-sky: #1a4282;
+  --aurora-rose: #6f2250;
+  --glass: #ffffff12;
+  --glass-strong: #241c4af0;
+  --glass-edge: #ffffff2e;
+  --line: #ffffff29;
+  --control-edge: #a595d6;
+  --ink: #f1ecff;
+  --ink-soft: #d2c8ee;
+  --ink-muted: #b4a8de;
+  --accent: #b9a4ff;
+  --spark: #ff8abf;
+  --grad-start: #a98cff;
+  --grad-end: #ff86bd;
+  --on-grad: #190e33;
+  --focus: #ffd9ec;
+  --success: #5ccdb9;
+  --warning: #ffbf55;
+  --danger: #ff8f9f;
+  --info: #8bbcff;
+  --data-1: #9372f0;
+  --data-2: #c9831a;
+  --data-3: #2a8fd0;
+  --scrim: #05030fbf;
+  --glow-rest: 0 1px 0 #ffffff1f inset, 0 10px 32px #05030f8c;
+  --glow-lift: 0 1px 0 #ffffff29 inset, 0 20px 48px #05030fb3, 0 0 28px #9372f02e;
+  --glow-float: 0 1px 0 #ffffff33 inset, 0 30px 80px #000000cc, 0 0 40px #9372f038;
+  --halo-pill: 0 6px 26px #ff86bd47, 0 0 0 1px #ffffff33 inset;
+  --rim: 0 0 0 1px #ffffff29 inset;
+}
+:root {
+  --space-1: 4px; /* Icon-to-label gaps, tight chip padding. */
+  --space-2: 8px; /* Gap between inline controls; row gap in lists. */
+  --space-3: 12px; /* Compact padding inside chips, tooltips and menu items. */
+  --space-4: 16px; /* Default padding inside rows, buttons and fields; grid gutter. */
+  --space-5: 20px; /* Card padding (comfortable). */
+  --space-6: 24px; /* Gap between cards; dialog padding. */
+  --space-8: 32px; /* Gap between sections within a view. */
+  --space-10: 40px; /* Page gutter on desktop. */
+  --space-12: 48px; /* Space above a section title. */
+  --space-16: 64px; /* Hero spacing and empty-state breathing room. */
+  --radius-xs: 8px; /* Keycaps, small chips, tooltips. */
+  --radius-sm: 12px; /* Inputs, rows, menu items. */
+  --radius-md: 16px; /* Cards, tabs, bulk bar. */
+  --radius-lg: 24px; /* Panels, dialogs, the command bar. */
+  --radius-xl: 32px; /* Big tiles, bento hero cards, the rail. */
+  --radius-pill: 999px; /* Primary buttons, the island, switches, gems. */
+  --blur-sm: 8px; /* Chips, gems, tooltips. */
+  --blur-md: 20px; /* Cards, rows, rail, the standard frosted layer. */
+  --blur-lg: 36px; /* Overlays, the command bar, bloom dialogs, scrim. */
+  --blur-aurora: 90px; /* Softening of the aurora blobs themselves. */
+  --sat-glass: 160%; /* backdrop-filter saturate() paired with the blur on every glass layer. */
+  --z-bulk: 40; /* Floating bulk-action bar from lasso select. */
+  --z-rail: 20; /* Navigation rail. */
+  --z-bloom: 60; /* Bloom overlays: dialogs, menus, popovers, with their scrim. */
+  --z-cmd: 70; /* Command bar. */
+  --z-hint: 80; /* Hint overlay letter labels. */
+  --z-island: 90; /* The dynamic-island toast. */
+  --z-tip: 95; /* Tooltips, always on top. */
+  --dur-fast: 120ms; /* Hover tints, press feedback, tooltip fade. */
+  --dur-base: 260ms; /* Most spring moves: toggles, tabs, rows, bloom close. */
+  --dur-slow: 520ms; /* Bloom open, island expand, view morph, celebrations. */
+  --dur-hold: 900ms; /* How long a hold-to-confirm must be held. */
+  --dur-aurora: 48s; /* One lap of the aurora drift. */
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1); /* Arrivals, presses, toggles, blooms: anything that should feel alive. */
+  --ease-settle: cubic-bezier(0.22, 1, 0.36, 1); /* Exits, fades, colour changes: smooth, no overshoot. */
+  --ease-snap: cubic-bezier(0.5, 0, 0.1, 1); /* Dragging back to rest and hold-to-confirm release. */
+  --font-display: "Fraunces", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  --font-mono: "DM Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --text-display-xl: 380 72px/72px var(--font-display); /* Greeting hero and big empty-state headlines. One per view. */
+  --text-display: 400 48px/52px var(--font-display); /* Page titles and the time-aware greeting. */
+  --text-h1: 420 34px/40px var(--font-display); /* Section titles. */
+  --text-h2: 440 26px/32px var(--font-display); /* Card titles, dialog titles. */
+  --text-h3: 480 20px/26px var(--font-display); /* Row titles, island titles. */
+  --text-body-lg: 400 17px/26px var(--font-display); /* Lead paragraphs, dialog copy. */
+  --text-body: 400 15px/23px var(--font-display); /* Default reading text. */
+  --text-body-sm: 400 13px/19px var(--font-display); /* Secondary descriptions, helper text, tooltip wit lines (italic). */
+  --text-wit: italic 400 14px/20px var(--font-display); /* The dry aside: tooltip second lines, empty-state subtitles, idle remarks. */
+  --text-ui: 500 13px/18px var(--font-mono); /* Buttons, tabs, nav labels, command bar rows. */
+  --text-data: 400 14px/20px var(--font-mono); /* Numbers, dates, table cells, chart axes. Tabular figures. */
+  --text-label: 500 11px/16px var(--font-mono); /* Field labels in caps, section eyebrows, gem text. */
+  --text-caption: 400 12px/16px var(--font-mono); /* Timestamps and counters. Never for required instructions. */
+  --text-key: 500 11px/14px var(--font-mono); /* Keycaps: shortcut hints. */
+}

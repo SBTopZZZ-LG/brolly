@@ -1,0 +1,16 @@
+<!-- @dsCard group="Lists" height=460 subtitle="Drag a row: it lifts, neighbours spring aside" -->
+<!doctype html>
+<html><head><meta charset="utf-8"><style>html,body{margin:0}</style></head>
+<body>
+<div class="br-stage" style="min-height:100vh;padding:32px">
+  <p class="br-small" style="margin:0 0 14px;max-width:640px">Grab a handle and drag. Keyboard: focus a row and use <kbd class="br-key">Alt</kbd> <kbd class="br-key">↑</kbd> / <kbd class="br-key">↓</kbd>.</p>
+  <ul class="br-rows" style="max-width:640px" id="l" data-br="sortable"></ul>
+  <p class="br-caption" id="o" style="margin-top:14px" aria-live="polite"></p>
+</div>
+<script>
+var R=Brolly.Rows;
+document.getElementById('l').innerHTML=['Write the thing','Reply to the email','Book the dentist','Think about lunch','Water the plant'].map(function(t,i){return R.html({id:'t'+i,title:t,meta:['First, naturally','Overdue, naturally','Smile','Priorities','It has opinions'][i]});}).join('');
+Brolly.init();
+document.getElementById('l').addEventListener('br-reorder',function(e){document.getElementById('o').textContent='Order: '+e.detail.order.join(' › ');});
+</script>
+</body></html>

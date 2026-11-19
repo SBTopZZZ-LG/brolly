@@ -1,0 +1,197 @@
+{
+  "manifestVersion": 3,
+  "name": "Brolly",
+  "namespace": "Brolly",
+  "files": [
+    "accessibility.md",
+    "behaviour.md",
+    "components/Aurora/README.md",
+    "components/Bloom/README.md",
+    "components/Button/README.md",
+    "components/Chart/README.md",
+    "components/CommandBar/README.md",
+    "components/Controls/README.md",
+    "components/DateField/README.md",
+    "components/Delight/README.md",
+    "components/EmptyState/README.md",
+    "components/Field/README.md",
+    "components/Gem/README.md",
+    "components/Glass/README.md",
+    "components/HintOverlay/README.md",
+    "components/HoldButton/README.md",
+    "components/Icons/README.md",
+    "components/Island/README.md",
+    "components/Keycap/README.md",
+    "components/Lasso/README.md",
+    "components/Layout/README.md",
+    "components/LiftShuffle/README.md",
+    "components/Orb/README.md",
+    "components/Progress/README.md",
+    "components/Rail/README.md",
+    "components/Rows/README.md",
+    "components/Sensory/README.md",
+    "components/SunTheme/README.md",
+    "components/Tabs/README.md",
+    "components/Tooltip/README.md",
+    "components/Transitions/README.md",
+    "components/bundle.css",
+    "components/bundle.js",
+    "motion.md",
+    "tokens.css",
+    "voice.md"
+  ],
+  "libraries": [],
+  "components": [
+    {
+      "name": "Aurora",
+      "group": "Foundations",
+      "summary": "The slow-drifting violet, sky and rose light behind every Brolly page."
+    },
+    {
+      "name": "Glass",
+      "group": "Foundations",
+      "summary": "The frosted-glass surface that everything sits on: translucent fill, backdrop blur, a hairline edge and a soft glow."
+    },
+    {
+      "name": "Button",
+      "group": "Actions",
+      "summary": "The gradient-pill primary button and its quieter siblings, with a magnetic lean and a springy press."
+    },
+    {
+      "name": "HoldButton",
+      "group": "Actions",
+      "summary": "A press-and-hold button that fills as you hold and only fires when it completes, for anything destructive."
+    },
+    {
+      "name": "Field",
+      "group": "Inputs",
+      "summary": "Floating-label text inputs, textareas, selects and search fields with inline validation."
+    },
+    {
+      "name": "DateField",
+      "group": "Inputs",
+      "summary": "A date field that understands plain words, day-first, and shows how it understood you before you commit."
+    },
+    {
+      "name": "Controls",
+      "group": "Inputs",
+      "summary": "Switches, checkboxes, radios and sliders with glass-bead handles that spring when toggled."
+    },
+    {
+      "name": "Tabs",
+      "group": "Navigation",
+      "summary": "A pill tab bar with a gliding glass thumb that springs to the selected tab."
+    },
+    {
+      "name": "Gem",
+      "group": "Display",
+      "summary": "A small faceted chip for status, tags and counts, with a tone and an optional icon."
+    },
+    {
+      "name": "Keycap",
+      "group": "Display",
+      "summary": "The little keyboard-key glyphs used to teach shortcuts."
+    },
+    {
+      "name": "Tooltip",
+      "group": "Display",
+      "summary": "Dry-wit tooltips that give a title, one wry line and the shortcut."
+    },
+    {
+      "name": "Rail",
+      "group": "Navigation",
+      "summary": "The collapsible left navigation rail that expands on hover and can be pinned."
+    },
+    {
+      "name": "CommandBar",
+      "group": "Navigation",
+      "summary": "The universal command bar, opened with ⌘/Ctrl+K, that reaches every action and destination."
+    },
+    {
+      "name": "HintOverlay",
+      "group": "Navigation",
+      "summary": "A Vimium-style overlay: press F and every clickable thing gets a letter."
+    },
+    {
+      "name": "Island",
+      "group": "Feedback",
+      "summary": "Dynamic-island toasts that expand from the top centre, hold briefly, and fold away."
+    },
+    {
+      "name": "Orb",
+      "group": "Feedback",
+      "summary": "A slow breathing gradient orb for loading and thinking states."
+    },
+    {
+      "name": "Progress",
+      "group": "Feedback",
+      "summary": "Gradient progress bars and rings for waits where you know how far along you are."
+    },
+    {
+      "name": "EmptyState",
+      "group": "Feedback",
+      "summary": "An illustrated empty state with a dry headline, a line of wit and one action."
+    },
+    {
+      "name": "Bloom",
+      "group": "Overlays",
+      "summary": "Dialogs, menus and popovers that grow out of the element that opened them and shrink back on close."
+    },
+    {
+      "name": "Rows",
+      "group": "Lists",
+      "summary": "Floating list rows with a checkbox, title, meta line and optional gems."
+    },
+    {
+      "name": "LiftShuffle",
+      "group": "Lists",
+      "summary": "Drag-to-reorder for rows: grab by the grip, neighbours shuffle aside, release to settle; Alt+arrows for keyboard."
+    },
+    {
+      "name": "Lasso",
+      "group": "Lists",
+      "summary": "Drag a soft rectangle around rows to select them; a bulk bar rises with Archive, Move and hold-to-delete."
+    },
+    {
+      "name": "Chart",
+      "group": "Data",
+      "summary": "Glow-line charts with a hover crosshair, legend, keyboard traversal and a table view."
+    },
+    {
+      "name": "Transitions",
+      "group": "Motion",
+      "summary": "View transitions: a morph for drill-ins and a depth push for peer views."
+    },
+    {
+      "name": "SunTheme",
+      "group": "Motion",
+      "summary": "Follow-the-sun theming: dawn, noon, dusk and night, switching by the local hour."
+    },
+    {
+      "name": "Sensory",
+      "group": "Motion",
+      "summary": "Short synthesised sounds and haptic ticks with a single master mute."
+    },
+    {
+      "name": "Delight",
+      "group": "Motion",
+      "summary": "The finishing touches: time-aware greetings, celebrations, and idle antics."
+    },
+    {
+      "name": "Layout",
+      "group": "Layout",
+      "summary": "The bento layout: a 12-column grid of glass tiles with a rail on the left."
+    },
+    {
+      "name": "Icons",
+      "group": "Foundations",
+      "summary": "The hairline icon set: 1.25px stroke, round caps, 24px grid, always currentColor."
+    },
+    {
+      "name": "Showcase",
+      "group": "Pages",
+      "page": true
+    }
+  ],
+  "assetGroups": []
+}

@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Journal — Brolly example</title>
+<link rel="stylesheet" href="../../dist/brolly.css">
+<link rel="stylesheet" href="../_shared.css">
+<style>
+  .journal-side { width: 320px; flex: none; display: flex; flex-direction: column; gap: var(--space-4); }
+  .journal-side .ex-list { overflow: auto; max-height: calc(100vh - 300px); padding-right: 4px; }
+  .journal-main { display: flex; flex-direction: column; gap: var(--space-4); min-height: calc(100vh - 96px); }
+  .journal-date { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .journal-text { flex: 1; display: flex; }
+  .journal-text textarea { min-height: 100%; height: 100%; font-size: 17px; line-height: 28px; }
+  .moods { display: flex; gap: 14px; flex-wrap: wrap; }
+  .mood { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; font: var(--br-body-sm); color: var(--ink-soft); }
+  .mood input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+  .mood .br-gem { cursor: pointer; }
+  .mood input:checked + .br-gem { outline: 2px solid var(--accent); outline-offset: 2px; background: color-mix(in srgb, var(--accent) 18%, var(--glass-strong)); }
+  .mood input:focus-visible + .br-gem { outline: 2px solid var(--focus); outline-offset: 2px; }
+  .journal-prompt { padding: 12px 16px; border-left: 2px solid var(--accent); background: color-mix(in srgb, var(--accent) 6%, transparent); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; }
+  .journal-foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+  @media (max-width: 900px) {
+    .br-app { flex-direction: column; }
+    .journal-side { width: 100%; }
+    .journal-side .ex-list { max-height: 200px; }
+    .journal-main { min-height: 0; }
+  }
+</style>
+</head>
+<body>
+<div class="br-stage">
+  <div class="br-app">
+    <aside class="journal-side">
+      <div class="ex-row" style="justify-content:space-between">
+        <a class="br-btn br-btn--ghost br-btn--sm ex-back" href="../index.html">← Examples</a>
+        <button class="br-btn br-btn--ghost br-btn--icon br-btn--sm" data-ex-theme aria-label="Change theme"></button>
+      </div>
+      <div class="ex-row" style="justify-content:space-between">
+        <div>
+          <span class="ex-label">Journal</span>
+          <div class="br-caption" id="entry-count">0 entries</div>
+        </div>
+        <button class="br-btn br-btn--ghost br-btn--sm" id="today-btn">Today</button>
+      </div>
+      <label class="br-field br-field--search">
+        <svg class="br-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4 4"/></svg>
+        <input class="br-field__input" id="q" placeholder=" " autocomplete="off">
+        <span class="br-field__label">Search entries</span>
+        <kbd class="br-key">/</kbd>
+      </label>
+      <div class="ex-list" id="list" aria-label="Journal entries"></div>
+      <p class="ex-wit" style="margin:0">Local only. No audience, no algorithm, no replies.</p>
+    </aside>
+
+    <main class="journal-main br-main">
+      <header class="ex-bar" style="margin:0;align-items:center">
+        <div>
+          <div class="journal-date">
+            <button class="br-btn br-btn--ghost br-btn--icon br-btn--sm" id="prev" aria-label="Previous day">←</button>
+            <h1 class="br-h2" id="date-label" style="margin:0"></h1>
+            <button class="br-btn br-btn--ghost br-btn--icon br-btn--sm" id="next" aria-label="Next day">→</button>
+            <span class="br-caption" id="state" aria-live="polite" style="margin-left:8px">Saved.</span>
+          </div>
+          <div class="br-caption" style="margin-top:2px" id="date-sub"></div>
+        </div>
+        <div class="ex-actions">
+          <button class="br-btn br-btn--ghost br-btn--icon br-btn--sm" id="del" aria-label="Delete entry">—</button>
+        </div>
+      </header>
+
+      <div class="journal-prompt">
+        <span class="ex-label">Prompt</span>
+        <p class="br-wit" id="prompt" style="margin:4px 0 0"></p>
+      </div>
+
+      <div class="moods" role="radiogroup" aria-label="Mood">
+        <label class="mood"><input type="radio" name="mood" value="low"><span class="br-gem" data-tone="danger">Low</span></label>
+        <label class="mood"><input type="radio" name="mood" value="meh"><span class="br-gem" data-tone="warning">Meh</span></label>
+        <label class="mood"><input type="radio" name="mood" value="fine"><span class="br-gem" data-tone="info">Fine</span></label>
+        <label class="mood"><input type="radio" name="mood" value="good"><span class="br-gem" data-tone="success">Good</span></label>
+        <label class="mood"><input type="radio" name="mood" value="great"><span class="br-gem" data-tone="violet">Great</span></label>
+      </div>
+
+      <div class="journal-text">
+        <label class="br-field">
+          <textarea class="br-field__input" id="text" placeholder=" " spellcheck="true"></textarea>
+          <span class="br-field__label">What happened?</span>
+        </label>
+      </div>
+
+      <footer class="journal-foot">
+        <div class="ex-row">
+          <span class="br-caption" id="words">0 words</span>
+          <span class="br-caption" id="updated"></span>
+        </div>
+        <span class="br-caption">Autosaves, badly spelt or otherwise.</span>
+      </footer>
+    </main>
+  </div>
+</div>
+<script src="../../dist/brolly.js"></script>
+<script src="../_shared.js"></script>
+<script>
+var PROMPTS = [
+  'What actually happened, as opposed to what you intended?',
+  'One thing that went right. It can be small.',
+  'What is the smallest useful thing for tomorrow?',
+  'What did you avoid today, and was it worth it?',
+  'Who made the day better? Be specific.'
+];
+var MOOD = {
+  low: ['danger', 'Low'], meh: ['warning', 'Meh'], fine: ['info', 'Fine'], good: ['success', 'Good'], great: ['violet', 'Great']
+};
+var entries = EX.load('journal.entries', null);
+var active = EX.iso(new Date());
+var query = '';
+var timer = 0;
+
+if (!entries) {
+  entries = {};
+  entries[EX.iso(EX.addDays(new Date(), -1))] = {
+    mood: 'good',
+    text: 'Finished the thing that had been staring at me for a week. It took forty minutes. The other six days were spent avoiding it, which is a kind of work too, apparently.',
+    updated: Date.now() - 864e5
+  };
+  entries[EX.iso(EX.addDays(new Date(), -2))] = {
+    mood: 'meh',
+    text: 'Kettle, emails, a walk in the rain. Not a bad day, not a good one. The rain did not ask for feedback.',
+    updated: Date.now() - 864e5 * 2
+  };
+  EX.save('journal.entries', entries);
+}
+
+function entry() { return entries[active] || { mood: '', text: '', updated: 0 }; }
+function ensureEntry() { entries[active] = entries[active] || { mood: '', text: '', updated: 0 }; return entries[active]; }
+function promptFor(key) {
+  var n = key.split('-').reduce(function (a, b) { return a + +b; }, 0);
+  return PROMPTS[n % PROMPTS.length];
+}
+function paintList() {
+  var q = query.toLowerCase();
+  var keys = Object.keys(entries).filter(function (k) {
+    var e = entries[k];
+    return (e.text || e.mood) && (!q || e.text.toLowerCase().indexOf(q) >= 0);
+  }).sort().reverse();
+  EX.byId('entry-count').textContent = Object.keys(entries).filter(function (k) { return entries[k].text || entries[k].mood; }).length + ' entries';
+  EX.byId('list').innerHTML = keys.map(function (k) {
+    var e = entries[k], m = MOOD[e.mood] || ['info', '—'];
+    var snippet = (e.text || 'No words. Just a mood.').replace(/\s+/g, ' ').slice(0, 48);
+    return '<button type="button" class="ex-item" data-k="' + k + '" aria-current="' + (k === active) + '">' +
+      '<span class="ex-item__main"><span class="ex-item__title">' + EX.shortDate(EX.fromISO(k)) + '</span>' +
+      '<span class="ex-item__meta">' + EX.esc(snippet) + '</span></span>' +
+      '<span class="br-gem" data-tone="' + m[0] + '">' + m[1] + '</span></button>';
+  }).join('');
+  if (!keys.length) EX.byId('list').innerHTML = '<div style="padding:8px 0"><div class="br-wit">Nothing written. The blank page is winning.</div></div>';
+}
+function paintEditor() {
+  var e = entry(), d = EX.fromISO(active), today = active === EX.iso(new Date());
+  EX.byId('date-label').textContent = today ? 'Today' : EX.longDate(d);
+  EX.byId('date-sub').textContent = today ? EX.longDate(d) : (d < new Date() ? 'Looking back' : 'The future, optimistically');
+  EX.byId('prompt').textContent = promptFor(active);
+  EX.byId('text').value = e.text || '';
+  EX.byId('words').textContent = EX.words(e.text) + ' words';
+  EX.byId('updated').textContent = e.updated ? 'Last saved ' + new Intl.DateTimeFormat('en-GB', { hour: '2-digit', minute: '2-digit' }).format(new Date(e.updated)) : '';
+  EX.byId('state').textContent = (e.text || e.mood) ? 'Saved.' : '';
+  document.querySelectorAll('input[name=mood]').forEach(function (r) { r.checked = r.value === e.mood; });
+  EX.byId('del').style.visibility = (e.text || e.mood) ? 'visible' : 'hidden';
+  EX.byId('next').disabled = active >= EX.iso(new Date());
+}
+function touch() {
+  var e = ensureEntry();
+  EX.byId('state').textContent = 'Saving…';
+  clearTimeout(timer);
+  timer = setTimeout(function () {
+    e.updated = Date.now(); EX.save('journal.entries', entries);
+    EX.byId('state').textContent = 'Saved.';
+    EX.byId('updated').textContent = 'Last saved ' + new Intl.DateTimeFormat('en-GB', { hour: '2-digit', minute: '2-digit' }).format(new Date(e.updated));
+    paintList();
+  }, 420);
+}
+function go(iso) { active = iso; paintList(); paintEditor(); }
+function remove() {
+  var e = entry(); if (!e.text && !e.mood) return;
+  EX.confirm('The entry for ' + EX.longDate(EX.fromISO(active)) + ' will go.', 'Delete this entry?').then(function (yes) {
+    if (!yes) return;
+    delete entries[active]; EX.save('journal.entries', entries);
+    paintList(); paintEditor();
+    Brolly.toast({ title: 'Deleted.', detail: 'As if it never happened. Which is the point.', tone: 'info' });
+  });
+}
+
+EX.byId('text').addEventListener('input', function () { ensureEntry().text = this.value; EX.byId('words').textContent = EX.words(this.value) + ' words'; touch(); });
+document.querySelectorAll('input[name=mood]').forEach(function (r) {
+  r.addEventListener('change', function () { ensureEntry().mood = this.value; EX.save('journal.entries', entries); touch(); Brolly.sound.play('tick'); });
+});
+EX.on(EX.byId('list'), '.ex-item', 'click', function (e, b) { go(b.dataset.k); });
+EX.byId('prev').addEventListener('click', function () { go(EX.iso(EX.addDays(EX.fromISO(active), -1))); });
+EX.byId('next').addEventListener('click', function () { if (active < EX.iso(new Date())) go(EX.iso(EX.addDays(EX.fromISO(active), 1))); });
+EX.byId('today-btn').addEventListener('click', function () { go(EX.iso(new Date())); });
+EX.byId('del').addEventListener('click', remove);
+EX.byId('q').addEventListener('input', function () { query = this.value.trim(); paintList(); });
+
+EX.byId('del').innerHTML = Brolly.icon('trash');
+EX.byId('prev').innerHTML = Brolly.icon('chevron-left');
+EX.byId('next').innerHTML = Brolly.icon('chevron-right');
+EX.mountTheme();
+Brolly.init();
+paintList();
+paintEditor();
+
+EX.cmd([
+  { id: 'today', group: 'Journal', icon: 'calendar', title: 'Go to today', run: function () { go(EX.iso(new Date())); } },
+  { id: 'prev', group: 'Journal', icon: 'chevron-left', title: 'Previous day', run: function () { go(EX.iso(EX.addDays(EX.fromISO(active), -1))); } },
+  { id: 'save', group: 'Journal', icon: 'check', title: 'Save now', keys: '⌘ S', run: function () { clearTimeout(timer); ensureEntry().updated = Date.now(); EX.save('journal.entries', entries); paintList(); Brolly.toast('saved'); } },
+  { id: 'del', group: 'Journal', icon: 'trash', title: 'Delete this entry', run: remove }
+].concat(EX.themeCommands()));
+Brolly.Keys.on('mod+s', function (e) { e.preventDefault(); clearTimeout(timer); if (entries[active]) { ensureEntry().updated = Date.now(); EX.save('journal.entries', entries); paintList(); } Brolly.toast('saved'); }, { inInputs: true });
+Brolly.Keys.on('t', function () { go(EX.iso(new Date())); });
+Brolly.Keys.on('/', function (e) { e.preventDefault(); EX.byId('q').focus(); });
+</script>
+</body>
+</html>

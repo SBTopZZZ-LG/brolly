@@ -1,0 +1,515 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Brolly — UI kit</title>
+<link rel="stylesheet" href="../dist/brolly.css">
+<style>
+  body{margin:0}
+  .wrap{max-width:1180px;margin:0 auto;padding:var(--space-8) var(--space-6) var(--space-16)}
+  .top{display:flex;align-items:flex-end;justify-content:space-between;gap:var(--space-6);flex-wrap:wrap;margin-bottom:var(--space-8)}
+  .themes{display:flex;gap:var(--space-2);flex-wrap:wrap}
+  .filters{display:flex;gap:var(--space-2);flex-wrap:wrap;margin-bottom:var(--space-6)}
+  .card{background:var(--glass);border:1px solid var(--line);box-shadow:var(--glow-rest);border-radius:var(--radius-lg);padding:var(--space-4);margin-bottom:var(--space-6);backdrop-filter:blur(var(--blur-md)) saturate(var(--sat-glass))}
+  .card__head{display:flex;align-items:flex-start;justify-content:space-between;gap:var(--space-4);margin-bottom:var(--space-3)}
+  .card__meta{display:flex;align-items:center;gap:var(--space-3);text-align:right;flex-wrap:wrap;justify-content:flex-end}
+  .card iframe{display:block;width:100%;border:1px solid var(--line);border-radius:var(--radius-md);background:var(--canvas)}
+  .hero-orb{width:12px;height:12px;border-radius:50%;display:inline-block;background:linear-gradient(135deg,var(--grad-start),var(--grad-end))}
+</style>
+</head>
+<body>
+<div class="br-stage">
+<div class="wrap">
+  <header class="top">
+    <div>
+      <span class="br-label"><span class="hero-orb"></span> UI kit for productivity tools</span>
+      <h1 class="br-display" style="margin:var(--space-2) 0">Brolly.</h1>
+      <p class="br-body-lg" style="margin:0;max-width:52ch">Aurora glass over a lavender haze. Fraunces and DM Mono. Springy, keyboard-first, dry about it.</p>
+    </div>
+    <div class="themes" role="group" aria-label="Theme">
+      <a class="br-btn br-btn--ghost br-btn--sm" href="../examples/index.html">Example tools</a>
+      <button class="br-btn br-btn--sm" data-set-theme="dawn">Dawn</button>
+      <button class="br-btn br-btn--sm" data-set-theme="noon">Noon</button>
+      <button class="br-btn br-btn--sm" data-set-theme="dusk">Dusk</button>
+      <button class="br-btn br-btn--sm" data-set-theme="night">Night</button>
+    </div>
+  </header>
+  <nav class="filters" aria-label="Filter components">
+    <button class="br-btn br-btn--sm br-btn--primary" data-filter="all">All 31</button>
+    <button class="br-btn br-btn--sm" data-filter="Foundations">Foundations</button>
+    <button class="br-btn br-btn--sm" data-filter="Overlays">Overlays</button>
+    <button class="br-btn br-btn--sm" data-filter="Actions">Actions</button>
+    <button class="br-btn br-btn--sm" data-filter="Data">Data</button>
+    <button class="br-btn br-btn--sm" data-filter="Navigation">Navigation</button>
+    <button class="br-btn br-btn--sm" data-filter="Inputs">Inputs</button>
+    <button class="br-btn br-btn--sm" data-filter="Components">Components</button>
+    <button class="br-btn br-btn--sm" data-filter="Motion">Motion</button>
+    <button class="br-btn br-btn--sm" data-filter="Feedback">Feedback</button>
+    <button class="br-btn br-btn--sm" data-filter="Display">Display</button>
+    <button class="br-btn br-btn--sm" data-filter="Lists">Lists</button>
+    <button class="br-btn br-btn--sm" data-filter="Layout">Layout</button>
+    <button class="br-btn br-btn--sm" data-filter="Pages">Pages</button>
+  </nav>
+  <main id="cards">
+
+  <section class="card" data-group="Foundations" id="Aurora">
+    <header class="card__head">
+      <div>
+        <span class="br-label">Foundations</span>
+        <h2 class="br-h2" style="margin:2px 0 0">Aurora</h2>
+      </div>
+      <div class="card__meta">
+        <span class="br-caption">Drifts on its own; leans toward your cursor; changes mood</span>
+        <a class="br-btn br-btn--ghost br-btn--sm" href="previews/Aurora.html" target="_blank">Open</a>
+      </div>
+    </header>
+    <iframe src="previews/Aurora.html" data-src="previews/Aurora.html" height="340" loading="lazy" title="Aurora preview"></iframe>
+  </section>
+
+  <section class="card" data-group="Overlays" id="Bloom">
+    <header class="card__head">
+      <div>
+        <span class="br-label">Overlays</span>
+        <h2 class="br-h2" style="margin:2px 0 0">Bloom</h2>
+      </div>
+      <div class="card__meta">
+        <span class="br-caption">Dialogs, menus and popovers grow out of what you pressed</span>
+        <a class="br-btn br-btn--ghost br-btn--sm" href="previews/Bloom.html" target="_blank">Open</a>
+      </div>
+    </header>
+    <iframe src="previews/Bloom.html" data-src="previews/Bloom.html" height="360" loading="lazy" title="Bloom preview"></iframe>
+  </section>
+
+  <section class="card" data-group="Actions" id="Button">
+    <header class="card__head">
+      <div>
+        <span class="br-label">Actions</span>
+        <h2 class="br-h2" style="margin:2px 0 0">Button</h2>
+      </div>
+      <div class="card__meta">
+        <span class="br-caption">Glowing gradient pill, glass, ghost, danger; magnetic</span>
+        <a class="br-btn br-btn--ghost br-btn--sm" href="previews/Button.html" target="_blank">Open</a>
+      </div>
+    </header>
+    <iframe src="previews/Button.html" data-src="previews/Button.html" height="460" loading="lazy" title="Button preview"></iframe>
+  </section>
+
+  <section class="card" data-group="Data" id="Chart">
+    <header class="card__head">
+      <div>
+        <span class="br-label">Data</span>
+        <h2 class="br-h2" style="margin:2px 0 0">Chart</h2>
+      </div>
+      <div class="card__meta">
+        <span class="br-caption">Glow lines on glass. Hover, or use the arrow keys.</span>
+        <a class="br-btn br-btn--ghost br-btn--sm" href="previews/Chart.html" target="_blank">Open</a>
+      </div>
+    </header>
+    <iframe src="previews/Chart.html" data-src="previews/Chart.html" height="460" loading="lazy" title="Chart preview"></iframe>
+  </section>
+
+  <section class="card" data-group="Navigation" id="CommandBar">
+    <header class="card__head">
+      <div>
+        <span class="br-label">Navigation</span>
+        <h2 class="br-h2" style="margin:2px 0 0">CommandBar</h2>
+      </div>
+      <div class="card__meta">
+        <span class="br-caption">One box for everything. Cmd/Ctrl+K.</span>
+        <a class="br-btn br-btn--ghost br-btn--sm" href="previews/CommandBar.html" target="_blank">Open</a>
+      </div>
+    </header>
+    <iframe src="previews/CommandBar.html" data-src="previews/CommandBar.html" height="420" loading="lazy" title="CommandBar preview"></iframe>
+  </section>
+
+  <section class="card" data-group="Inputs" id="Controls">
+    <header class="card__head">
+      <div>
+        <span class="br-label">Inputs</span>
+        <h2 class="br-h2" style="margin:2px 0 0">Controls</h2>
+      </div>
+      <div class="card__meta">
+        <span class="br-caption">Glass beads: switch, checkbox, radio, slider</span>
+        <a class="br-btn br-btn--ghost br-btn--sm" href="previews/Controls.html" target="_blank">Open</a>
+      </div>
+    </header>
+    <iframe src="previews/Controls.html" data-src="previews/Controls.html" height="420" loading="lazy" title="Controls preview"></iframe>
+  </section>
+
+  <section class="card" data-group="Components" id="Cover">
+    <header class="card__head">
+      <div>
+        <span class="br-label">Components</span>
+        <h2 class="br-h2" style="margin:2px 0 0">Cover</h2>
+      </div>
+      <div class="card__meta">
+        <span class="br-caption"></span>
+        <a class="br-btn br-btn--ghost br-btn--sm" href="previews/Cover.html" target="_blank">Open</a>
+      </div>
+    </header>
+    <iframe src="previews/Cover.html" data-src="previews/Cover.html" height="300" loading="lazy" title="Cover preview"></iframe>
+  </section>
+
+  <section class="card" data-group="Inputs" id="DateField">
+    <header class="card__head">
+      <div>
+        <span class="br-label">Inputs</span>
+        <h2 class="br-h2" style="margin:2px 0 0">DateField</h2>
+      </div>
+      <div class="card__meta">
+        <span class="br-caption">Type it like a person; the calendar is the fallback</span>
+        <a class="br-btn br-btn--ghost br-btn--sm" href="previews/DateField.html" target="_blank">Open</a>
+      </div>
+    </header>
+    <iframe src="previews/DateField.html" data-src="previews/DateField.html" height="360" loading="lazy" title="DateField preview"></iframe>
+  </section>
+
+  <section class="card" data-group="Motion" id="Delight">
+    <header class="card__head">
+      <div>
+        <span class="br-label">Motion</span>
+        <h2 class="br-h2" style="margin:2px 0 0">Delight</h2>
+      </div>
+      <div class="card__meta">
+        <span class="br-caption">Greetings with opinions, celebrations, idle antics</span>
+        <a class="br-btn br-btn--ghost br-btn--sm" href="previews/Delight.html" target="_blank">Open</a>
+      </div>
+    </header>
+    <iframe src="previews/Delight.html" data-src="previews/Delight.html" height="520" loading="lazy" title="Delight preview"></iframe>
+  </section>
+
+  <section class="card" data-group="Feedback" id="EmptyState">
+    <header class="card__head">
+      <div>
+        <span class="br-label">Feedback</span>
+        <h2 class="br-h2" style="margin:2px 0 0">EmptyState</h2>
+      </div>
+      <div class="card__meta">
+        <span class="br-caption">Illustrated, and rather rude about it. All seven.</span>
+        <a class="br-btn br-btn--ghost br-btn--sm" href="previews/EmptyState.html" target="_blank">Open</a>
+      </div>
+    </header>
+    <iframe src="previews/EmptyState.html" data-src="previews/EmptyState.html" height="560" loading="lazy" title="EmptyState preview"></iframe>
+  </section>
+
+  <section class="card" data-group="Inputs" id="Field">
+    <header class="card__head">
+      <div>
+        <span class="br-label">Inputs</span>
+        <h2 class="br-h2" style="margin:2px 0 0">Field</h2>
+      </div>
+      <div class="card__meta">
+        <span class="br-caption">Floating labels that glide into the border</span>
+        <a class="br-btn br-btn--ghost br-btn--sm" href="previews/Field.html" target="_blank">Open</a>
+      </div>
+    </header>
+    <iframe src="previews/Field.html" data-src="previews/Field.html" height="640" loading="lazy" title="Field preview"></iframe>
+  </section>
+
+  <section class="card" data-group="Display" id="Gem">
+    <header class="card__head">
+      <div>
+        <span class="br-label">Display</span>
+        <h2 class="br-h2" style="margin:2px 0 0">Gem</h2>
+      </div>
+      <div class="card__meta">
+        <span class="br-caption">Faceted status chips: always a word and an icon</span>
+        <a class="br-btn br-btn--ghost br-btn--sm" href="previews/Gem.html" target="_blank">Open</a>
+      </div>
+    </header>
+    <iframe src="previews/Gem.html" data-src="previews/Gem.html" height="230" loading="lazy" title="Gem preview"></iframe>
+  </section>
+
+  <section class="card" data-group="Foundations" id="Glass">
+    <header class="card__head">
+      <div>
+        <span class="br-label">Foundations</span>
+        <h2 class="br-h2" style="margin:2px 0 0">Glass</h2>
+      </div>
+      <div class="card__meta">
+        <span class="br-caption">Frosted stack: resting, strong, lift</span>
+        <a class="br-btn br-btn--ghost br-btn--sm" href="previews/Glass.html" target="_blank">Open</a>
+      </div>
+    </header>
+    <iframe src="previews/Glass.html" data-src="previews/Glass.html" height="320" loading="lazy" title="Glass preview"></iframe>
+  </section>
+
+  <section class="card" data-group="Navigation" id="HintOverlay">
+    <header class="card__head">
+      <div>
+        <span class="br-label">Navigation</span>
+        <h2 class="br-h2" style="margin:2px 0 0">HintOverlay</h2>
+      </div>
+      <div class="card__meta">
+        <span class="br-caption">Press F: every clickable thing gets a letter</span>
+        <a class="br-btn br-btn--ghost br-btn--sm" href="previews/HintOverlay.html" target="_blank">Open</a>
+      </div>
+    </header>
+    <iframe src="previews/HintOverlay.html" data-src="previews/HintOverlay.html" height="340" loading="lazy" title="HintOverlay preview"></iframe>
+  </section>
+
+  <section class="card" data-group="Actions" id="HoldButton">
+    <header class="card__head">
+      <div>
+        <span class="br-label">Actions</span>
+        <h2 class="br-h2" style="margin:2px 0 0">HoldButton</h2>
+      </div>
+      <div class="card__meta">
+        <span class="br-caption">Hold to confirm: no dialogs, just intent</span>
+        <a class="br-btn br-btn--ghost br-btn--sm" href="previews/HoldButton.html" target="_blank">Open</a>
+      </div>
+    </header>
+    <iframe src="previews/HoldButton.html" data-src="previews/HoldButton.html" height="260" loading="lazy" title="HoldButton preview"></iframe>
+  </section>
+
+  <section class="card" data-group="Foundations" id="Icons">
+    <header class="card__head">
+      <div>
+        <span class="br-label">Foundations</span>
+        <h2 class="br-h2" style="margin:2px 0 0">Icons</h2>
+      </div>
+      <div class="card__meta">
+        <span class="br-caption">Hairline 1.25px strokes on a 24px grid</span>
+        <a class="br-btn br-btn--ghost br-btn--sm" href="previews/Icons.html" target="_blank">Open</a>
+      </div>
+    </header>
+    <iframe src="previews/Icons.html" data-src="previews/Icons.html" height="480" loading="lazy" title="Icons preview"></iframe>
+  </section>
+
+  <section class="card" data-group="Feedback" id="Island">
+    <header class="card__head">
+      <div>
+        <span class="br-label">Feedback</span>
+        <h2 class="br-h2" style="margin:2px 0 0">Island</h2>
+      </div>
+      <div class="card__meta">
+        <span class="br-caption">Toasts that morph from a pill into a card and back</span>
+        <a class="br-btn br-btn--ghost br-btn--sm" href="previews/Island.html" target="_blank">Open</a>
+      </div>
+    </header>
+    <iframe src="previews/Island.html" data-src="previews/Island.html" height="330" loading="lazy" title="Island preview"></iframe>
+  </section>
+
+  <section class="card" data-group="Display" id="Keycap">
+    <header class="card__head">
+      <div>
+        <span class="br-label">Display</span>
+        <h2 class="br-h2" style="margin:2px 0 0">Keycap</h2>
+      </div>
+      <div class="card__meta">
+        <span class="br-caption">Shortcut hints that look like keys</span>
+        <a class="br-btn br-btn--ghost br-btn--sm" href="previews/Keycap.html" target="_blank">Open</a>
+      </div>
+    </header>
+    <iframe src="previews/Keycap.html" data-src="previews/Keycap.html" height="170" loading="lazy" title="Keycap preview"></iframe>
+  </section>
+
+  <section class="card" data-group="Lists" id="Lasso">
+    <header class="card__head">
+      <div>
+        <span class="br-label">Lists</span>
+        <h2 class="br-h2" style="margin:2px 0 0">Lasso</h2>
+      </div>
+      <div class="card__meta">
+        <span class="br-caption">Drag a soft rectangle; a bulk bar rises</span>
+        <a class="br-btn br-btn--ghost br-btn--sm" href="previews/Lasso.html" target="_blank">Open</a>
+      </div>
+    </header>
+    <iframe src="previews/Lasso.html" data-src="previews/Lasso.html" height="520" loading="lazy" title="Lasso preview"></iframe>
+  </section>
+
+  <section class="card" data-group="Layout" id="Layout">
+    <header class="card__head">
+      <div>
+        <span class="br-label">Layout</span>
+        <h2 class="br-h2" style="margin:2px 0 0">Layout</h2>
+      </div>
+      <div class="card__meta">
+        <span class="br-caption">Desktop-first shell: rail, bento tiles, detail column</span>
+        <a class="br-btn br-btn--ghost br-btn--sm" href="previews/Layout.html" target="_blank">Open</a>
+      </div>
+    </header>
+    <iframe src="previews/Layout.html" data-src="previews/Layout.html" height="560" loading="lazy" title="Layout preview"></iframe>
+  </section>
+
+  <section class="card" data-group="Lists" id="LiftShuffle">
+    <header class="card__head">
+      <div>
+        <span class="br-label">Lists</span>
+        <h2 class="br-h2" style="margin:2px 0 0">LiftShuffle</h2>
+      </div>
+      <div class="card__meta">
+        <span class="br-caption">Drag a row: it lifts, neighbours spring aside</span>
+        <a class="br-btn br-btn--ghost br-btn--sm" href="previews/LiftShuffle.html" target="_blank">Open</a>
+      </div>
+    </header>
+    <iframe src="previews/LiftShuffle.html" data-src="previews/LiftShuffle.html" height="460" loading="lazy" title="LiftShuffle preview"></iframe>
+  </section>
+
+  <section class="card" data-group="Feedback" id="Orb">
+    <header class="card__head">
+      <div>
+        <span class="br-label">Feedback</span>
+        <h2 class="br-h2" style="margin:2px 0 0">Orb</h2>
+      </div>
+      <div class="card__meta">
+        <span class="br-caption">A breathing orb with commentary, in three sizes</span>
+        <a class="br-btn br-btn--ghost br-btn--sm" href="previews/Orb.html" target="_blank">Open</a>
+      </div>
+    </header>
+    <iframe src="previews/Orb.html" data-src="previews/Orb.html" height="300" loading="lazy" title="Orb preview"></iframe>
+  </section>
+
+  <section class="card" data-group="Feedback" id="Progress">
+    <header class="card__head">
+      <div>
+        <span class="br-label">Feedback</span>
+        <h2 class="br-h2" style="margin:2px 0 0">Progress</h2>
+      </div>
+      <div class="card__meta">
+        <span class="br-caption">Bar, indeterminate bar and ring</span>
+        <a class="br-btn br-btn--ghost br-btn--sm" href="previews/Progress.html" target="_blank">Open</a>
+      </div>
+    </header>
+    <iframe src="previews/Progress.html" data-src="previews/Progress.html" height="300" loading="lazy" title="Progress preview"></iframe>
+  </section>
+
+  <section class="card" data-group="Navigation" id="Rail">
+    <header class="card__head">
+      <div>
+        <span class="br-label">Navigation</span>
+        <h2 class="br-h2" style="margin:2px 0 0">Rail</h2>
+      </div>
+      <div class="card__meta">
+        <span class="br-caption">Collapsible glass rail: hover to open, pin to keep</span>
+        <a class="br-btn br-btn--ghost br-btn--sm" href="previews/Rail.html" target="_blank">Open</a>
+      </div>
+    </header>
+    <iframe src="previews/Rail.html" data-src="previews/Rail.html" height="520" loading="lazy" title="Rail preview"></iframe>
+  </section>
+
+  <section class="card" data-group="Lists" id="Rows">
+    <header class="card__head">
+      <div>
+        <span class="br-label">Lists</span>
+        <h2 class="br-h2" style="margin:2px 0 0">Rows</h2>
+      </div>
+      <div class="card__meta">
+        <span class="br-caption">Floating glass rows: rest, selected, done</span>
+        <a class="br-btn br-btn--ghost br-btn--sm" href="previews/Rows.html" target="_blank">Open</a>
+      </div>
+    </header>
+    <iframe src="previews/Rows.html" data-src="previews/Rows.html" height="440" loading="lazy" title="Rows preview"></iframe>
+  </section>
+
+  <section class="card" data-group="Motion" id="Sensory">
+    <header class="card__head">
+      <div>
+        <span class="br-label">Motion</span>
+        <h2 class="br-h2" style="margin:2px 0 0">Sensory</h2>
+      </div>
+      <div class="card__meta">
+        <span class="br-caption">Glass-chime sounds and haptics, with a master mute</span>
+        <a class="br-btn br-btn--ghost br-btn--sm" href="previews/Sensory.html" target="_blank">Open</a>
+      </div>
+    </header>
+    <iframe src="previews/Sensory.html" data-src="previews/Sensory.html" height="360" loading="lazy" title="Sensory preview"></iframe>
+  </section>
+
+  <section class="card" data-group="Pages" id="Showcase">
+    <header class="card__head">
+      <div>
+        <span class="br-label">Pages</span>
+        <h2 class="br-h2" style="margin:2px 0 0">Showcase</h2>
+      </div>
+      <div class="card__meta">
+        <span class="br-caption">Everything together: a small task app, fully behaved</span>
+        <a class="br-btn br-btn--ghost br-btn--sm" href="previews/Showcase.html" target="_blank">Open</a>
+      </div>
+    </header>
+    <iframe src="previews/Showcase.html" data-src="previews/Showcase.html" height="860" loading="lazy" title="Showcase preview"></iframe>
+  </section>
+
+  <section class="card" data-group="Motion" id="SunTheme">
+    <header class="card__head">
+      <div>
+        <span class="br-label">Motion</span>
+        <h2 class="br-h2" style="margin:2px 0 0">SunTheme</h2>
+      </div>
+      <div class="card__meta">
+        <span class="br-caption">Dawn, noon, dusk, night. Drag the clock.</span>
+        <a class="br-btn br-btn--ghost br-btn--sm" href="previews/SunTheme.html" target="_blank">Open</a>
+      </div>
+    </header>
+    <iframe src="previews/SunTheme.html" data-src="previews/SunTheme.html" height="380" loading="lazy" title="SunTheme preview"></iframe>
+  </section>
+
+  <section class="card" data-group="Navigation" id="Tabs">
+    <header class="card__head">
+      <div>
+        <span class="br-label">Navigation</span>
+        <h2 class="br-h2" style="margin:2px 0 0">Tabs</h2>
+      </div>
+      <div class="card__meta">
+        <span class="br-caption">Segmented control with a sliding glass thumb</span>
+        <a class="br-btn br-btn--ghost br-btn--sm" href="previews/Tabs.html" target="_blank">Open</a>
+      </div>
+    </header>
+    <iframe src="previews/Tabs.html" data-src="previews/Tabs.html" height="200" loading="lazy" title="Tabs preview"></iframe>
+  </section>
+
+  <section class="card" data-group="Display" id="Tooltip">
+    <header class="card__head">
+      <div>
+        <span class="br-label">Display</span>
+        <h2 class="br-h2" style="margin:2px 0 0">Tooltip</h2>
+      </div>
+      <div class="card__meta">
+        <span class="br-caption">Dry wit second, real information first</span>
+        <a class="br-btn br-btn--ghost br-btn--sm" href="previews/Tooltip.html" target="_blank">Open</a>
+      </div>
+    </header>
+    <iframe src="previews/Tooltip.html" data-src="previews/Tooltip.html" height="280" loading="lazy" title="Tooltip preview"></iframe>
+  </section>
+
+  <section class="card" data-group="Motion" id="Transitions">
+    <header class="card__head">
+      <div>
+        <span class="br-label">Motion</span>
+        <h2 class="br-h2" style="margin:2px 0 0">Transitions</h2>
+      </div>
+      <div class="card__meta">
+        <span class="br-caption">Morph for drill-ins; depth push between peers</span>
+        <a class="br-btn br-btn--ghost br-btn--sm" href="previews/Transitions.html" target="_blank">Open</a>
+      </div>
+    </header>
+    <iframe src="previews/Transitions.html" data-src="previews/Transitions.html" height="480" loading="lazy" title="Transitions preview"></iframe>
+  </section>
+  </main>
+  <footer class="br-small" style="margin-top:var(--space-12)">
+    Generated from <code>src/</code> by <code>build.mjs</code>. Edit the source, not <code>dist/</code>.
+  </footer>
+</div>
+</div>
+<script>
+var root=document.documentElement;
+function setTheme(t){
+  root.setAttribute('data-theme',t);
+  document.querySelectorAll('.card iframe').forEach(function(f){
+    f.src=f.dataset.src+'?theme='+encodeURIComponent(t);
+  });
+  document.querySelectorAll('[data-set-theme]').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.setTheme===t));});
+}
+document.querySelectorAll('[data-set-theme]').forEach(function(b){b.addEventListener('click',function(){setTheme(b.dataset.setTheme);});});
+document.querySelectorAll('[data-filter]').forEach(function(b){
+  b.addEventListener('click',function(){
+    var g=b.dataset.filter;
+    document.querySelectorAll('[data-filter]').forEach(function(x){x.classList.remove('br-btn--primary');});
+    b.classList.add('br-btn--primary');
+    document.querySelectorAll('.card').forEach(function(c){c.hidden=g!=='all'&&c.dataset.group!==g;});
+  });
+});
+</script>
+</body>
+</html>

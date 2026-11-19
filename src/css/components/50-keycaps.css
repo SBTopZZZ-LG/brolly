@@ -1,0 +1,4 @@
+.br-key{display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:22px;padding:0 6px;border-radius:var(--radius-xs);background:var(--glass-strong);color:var(--ink-soft);
+  font:500 11px/14px var(--font-mono);border:1px solid var(--line);border-bottom-width:2px;box-shadow:0 1px 0 #ffffff55 inset;vertical-align:middle}
+.br-keys{display:inline-flex;gap:4px}
+

@@ -1,0 +1,25 @@
+<!-- @dsCard group="Feedback" height=330 subtitle="Toasts that morph from a pill into a card and back" -->
+<!doctype html>
+<html><head><meta charset="utf-8"><style>html,body{margin:0}.row{display:flex;gap:12px;flex-wrap:wrap;margin-top:70px}</style></head>
+<body>
+<div class="br-stage" style="min-height:100vh;padding:32px">
+  <p class="br-small" style="margin:0">Press a button, then watch the top of this panel.</p>
+  <div class="row" id="r">
+    <button class="br-btn" data-t="saved">Saved</button>
+    <button class="br-btn" data-t="failed">Failed</button>
+    <button class="br-btn" data-t="warn">Warning</button>
+    <button class="br-btn" data-t="copied">Copied</button>
+    <button class="br-btn" data-t="undo">With undo</button>
+    <button class="br-btn br-btn--primary" data-t="progress">Progress</button>
+  </div>
+</div>
+<script>
+Brolly.init();
+document.getElementById('r').addEventListener('click',function(e){
+  var b=e.target.closest('[data-t]');if(!b)return;var t=b.getAttribute('data-t');
+  if(t==='undo')Brolly.Island.show({title:'Task archived',detail:'It will not miss you. You have a few seconds to change your mind.',tone:'info',icon:'archive',actions:[{label:'Undo',primary:true,onClick:function(){Brolly.toast('done');}},{label:'Fine'}],duration:7000});
+  else if(t==='progress'){var h=Brolly.Island.show({title:'Uploading',detail:'Queueing politely…',tone:'info',progress:5,open:true}),p=5;var i=setInterval(function(){p+=9+Math.random()*12;if(p>=100){p=100;clearInterval(i);h.update({title:'Uploaded',detail:'Every last byte, accounted for.',tone:'success',progress:100});}else h.update({progress:Math.round(p)});},420);}
+  else Brolly.toast(t);
+});
+</script>
+</body></html>

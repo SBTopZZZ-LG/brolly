@@ -1,0 +1,32 @@
+<!-- @dsCard height=300 -->
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+html,body{margin:0;background:transparent}
+.cv{width:960px;height:300px;display:block}
+.ground{fill:var(--canvas)}
+.violet{fill:var(--grad-start)}.pink{fill:var(--grad-end)}.sky{fill:var(--data-3)}.ink{fill:var(--ink)}.cut{fill:var(--canvas)}
+.b1,.b4{rx:32px}.b2,.b3{rx:32px}
+.name{font:380 120px/114px var(--font-display);letter-spacing:-.02em;fill:var(--ink)}
+.tag{font:italic 400 14px/20px var(--font-display);fill:var(--ink-muted)}
+</style></head>
+<body>
+<svg class="cv" viewBox="0 0 960 300" role="img" aria-label="Brolly design system cover">
+<!--
+ blocks: grad-start 192x160, data-3 128x96, grad-end 128x96, ink 128x208 (bleeds right); all rx radius-xl (32px) on a 16px-step grid
+ arrangement: one tall violet slab, a stacked sky/pink pair, an ink slab bleeding off the right edge
+ pattern: umbrella canopy (literal motif) — ground-coloured half-discs (d=64, a radius-pill silhouette) bitten out of the slab hems, because "Brolly" is a British umbrella
+ steps/radii: space-16 half-disc diameter, space-8 gaps, radius-xl corners
+-->
+<rect class="ground" width="960" height="300"/>
+<rect class="violet b1" x="496" y="24" width="192" height="160"/>
+<rect class="sky b2" x="704" y="24" width="128" height="96"/>
+<rect class="pink b3" x="704" y="136" width="128" height="96"/>
+<rect class="ink b4" x="848" y="24" width="128" height="208"/>
+<path class="cut" d="M496 184a32 32 0 0 1 64 0zM560 184a32 32 0 0 1 64 0zM624 184a32 32 0 0 1 64 0z" transform="translate(0 0)"/>
+<path class="cut" d="M704 232a32 32 0 0 1 64 0zM768 232a32 32 0 0 1 64 0z"/>
+<path class="cut" d="M848 232a32 32 0 0 1 64 0zM912 232a32 32 0 0 1 64 0z"/>
+<text class="name" x="40" y="224">Brolly</text>
+<text class="tag" x="44" y="270">A UI kit with a stiff upper lip and a soft glow.</text>
+</svg>
+</body></html>

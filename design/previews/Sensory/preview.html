@@ -1,0 +1,22 @@
+<!-- @dsCard group="Motion" height=360 subtitle="Glass-chime sounds and haptics, with a master mute" -->
+<!doctype html>
+<html><head><meta charset="utf-8"><style>html,body{margin:0}.row{display:flex;gap:12px;flex-wrap:wrap;margin:14px 0 22px}</style></head>
+<body>
+<div class="br-stage" style="min-height:100vh;padding:32px">
+  <p class="br-label" style="margin:0">Sounds (synthesised, nothing to download)</p>
+  <div class="row" id="s"></div>
+  <p class="br-label" style="margin:0">Master controls</p>
+  <div class="row" style="gap:28px">
+    <label class="br-switch"><input type="checkbox" role="switch" id="snd" checked/><span class="br-switch__track"><span class="br-switch__bead"></span></span><span>Sounds</span></label>
+    <label class="br-switch"><input type="checkbox" role="switch" id="hap" checked/><span class="br-switch__track"><span class="br-switch__bead"></span></span><span>Haptics (phones only)</span></label>
+  </div>
+  <p class="br-wit" style="margin:0">Off-switches are one click. Silence is a perfectly respectable user interface.</p>
+</div>
+<script>
+Brolly.init();var S=Brolly.Sensory;
+document.getElementById('s').innerHTML=S.names.map(function(n){return '<button class="br-btn br-btn--sm" data-n="'+n+'">'+n+'</button>';}).join('');
+document.getElementById('s').addEventListener('click',function(e){var b=e.target.closest('[data-n]');if(b)S.fire(b.getAttribute('data-n'));});
+document.getElementById('snd').addEventListener('change',function(e){S.mute(!e.target.checked);});
+document.getElementById('hap').addEventListener('change',function(e){S.hapticsOff(!e.target.checked);});
+</script>
+</body></html>

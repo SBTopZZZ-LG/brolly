@@ -1,0 +1,23 @@
+.br-cmd{position:fixed;inset:0;z-index:var(--z-cmd);display:none;align-items:flex-start;justify-content:center;padding-top:12vh}
+.br-cmd.is-open{display:flex}
+.br-cmd__scrim{position:absolute;inset:0;background:var(--scrim);-webkit-backdrop-filter:blur(var(--blur-sm));backdrop-filter:blur(var(--blur-sm));opacity:0;transition:opacity var(--dur-base) var(--ease-settle)}
+.br-cmd.is-in .br-cmd__scrim{opacity:1}
+.br-cmd__panel{position:relative;width:min(660px,92vw);max-height:70vh;display:flex;flex-direction:column;border-radius:var(--radius-lg);background:var(--glass-strong);box-shadow:var(--glow-float);
+  -webkit-backdrop-filter:blur(var(--blur-lg)) saturate(var(--sat-glass));backdrop-filter:blur(var(--blur-lg)) saturate(var(--sat-glass));
+  transform:translateY(-14px) scale(.94);opacity:0;transition:transform var(--dur-slow) var(--ease-spring),opacity var(--dur-base) var(--ease-settle)}
+.br-cmd.is-in .br-cmd__panel{transform:none;opacity:1}
+.br-cmd__top{display:flex;align-items:center;gap:12px;padding:16px 20px;border-bottom:1px solid var(--line)}
+.br-cmd__input{flex:1;min-width:0;border:0;background:transparent;color:var(--ink);font:400 19px/28px var(--font-display);outline:none}
+.br-cmd__input::placeholder{color:var(--ink-muted)}
+.br-cmd__list{overflow:auto;padding:8px;scrollbar-width:thin}
+.br-cmd__group{padding:12px 12px 6px}
+.br-cmd__item{display:flex;align-items:center;gap:14px;padding:10px 12px;border-radius:var(--radius-sm);cursor:pointer;color:var(--ink);transition:background var(--dur-fast),transform var(--dur-base) var(--ease-spring)}
+.br-cmd__item .br-icon{color:var(--ink-soft)}
+.br-cmd__item[aria-selected="true"]{background:color-mix(in srgb,var(--accent) 16%,transparent);transform:translateX(3px)}
+.br-cmd__item[aria-selected="true"] .br-icon{color:var(--accent)}
+.br-cmd__title{flex:1;min-width:0}
+.br-cmd__title small{display:block;font:var(--br-wit);color:var(--ink-soft)}
+.br-cmd__title mark{background:transparent;color:var(--accent);font-weight:600;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px}
+.br-cmd__foot{display:flex;gap:18px;align-items:center;padding:10px 20px;border-top:1px solid var(--line);color:var(--ink-muted);font:400 12px/16px var(--font-mono)}
+.br-cmd__empty{padding:28px 16px;text-align:center}
+

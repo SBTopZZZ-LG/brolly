@@ -1,0 +1,22 @@
+.br-chart{position:relative;padding:var(--space-5);border-radius:var(--radius-lg)}
+.br-chart__head{display:flex;align-items:flex-start;justify-content:space-between;gap:var(--space-4);margin-bottom:var(--space-3)}
+.br-chart__title{margin:0}
+.br-chart__legend{display:flex;gap:var(--space-4);flex-wrap:wrap;margin-top:6px}
+.br-chart__legend span{display:inline-flex;align-items:center;gap:8px;font:var(--br-ui);color:var(--ink)}
+.br-chart__legend i{width:14px;height:2px;border-radius:2px;background:var(--c);box-shadow:0 0 8px var(--c)}
+.br-chart svg{display:block;width:100%;height:auto;overflow:visible}
+.br-chart text{font:400 11px/1 var(--font-mono);fill:var(--ink-muted)}
+.br-chart .grid{stroke:var(--line);stroke-width:1}
+.br-chart .ser{fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.br-chart .dot{stroke:var(--glass-strong);stroke-width:2}
+.br-chart .cross{stroke:var(--ink-muted);stroke-width:1;opacity:0;transition:opacity var(--dur-fast)}
+.br-chart.is-hover .cross{opacity:.6}
+.br-chart__tip{position:absolute;pointer-events:none;min-width:150px;padding:10px 12px;border-radius:var(--radius-sm);background:var(--glass-strong);box-shadow:var(--glow-float);opacity:0;transform:translate(-50%,-8px);transition:opacity var(--dur-fast)}
+.br-chart.is-hover .br-chart__tip{opacity:1}
+.br-chart__tip dl{margin:6px 0 0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font:var(--br-data)}
+.br-chart__tip dt{display:flex;align-items:center;gap:8px;color:var(--ink-soft)}.br-chart__tip dt i{width:10px;height:10px;border-radius:50%;background:var(--c)}
+.br-chart__tip dd{margin:0;text-align:right;color:var(--ink)}
+.br-chart__table{display:none;width:100%;border-collapse:collapse;font:var(--br-data)}
+.br-chart__table th,.br-chart__table td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:right}.br-chart__table th:first-child,.br-chart__table td:first-child{text-align:left}
+.br-chart.show-table svg,.br-chart.show-table .br-chart__legend{display:none}.br-chart.show-table .br-chart__table{display:table}
+

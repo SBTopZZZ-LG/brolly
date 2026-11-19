@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Flashcards — Brolly example</title>
+<link rel="stylesheet" href="../../dist/brolly.css">
+<link rel="stylesheet" href="../_shared.css">
+<style>
+  .flash-wrap { max-width: 1080px; margin: 0 auto; padding: var(--space-8) var(--space-6) var(--space-16); }
+  .flash-card {
+    position: relative; display: grid; place-items: center; min-height: 300px; padding: var(--space-8);
+    text-align: center; cursor: pointer; user-select: none; overflow: hidden;
+    background: var(--glass); box-shadow: var(--glow-rest); border-radius: var(--radius-xl);
+    transition: box-shadow var(--dur-base), transform var(--dur-base) var(--ease-spring);
+  }
+  .flash-card:hover { box-shadow: var(--glow-lift); }
+  .flash-card::before {
+    content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 1px; pointer-events: none;
+    background: linear-gradient(135deg, var(--glass-edge), transparent 38%, transparent 62%, var(--glass-edge));
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude;
+  }
+  .flash-face { display: none; flex-direction: column; align-items: center; gap: 14px; }
+  .flash-card[data-revealed="false"] .flash-front, .flash-card[data-revealed="true"] .flash-back { display: flex; }
+  .flash-q { font: 420 34px/42px var(--font-display); letter-spacing: -.01em; max-width: 22ch; }
+  .flash-a { font: 400 28px/36px var(--font-display); color: var(--accent); }
+  .flash-tag { position: absolute; top: 16px; left: 16px; }
+  .flash-hint { position: absolute; bottom: 16px; left: 0; right: 0; text-align: center; font: var(--br-caption); color: var(--ink-muted); }
+  .flash-actions { display: flex; gap: var(--space-2); justify-content: center; flex-wrap: wrap; }
+  .flash-stat { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--line); }
+  .flash-stat:last-child { border-bottom: 0; }
+  .deck-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 6px 0; }
+  .deck-row .br-progress { flex: 1; }
+  @media (max-width: 720px) { .flash-q { font-size: 26px; line-height: 34px; } }
+</style>
+</head>
+<body>
+<div class="br-stage">
+  <div class="flash-wrap">
+    <header class="ex-bar">
+      <div>
+        <a class="br-btn br-btn--ghost br-btn--sm ex-back" href="../index.html">← Examples</a>
+        <span class="ex-label" style="display:block;margin-top:12px">Remember, then forget more slowly</span>
+        <h1 class="br-display" style="margin:6px 0 0">Flashcards.</h1>
+      </div>
+      <div class="ex-actions">
+        <div class="br-tabs" id="decks" data-br="tabs" aria-label="Deck">
+          <button class="br-tabs__tab" data-id="spanish" aria-selected="true">Spanish</button>
+          <button class="br-tabs__tab" data-id="capitals">Capitals</button>
+          <button class="br-tabs__tab" data-id="css">CSS</button>
+        </div>
+        <button class="br-btn br-btn--ghost br-btn--icon br-btn--sm" data-ex-theme aria-label="Change theme"></button>
+      </div>
+    </header>
+
+    <div class="br-bento">
+      <section class="br-span-8 ex-stack">
+        <div class="flash-card" id="card" data-revealed="false" role="button" tabindex="0" aria-label="Flashcard. Press Space to reveal.">
+          <span class="flash-tag br-gem" data-tone="info" id="card-tag">Spanish</span>
+          <div class="flash-face flash-front"><div class="ex-label" id="side-label">Question</div><div class="flash-q" id="front"></div></div>
+          <div class="flash-face flash-back"><div class="ex-label" id="side-label-back">Answer</div><div class="flash-q" id="front-back"></div><div class="flash-a" id="back"></div></div>
+          <div class="flash-hint" id="card-hint">Press Space, or click, to reveal</div>
+        </div>
+        <div class="flash-actions" id="grade" style="visibility:hidden">
+          <button class="br-btn br-btn--danger" data-grade="again">Again <span class="br-keys"><kbd class="br-key">1</kbd></span></button>
+          <button class="br-btn" data-grade="good">Good <span class="br-keys"><kbd class="br-key">2</kbd></span></button>
+          <button class="br-btn br-btn--primary" data-grade="easy">Easy <span class="br-keys"><kbd class="br-key">3</kbd></span></button>
+        </div>
+        <div id="progress"></div>
+      </section>
+
+      <section class="br-tile br-span-4 ex-stack">
+        <span class="ex-label">This session</span>
+        <div class="flash-stat"><span class="br-caption">Reviewed</span><span class="br-gem" data-tone="info" id="reviewed">0</span></div>
+        <div class="flash-stat"><span class="br-caption">Remembered</span><span class="br-gem" data-tone="success" id="right">0</span></div>
+        <div class="flash-stat"><span class="br-caption">Left in queue</span><span class="br-gem" data-tone="violet" id="left">0</span></div>
+        <div class="flash-stat"><span class="br-caption">Accuracy</span><span class="br-gem" data-tone="warning" id="accuracy">—</span></div>
+        <div class="ex-label" style="margin-top:8px">Deck progress</div>
+        <div id="deck-progress"></div>
+        <p class="ex-wit" id="done-wit" style="margin:0">Boxes do the scheduling. You just turn up.</p>
+      </section>
+
+      <section class="br-tile br-span-12" style="padding-bottom:0;overflow:hidden">
+        <div id="chart" style="margin:calc(var(--space-5) * -1)"></div>
+      </section>
+    </div>
+  </div>
+</div>
+<script src="../../dist/brolly.js"></script>
+<script src="../_shared.js"></script>
+<script>
+var DECKS = {
+  spanish: { name: 'Spanish', cards: [
+    ['hola', 'hello'], ['gracias', 'thank you'], ['mañana', 'tomorrow'], ['perro', 'dog'], ['biblioteca', 'library']
+  ] },
+  capitals: { name: 'Capitals', cards: [
+    ['France', 'Paris'], ['Japan', 'Tokyo'], ['Australia', 'Canberra'], ['Canada', 'Ottawa'], ['Brazil', 'Brasília']
+  ] },
+  css: { name: 'CSS', cards: [
+    ['Make a flex child scroll', 'min-height: 0 (or min-width: 0)'], ['Centre a box both ways', 'display: grid; place-items: center'], ['Style every other row', 'tr:nth-child(odd)'], ['Round only the top corners', 'border-radius: 16px 16px 0 0'], ['Respect reduced motion', '@media (prefers-reduced-motion: reduce)']
+  ] }
+};
+var boxes = EX.load('flashcards.boxes', {});
+var history = EX.load('flashcards.history', null);
+var deckKey = EX.load('flashcards.deck', 'spanish');
+if (!DECKS[deckKey]) deckKey = 'spanish';
+var queue = [];
+var reviewed = 0, right = 0, revealed = false, total = 0;
+
+if (!history) {
+  history = {};
+  [12, 8, 0, 15, 10, 5, 0].forEach(function (n, i) { history[EX.iso(EX.addDays(new Date(), -(6 - i)))] = n; });
+  EX.save('flashcards.history', history);
+}
+function box(id) { return boxes[id] || 0; }
+function cardId(c) { return deckKey + ':' + c[0]; }
+function startSession() {
+  var cards = DECKS[deckKey].cards.filter(function (c) { return box(cardId(c)) < 3; });
+  if (!cards.length) cards = DECKS[deckKey].cards.slice();
+  queue = cards.map(cardId);
+  reviewed = 0; right = 0; total = queue.length; revealed = false;
+  paint();
+}
+function currentCard() {
+  var id = queue[0]; if (!id) return null;
+  var text = id.slice(deckKey.length + 1);
+  var c = DECKS[deckKey].cards.filter(function (x) { return x[0] === text; })[0];
+  return c ? { id: id, front: c[0], back: c[1] } : null;
+}
+function reveal() {
+  if (revealed || !queue.length) return;
+  revealed = true; paint(); Brolly.sound.play('pop');
+}
+function grade(g) {
+  if (!revealed || !queue.length) return;
+  var id = queue.shift(), b = box(id);
+  if (g === 'again') { boxes[id] = 0; queue.push(id); Brolly.sound.play('error'); }
+  else {
+    boxes[id] = g === 'easy' ? 3 : Math.min(3, b + 1);
+    right++; Brolly.sound.play('success');
+  }
+  reviewed++;
+  history[EX.iso(new Date())] = (history[EX.iso(new Date())] || 0) + 1;
+  EX.save('flashcards.boxes', boxes); EX.save('flashcards.history', history);
+  revealed = false;
+  paint();
+  if (!queue.length) done();
+}
+function done() {
+  Brolly.celebrate.burst();
+  Brolly.toast({ title: 'Deck done.', detail: 'You may now forget it all by Thursday.', tone: 'success' });
+}
+function paint() {
+  var c = currentCard();
+  EX.byId('card').dataset.revealed = String(revealed);
+  EX.byId('grade').style.visibility = revealed ? 'visible' : 'hidden';
+  EX.byId('card-tag').textContent = DECKS[deckKey].name;
+  if (c) {
+    EX.byId('front').textContent = c.front;
+    EX.byId('front-back').textContent = c.front;
+    EX.byId('back').textContent = c.back;
+    EX.byId('card').setAttribute('aria-label', 'Flashcard. ' + (revealed ? 'Answer: ' + c.back : 'Press Space to reveal'));
+    EX.byId('card-hint').textContent = revealed ? 'Grade it honestly. 1, 2 or 3.' : 'Press Space, or click, to reveal';
+  } else {
+    EX.byId('front').textContent = '';
+    EX.byId('front-back').textContent = '';
+    EX.byId('back').textContent = '';
+    EX.byId('card-hint').textContent = 'Nothing left. Start again, or go outside.';
+  }
+  var pct = (reviewed + queue.length) ? Math.round(reviewed / (reviewed + queue.length) * 100) : 100;
+  EX.byId('progress').innerHTML = Brolly.Progress.bar('Session', pct);
+  EX.byId('reviewed').textContent = reviewed;
+  EX.byId('right').textContent = right;
+  EX.byId('left').textContent = queue.length;
+  EX.byId('accuracy').textContent = reviewed ? Math.round(right / reviewed * 100) + '%' : '—';
+  EX.byId('done-wit').textContent = !queue.length ? 'Deck done. The forgetting starts now.' : revealed ? 'No pressure. Just the answer.' : 'Boxes do the scheduling. You just turn up.';
+  EX.byId('deck-progress').innerHTML = Object.keys(DECKS).map(function (k) {
+    var cards = DECKS[k].cards;
+    var retired = cards.filter(function (c) { return box(k + ':' + c[0]) >= 3; }).length;
+    return '<div class="deck-row"><span class="br-caption">' + DECKS[k].name + '</span><div class="br-progress" style="--p:' + Math.round(retired / cards.length * 100) + '%"><div class="br-progress__track"><span class="br-progress__fill"></span></div></div><span class="br-caption">' + retired + '/' + cards.length + '</span></div>';
+  }).join('');
+  var labels = [], values = [];
+  for (var i = 6; i >= 0; i--) {
+    var d = EX.iso(EX.addDays(new Date(), -i));
+    labels.push(new Intl.DateTimeFormat('en-GB', { weekday: 'short' }).format(EX.fromISO(d)));
+    values.push(history[d] || 0);
+  }
+  Brolly.Chart.line(EX.byId('chart'), { title: 'Cards reviewed', subtitle: 'Last seven days', labels: labels, series: [{ name: 'Reviewed', values: values }] });
+}
+
+EX.byId('card').addEventListener('click', reveal);
+EX.byId('card').addEventListener('keydown', function (e) { if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); reveal(); } });
+EX.on(EX.byId('grade'), '[data-grade]', 'click', function (e, b) { grade(b.dataset.grade); });
+EX.byId('decks').addEventListener('br-tab', function (e) { deckKey = e.detail.id; EX.save('flashcards.deck', deckKey); startSession(); });
+document.addEventListener('keydown', function (e) {
+  if (e.target.closest('input,textarea,select')) return;
+  if (e.key === ' ') { e.preventDefault(); reveal(); }
+  else if (revealed && (e.key === '1' || e.key === '2' || e.key === '3')) { e.preventDefault(); grade(e.key === '1' ? 'again' : e.key === '2' ? 'good' : 'easy'); }
+});
+EX.byId('decks').querySelectorAll('.br-tabs__tab').forEach(function (t) { if (t.dataset.id === deckKey) t.setAttribute('aria-selected', 'true'); else t.setAttribute('aria-selected', 'false'); });
+
+EX.mountTheme();
+Brolly.init();
+startSession();
+
+EX.cmd([
+  { id: 'reveal', group: 'Flashcards', icon: 'sparkle', title: 'Reveal the answer', keys: 'Space', run: reveal },
+  { id: 'again', group: 'Flashcards', icon: 'undo', title: 'Grade: again', keys: '1', run: function () { grade('again'); } },
+  { id: 'good', group: 'Flashcards', icon: 'check', title: 'Grade: good', keys: '2', run: function () { grade('good'); } },
+  { id: 'easy', group: 'Flashcards', icon: 'sparkle', title: 'Grade: easy', keys: '3', run: function () { grade('easy'); } },
+  { id: 'restart', group: 'Flashcards', icon: 'undo', title: 'Restart this deck', run: function () { startSession(); } }
+].concat(EX.themeCommands()));
+</script>
+</body>
+</html>

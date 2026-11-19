@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Expenses — Brolly example</title>
+<link rel="stylesheet" href="../../dist/brolly.css">
+<link rel="stylesheet" href="../_shared.css">
+<style>
+  .exp-form { display: flex; flex-direction: column; gap: var(--space-3); }
+  .exp-table { width: 100%; border-collapse: collapse; }
+  .exp-table th { text-align: left; padding: 0 10px 10px; font: var(--br-label); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-muted); }
+  .exp-table td { padding: 10px; border-top: 1px solid var(--line); font: var(--br-body); vertical-align: middle; }
+  .exp-table td.amount { font: var(--br-data); font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap; }
+  .exp-table th.amount { text-align: right; }
+  .exp-table tr:hover td { background: color-mix(in srgb, var(--ink) 3%, transparent); }
+  .exp-del { opacity: 0; transition: opacity var(--dur-fast); }
+  .exp-table tr:hover .exp-del, .exp-del:focus-visible { opacity: 1; }
+  .exp-sum { display: flex; gap: var(--space-6); flex-wrap: wrap; align-items: flex-end; }
+  .exp-sum .ex-kpi { font-size: 48px; }
+  @media (max-width: 720px) { .exp-table .hide-sm { display: none; } }
+</style>
+</head>
+<body>
+<div class="br-stage">
+  <div class="ex-shell">
+    <header class="ex-bar">
+      <div>
+        <a class="br-btn br-btn--ghost br-btn--sm ex-back" href="../index.html">← Examples</a>
+        <span class="ex-label" style="display:block;margin-top:12px">Where it went</span>
+        <h1 class="br-display" style="margin:6px 0 0">Expenses.</h1>
+      </div>
+      <div class="ex-actions">
+        <div class="br-tabs" id="period" data-br="tabs" aria-label="Period">
+          <button class="br-tabs__tab" data-id="7" aria-selected="true">7 days</button>
+          <button class="br-tabs__tab" data-id="30">30 days</button>
+          <button class="br-tabs__tab" data-id="all">All</button>
+        </div>
+        <button class="br-btn br-btn--ghost br-btn--icon br-btn--sm" data-ex-theme aria-label="Change theme"></button>
+      </div>
+    </header>
+
+    <div class="br-bento">
+      <section class="br-tile br-span-4">
+        <span class="ex-label">New expense</span>
+        <h2 class="br-h2" style="margin:4px 0 var(--space-4)">Money out.</h2>
+        <div class="exp-form">
+          <label class="br-field"><input class="br-field__input" id="desc" placeholder=" " autocomplete="off"><span class="br-field__label">What was it?</span></label>
+          <label class="br-field"><input class="br-field__input" id="amount" placeholder=" " inputmode="decimal"><span class="br-field__label">Amount (£)</span></label>
+          <label class="br-field br-field--select"><select class="br-field__input" id="cat">
+            <option>Food</option><option>Travel</option><option>Home</option><option>Health</option><option>Other</option>
+          </select><span class="br-field__label">Category</span></label>
+          <div id="date"></div>
+          <button class="br-btn br-btn--primary" id="add" style="margin-top:4px">Add it</button>
+          <p class="br-caption" style="margin:0">Dates understand “today”, “next friday”, “5 nov”.</p>
+        </div>
+      </section>
+
+      <section class="br-tile br-span-8 ex-stack">
+        <div class="exp-sum">
+          <div><div class="ex-label">This month</div><div class="ex-kpi" id="month-total">£0.00</div></div>
+          <div><div class="ex-label">Today</div><div class="br-h2" id="today-total">£0.00</div></div>
+          <div><div class="ex-label">Biggest category</div><div id="top-cat">—</div></div>
+        </div>
+        <div id="chart" style="margin:0 calc(var(--space-5) * -1) calc(var(--space-5) * -1)"></div>
+      </section>
+
+      <section class="br-tile br-span-12">
+        <div class="ex-row" style="justify-content:space-between;margin-bottom:var(--space-3)">
+          <div><span class="ex-label">Recent</span><h2 class="br-h2" style="margin:4px 0 0">The receipts.</h2></div>
+          <span class="br-caption" id="shown-count"></span>
+        </div>
+        <div class="ex-scroll">
+          <table class="exp-table">
+            <thead><tr><th>What</th><th class="hide-sm">Category</th><th class="hide-sm">Date</th><th class="amount">Amount</th><th></th></tr></thead>
+            <tbody id="rows"></tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+<script src="../../dist/brolly.js"></script>
+<script src="../_shared.js"></script>
+<script>
+var CATS = { Food: ['warning', 'cup'], Travel: ['info', 'arrow-right'], Home: ['violet', 'home'], Health: ['success', 'check'], Other: ['info', 'tag'] };
+var items = EX.load('expenses.items', null);
+var period = 7;
+
+if (!items) {
+  items = [
+    ['Coffee, twice', 7.2, 'Food', 0],
+    ['Train to somewhere', 24.5, 'Travel', 1],
+    ['Sourdough, ambitious', 5.4, 'Food', 1],
+    ['Plant pot', 18, 'Home', 2],
+    ['Chemist', 12.3, 'Health', 3],
+    ['Lunch, regrettable', 11.75, 'Food', 4],
+    ['Bus, in the rain', 2.8, 'Travel', 5],
+    ['Tea subscription, obviously', 15, 'Food', 6]
+  ].map(function (r) {
+    return { id: EX.uid(), desc: r[0], amount: r[1], category: r[2], date: EX.iso(EX.addDays(new Date(), -r[3])) };
+  });
+  EX.save('expenses.items', items);
+}
+
+function inPeriod(it) {
+  if (period === 'all') return true;
+  return EX.fromISO(it.date) >= EX.addDays(new Date(), -(period - 1));
+}
+function paint() {
+  var shown = items.filter(inPeriod).sort(function (a, b) { return b.date.localeCompare(a.date); });
+  var month = items.filter(function (it) { var d = EX.fromISO(it.date), n = new Date(); return d.getMonth() === n.getMonth() && d.getFullYear() === n.getFullYear(); });
+  var monthTotal = month.reduce(function (s, it) { return s + it.amount; }, 0);
+  var today = items.filter(function (it) { return it.date === EX.iso(new Date()); }).reduce(function (s, it) { return s + it.amount; }, 0);
+  EX.byId('month-total').textContent = EX.money(monthTotal);
+  EX.byId('today-total').textContent = EX.money(today);
+  var byCat = {};
+  month.forEach(function (it) { byCat[it.category] = (byCat[it.category] || 0) + it.amount; });
+  var top = Object.keys(byCat).sort(function (a, b) { return byCat[b] - byCat[a]; })[0];
+  EX.byId('top-cat').innerHTML = top ? Brolly.Gem.html(top + ' · ' + EX.money(byCat[top]), CATS[top][0], CATS[top][1]) : '<span class="br-caption">Nothing yet.</span>';
+  EX.byId('shown-count').textContent = shown.length + (shown.length === 1 ? ' expense' : ' expenses') + ' · ' + EX.money(shown.reduce(function (s, it) { return s + it.amount; }, 0));
+  EX.byId('rows').innerHTML = shown.map(function (it) {
+    var c = CATS[it.category] || CATS.Other;
+    return '<tr><td>' + EX.esc(it.desc) + '</td>' +
+      '<td class="hide-sm">' + Brolly.Gem.html(it.category, c[0], c[1]) + '</td>' +
+      '<td class="hide-sm br-caption">' + EX.shortDate(EX.fromISO(it.date)) + '</td>' +
+      '<td class="amount">' + EX.money(it.amount) + '</td>' +
+      '<td style="width:44px"><button class="br-btn br-btn--ghost br-btn--icon br-btn--sm exp-del" data-del="' + it.id + '" aria-label="Delete expense">' + Brolly.icon('trash') + '</button></td></tr>';
+  }).join('');
+  if (!shown.length) {
+    EX.byId('rows').innerHTML = '<tr><td colspan="5" style="padding:24px 10px"><div class="br-wit">Nothing in this period. Frugal, or forgetting.</div></td></tr>';
+  }
+  var labels = [], values = [];
+  for (var i = 6; i >= 0; i--) {
+    var d = EX.iso(EX.addDays(new Date(), -i));
+    labels.push(new Intl.DateTimeFormat('en-GB', { weekday: 'short' }).format(EX.fromISO(d)));
+    values.push(+items.filter(function (it) { return it.date === d; }).reduce(function (s, it) { return s + it.amount; }, 0).toFixed(2));
+  }
+  Brolly.Chart.line(EX.byId('chart'), { title: 'Spent per day', subtitle: 'Last seven days', labels: labels, series: [{ name: 'Spend', values: values }], format: function (v) { return '£' + v; } });
+}
+function add() {
+  var descEl = EX.byId('desc'), amtEl = EX.byId('amount'), descField = descEl.closest('.br-field'), amtField = amtEl.closest('.br-field');
+  var desc = descEl.value.trim(), amount = parseFloat(amtEl.value.replace(/[^0-9.]/g, ''));
+  Brolly.Field.setInvalid(descField, '');
+  Brolly.Field.setInvalid(amtField, '');
+  if (!desc) { Brolly.Field.setInvalid(descField, 'It needs a name.'); descEl.focus(); return; }
+  if (!isFinite(amount) || amount <= 0) { Brolly.Field.setInvalid(amtField, 'A number above zero.'); amtEl.focus(); return; }
+  var dateWrap = document.querySelector('#date .br-date');
+  var raw = dateWrap ? dateWrap.querySelector('input').value.trim() : '';
+  var parsed = raw ? Brolly.When.parse(raw) : null;
+  var date = parsed ? EX.iso(parsed.date) : EX.iso(new Date());
+  items.push({ id: EX.uid(), desc: desc, amount: Math.round(amount * 100) / 100, category: EX.byId('cat').value, date: date });
+  EX.save('expenses.items', items);
+  descEl.value = ''; amtEl.value = ''; EX.byId('cat').value = 'Food';
+  if (dateWrap) { var inp = dateWrap.querySelector('input'); inp.value = ''; inp.dispatchEvent(new Event('input')); }
+  paint();
+  Brolly.toast({ title: 'Added.', detail: 'The number went up. That is how it works.', tone: 'success' });
+  descEl.focus();
+}
+function remove(id) {
+  var it = items.filter(function (x) { return x.id === id; })[0]; if (!it) return;
+  EX.confirm('“' + it.desc + '” (' + EX.money(it.amount) + ') will be removed.', 'Delete this expense?').then(function (yes) {
+    if (!yes) return;
+    items = items.filter(function (x) { return x.id !== id; });
+    EX.save('expenses.items', items); paint();
+    Brolly.toast({ title: 'Gone.', detail: 'The money, sadly, is not.', tone: 'info' });
+  });
+}
+
+EX.byId('date').innerHTML = Brolly.DateField.html();
+var dlabel = document.querySelector('#date .br-field__label'); if (dlabel) dlabel.textContent = 'When';
+EX.byId('date').addEventListener('br-date', function () { Brolly.sound.play('pop'); });
+EX.byId('add').addEventListener('click', add);
+EX.byId('amount').addEventListener('keydown', function (e) { if (e.key === 'Enter') add(); });
+EX.on(EX.byId('rows'), '[data-del]', 'click', function (e, b) { remove(b.dataset.del); });
+EX.byId('period').addEventListener('br-tab', function (e) { period = e.detail.id === 'all' ? 'all' : +e.detail.id; paint(); });
+
+EX.mountTheme();
+Brolly.init();
+paint();
+
+EX.cmd([
+  { id: 'add', group: 'Expenses', icon: 'plus', title: 'Add an expense', keys: 'N', run: function () { EX.byId('desc').focus(); } },
+  { id: '7', group: 'Expenses', icon: 'calendar', title: 'Show 7 days', run: function () { EX.byId('period').querySelector('[data-id="7"]').click(); } },
+  { id: '30', group: 'Expenses', icon: 'calendar', title: 'Show 30 days', run: function () { EX.byId('period').querySelector('[data-id="30"]').click(); } },
+  { id: 'all', group: 'Expenses', icon: 'layers', title: 'Show everything', run: function () { EX.byId('period').querySelector('[data-id="all"]').click(); } }
+].concat(EX.themeCommands()));
+Brolly.Keys.on('n', function () { EX.byId('desc').focus(); });
+</script>
+</body>
+</html>

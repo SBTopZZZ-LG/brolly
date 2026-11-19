@@ -1,0 +1,222 @@
+{
+  "version": "1.0.0",
+  "components": [
+    {
+      "name": "Aurora",
+      "group": "Foundations",
+      "height": 340,
+      "subtitle": "Drifts on its own; leans toward your cursor; changes mood",
+      "page": false
+    },
+    {
+      "name": "Bloom",
+      "group": "Overlays",
+      "height": 360,
+      "subtitle": "Dialogs, menus and popovers grow out of what you pressed",
+      "page": false
+    },
+    {
+      "name": "Button",
+      "group": "Actions",
+      "height": 460,
+      "subtitle": "Glowing gradient pill, glass, ghost, danger; magnetic",
+      "page": false
+    },
+    {
+      "name": "Chart",
+      "group": "Data",
+      "height": 460,
+      "subtitle": "Glow lines on glass. Hover, or use the arrow keys.",
+      "page": false
+    },
+    {
+      "name": "CommandBar",
+      "group": "Navigation",
+      "height": 420,
+      "subtitle": "One box for everything. Cmd/Ctrl+K.",
+      "page": false
+    },
+    {
+      "name": "Controls",
+      "group": "Inputs",
+      "height": 420,
+      "subtitle": "Glass beads: switch, checkbox, radio, slider",
+      "page": false
+    },
+    {
+      "name": "Cover",
+      "group": "Components",
+      "height": 300,
+      "subtitle": "",
+      "page": false
+    },
+    {
+      "name": "DateField",
+      "group": "Inputs",
+      "height": 360,
+      "subtitle": "Type it like a person; the calendar is the fallback",
+      "page": false
+    },
+    {
+      "name": "Delight",
+      "group": "Motion",
+      "height": 520,
+      "subtitle": "Greetings with opinions, celebrations, idle antics",
+      "page": false
+    },
+    {
+      "name": "EmptyState",
+      "group": "Feedback",
+      "height": 560,
+      "subtitle": "Illustrated, and rather rude about it. All seven.",
+      "page": false
+    },
+    {
+      "name": "Field",
+      "group": "Inputs",
+      "height": 640,
+      "subtitle": "Floating labels that glide into the border",
+      "page": false
+    },
+    {
+      "name": "Gem",
+      "group": "Display",
+      "height": 230,
+      "subtitle": "Faceted status chips: always a word and an icon",
+      "page": false
+    },
+    {
+      "name": "Glass",
+      "group": "Foundations",
+      "height": 320,
+      "subtitle": "Frosted stack: resting, strong, lift",
+      "page": false
+    },
+    {
+      "name": "HintOverlay",
+      "group": "Navigation",
+      "height": 340,
+      "subtitle": "Press F: every clickable thing gets a letter",
+      "page": false
+    },
+    {
+      "name": "HoldButton",
+      "group": "Actions",
+      "height": 260,
+      "subtitle": "Hold to confirm: no dialogs, just intent",
+      "page": false
+    },
+    {
+      "name": "Icons",
+      "group": "Foundations",
+      "height": 480,
+      "subtitle": "Hairline 1.25px strokes on a 24px grid",
+      "page": false
+    },
+    {
+      "name": "Island",
+      "group": "Feedback",
+      "height": 330,
+      "subtitle": "Toasts that morph from a pill into a card and back",
+      "page": false
+    },
+    {
+      "name": "Keycap",
+      "group": "Display",
+      "height": 170,
+      "subtitle": "Shortcut hints that look like keys",
+      "page": false
+    },
+    {
+      "name": "Lasso",
+      "group": "Lists",
+      "height": 520,
+      "subtitle": "Drag a soft rectangle; a bulk bar rises",
+      "page": false
+    },
+    {
+      "name": "Layout",
+      "group": "Layout",
+      "height": 560,
+      "subtitle": "Desktop-first shell: rail, bento tiles, detail column",
+      "page": false
+    },
+    {
+      "name": "LiftShuffle",
+      "group": "Lists",
+      "height": 460,
+      "subtitle": "Drag a row: it lifts, neighbours spring aside",
+      "page": false
+    },
+    {
+      "name": "Orb",
+      "group": "Feedback",
+      "height": 300,
+      "subtitle": "A breathing orb with commentary, in three sizes",
+      "page": false
+    },
+    {
+      "name": "Progress",
+      "group": "Feedback",
+      "height": 300,
+      "subtitle": "Bar, indeterminate bar and ring",
+      "page": false
+    },
+    {
+      "name": "Rail",
+      "group": "Navigation",
+      "height": 520,
+      "subtitle": "Collapsible glass rail: hover to open, pin to keep",
+      "page": false
+    },
+    {
+      "name": "Rows",
+      "group": "Lists",
+      "height": 440,
+      "subtitle": "Floating glass rows: rest, selected, done",
+      "page": false
+    },
+    {
+      "name": "Sensory",
+      "group": "Motion",
+      "height": 360,
+      "subtitle": "Glass-chime sounds and haptics, with a master mute",
+      "page": false
+    },
+    {
+      "name": "Showcase",
+      "group": "Pages",
+      "height": 860,
+      "subtitle": "Everything together: a small task app, fully behaved",
+      "page": true
+    },
+    {
+      "name": "SunTheme",
+      "group": "Motion",
+      "height": 380,
+      "subtitle": "Dawn, noon, dusk, night. Drag the clock.",
+      "page": false
+    },
+    {
+      "name": "Tabs",
+      "group": "Navigation",
+      "height": 200,
+      "subtitle": "Segmented control with a sliding glass thumb",
+      "page": false
+    },
+    {
+      "name": "Tooltip",
+      "group": "Display",
+      "height": 280,
+      "subtitle": "Dry wit second, real information first",
+      "page": false
+    },
+    {
+      "name": "Transitions",
+      "group": "Motion",
+      "height": 480,
+      "subtitle": "Morph for drill-ins; depth push between peers",
+      "page": false
+    }
+  ]
+}

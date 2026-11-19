@@ -1,0 +1,22 @@
+<!-- @dsCard group="Feedback" height=560 subtitle="Illustrated, and rather rude about it. All seven." -->
+<!doctype html>
+<html><head>
+<link rel="stylesheet" href="../../dist/brolly.css">
+<script src="../../dist/brolly.js"></script>
+<script>try{var t=new URLSearchParams(location.search).get('theme');if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script><meta charset="utf-8"><style>html,body{margin:0}</style></head>
+<body>
+<div class="br-stage" style="min-height:100vh;padding:28px 32px">
+  <div class="br-tabs" data-br="tabs" id="t" style="flex-wrap:wrap"></div>
+  <div class="br-glass br-glass--xl" style="margin-top:20px;max-width:640px;margin-left:auto;margin-right:auto" id="h"></div>
+</div>
+<script>
+var keys=['tasks','search','inbox','error','offline','quiet','notfound'],names={tasks:'No tasks',search:'No results',inbox:'Inbox zero',error:'Error',offline:'Offline',quiet:'No alerts',notfound:'404'};
+var t=document.getElementById('t'),h=document.getElementById('h');
+t.innerHTML=keys.map(function(k,i){return '<button class="br-tabs__tab" data-id="'+k+'" aria-selected="'+(i===0)+'">'+names[k]+'</button>';}).join('');
+Brolly.init();
+function show(k){h.innerHTML=Brolly.EmptyState.html(k);}
+t.addEventListener('br-tab',function(e){show(e.detail.id);});
+show('tasks');
+h.addEventListener('click',function(e){if(e.target.closest('[data-br-act]'))Brolly.toast({title:'Right you are.',detail:'That button was purely decorative.',tone:'info'});});
+</script>
+</body></html>

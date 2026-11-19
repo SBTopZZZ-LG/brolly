@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Brolly — example tools</title>
+<link rel="stylesheet" href="../dist/brolly.css">
+<link rel="stylesheet" href="_shared.css">
+<style>
+  .clock { font: 380 56px/1 var(--font-display); letter-spacing: -.03em; }
+  .tools { grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); }
+  .kit { grid-column: 1 / -1; }
+  @media (min-width: 760px) { .kit { grid-column: span 2; } }
+</style>
+</head>
+<body>
+<div class="br-stage">
+  <div class="ex-shell">
+    <header class="ex-bar">
+      <div>
+        <span class="ex-label">Productivity tools · eight ways</span>
+        <h1 class="br-display" style="margin:var(--space-2) 0 0">The kit, in use.</h1>
+        <div id="greet" style="margin-top:var(--space-3)"></div>
+      </div>
+      <div class="ex-actions">
+        <a class="br-btn br-btn--ghost br-btn--sm" href="../docs/index.html">Component gallery</a>
+        <button class="br-btn br-btn--ghost br-btn--icon br-btn--sm" data-ex-theme aria-label="Change theme"></button>
+      </div>
+    </header>
+
+    <div class="ex-grid tools" id="tools">
+      <a class="ex-tool" href="tasks/index.html">
+        <span class="ex-tool__glyph" data-icon="check"></span>
+        <h2 class="br-h2">Tasks</h2>
+        <p>Rows that lift, drag and lasso. A command bar, a chart, and a small celebration when you finish something.</p>
+        <span class="ex-tool__foot"><span class="br-label">Lists · Reorder · Bulk</span><span class="br-gem" data-tone="success">Core</span></span>
+      </a>
+      <a class="ex-tool" href="notes/index.html">
+        <span class="ex-tool__glyph" data-icon="edit"></span>
+        <h2 class="br-h2">Notes</h2>
+        <p>A quiet notebook. Autosave, search, word count, and a delete that asks nicely first.</p>
+        <span class="ex-tool__foot"><span class="br-label">Editor · Autosave</span><span class="br-gem" data-tone="info">Writing</span></span>
+      </a>
+      <a class="ex-tool" href="habits/index.html">
+        <span class="ex-tool__glyph" data-icon="cup"></span>
+        <h2 class="br-h2">Habits</h2>
+        <p>Seven columns, one week, a ring that fills. Streaks are calculated honestly, not flatteringly.</p>
+        <span class="ex-tool__foot"><span class="br-label">Grid · Streaks · Ring</span><span class="br-gem" data-tone="success">Daily</span></span>
+      </a>
+      <a class="ex-tool" href="focus/index.html">
+        <span class="ex-tool__glyph" data-icon="clock"></span>
+        <h2 class="br-h2">Focus</h2>
+        <p>A pomodoro with a large ring, a task field, and a log of where the time actually went.</p>
+        <span class="ex-tool__foot"><span class="br-label">Timer · Sessions</span><span class="br-gem" data-tone="warning">Time</span></span>
+      </a>
+      <a class="ex-tool" href="library/index.html">
+        <span class="ex-tool__glyph" data-icon="archive"></span>
+        <h2 class="br-h2">Library</h2>
+        <p>Read-later, without the guilt. Add a link, tag it, mark it read, or admit defeat.</p>
+        <span class="ex-tool__foot"><span class="br-label">Cards · Filters · Dialog</span><span class="br-gem" data-tone="info">Reading</span></span>
+      </a>
+      <a class="ex-tool" href="expenses/index.html">
+        <span class="ex-tool__glyph" data-icon="chart"></span>
+        <h2 class="br-h2">Expenses</h2>
+        <p>What left the account. Natural-language dates, categories, a seven-day glow line.</p>
+        <span class="ex-tool__foot"><span class="br-label">Forms · Table · Chart</span><span class="br-gem" data-tone="danger">Money</span></span>
+      </a>
+      <a class="ex-tool" href="journal/index.html">
+        <span class="ex-tool__glyph" data-icon="tag"></span>
+        <h2 class="br-h2">Journal</h2>
+        <p>One page a day, with a mood and a prompt. Autosaved, searchable, no audience.</p>
+        <span class="ex-tool__foot"><span class="br-label">Dates · Mood · Autosave</span><span class="br-gem" data-tone="violet">Private</span></span>
+      </a>
+      <a class="ex-tool" href="flashcards/index.html">
+        <span class="ex-tool__glyph" data-icon="layers"></span>
+        <h2 class="br-h2">Flashcards</h2>
+        <p>Three decks, one card at a time. Space to flip, 1–3 to grade. Boxes do the scheduling.</p>
+        <span class="ex-tool__foot"><span class="br-label">Keyboard · Progress</span><span class="br-gem" data-tone="warning">Learning</span></span>
+      </a>
+
+      <a class="ex-tool kit" href="../docs/index.html">
+        <span class="ex-tool__glyph" data-icon="sparkle"></span>
+        <h2 class="br-h2">The kit itself</h2>
+        <p>Every component, all four themes, and the token table. If an example here is missing something, it probably lives in there.</p>
+        <span class="ex-tool__foot"><span class="br-label">31 previews · Docs</span><span class="br-gem" data-tone="info">Reference</span></span>
+      </a>
+    </div>
+
+    <footer class="ex-bar" style="margin:var(--space-12) 0 0;align-items:center">
+      <p class="ex-wit" style="margin:0">Built with the same kit. No dashboards were harmed.</p>
+      <div class="ex-actions">
+        <span class="br-caption">Brolly v1.0.0</span>
+        <button class="br-btn br-btn--ghost br-btn--sm" id="reset">Reset demo data</button>
+        <button class="br-btn br-btn--ghost br-btn--sm" id="cmd">Command bar <span class="br-keys"><kbd class="br-key">⌘</kbd><kbd class="br-key">K</kbd></span></button>
+      </div>
+    </footer>
+  </div>
+</div>
+<script src="../dist/brolly.js"></script>
+<script src="_shared.js"></script>
+<script>
+document.querySelectorAll('[data-icon]').forEach(function (s) { s.innerHTML = Brolly.icon(s.dataset.icon); });
+document.getElementById('greet').innerHTML = Brolly.Delight.greeting('Reader');
+Brolly.init();
+EX.mountTheme();
+
+var TOOLS = [
+  ['tasks', 'Tasks', 'check'], ['notes', 'Notes', 'edit'], ['habits', 'Habits', 'cup'],
+  ['focus', 'Focus', 'clock'], ['library', 'Library', 'archive'], ['expenses', 'Expenses', 'chart'],
+  ['journal', 'Journal', 'tag'], ['flashcards', 'Flashcards', 'layers']
+];
+EX.cmd(TOOLS.map(function (t) {
+  return { id: 'go-' + t[0], group: 'Open a tool', icon: t[2], title: t[1], hint: 'An example, not a commitment.', run: function () { location.href = t[0] + '/index.html'; } };
+}).concat([
+  { id: 'reset', group: 'Kit', icon: 'undo', title: 'Reset demo data', hint: 'Every example returns to its seeded state.', run: resetAll },
+  { id: 'docs', group: 'Kit', icon: 'sparkle', title: 'Component gallery', run: function () { location.href = '../docs/index.html'; } },
+  { id: 'readme', group: 'Kit', icon: 'info', title: 'README', run: function () { location.href = '../README.md'; } }
+]).concat(EX.themeCommands()));
+
+function resetAll() {
+  EX.confirm('Every example goes back to its seeded state. The kit is untouched.', 'Reset demo data?').then(function (yes) {
+    if (!yes) return;
+    try {
+      Object.keys(localStorage).filter(function (k) { return k.indexOf('brolly.example.') === 0; }).forEach(function (k) { localStorage.removeItem(k); });
+    } catch (e) {}
+    location.reload();
+  });
+}
+document.getElementById('reset').addEventListener('click', resetAll);
+document.getElementById('cmd').addEventListener('click', function () { Brolly.palette.open(); });
+</script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+<!-- @dsCard group="Foundations" height=480 subtitle="Hairline 1.25px strokes on a 24px grid" -->
+<!doctype html>
+<html><head>
+<link rel="stylesheet" href="../../dist/brolly.css">
+<script src="../../dist/brolly.js"></script>
+<script>try{var t=new URLSearchParams(location.search).get('theme');if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script><meta charset="utf-8"><style>html,body{margin:0}.g{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:12px}.c{display:flex;flex-direction:column;align-items:center;gap:8px;padding:14px 4px}</style></head>
+<body>
+<div class="br-stage" style="min-height:100vh;padding:28px 32px">
+  <div class="g" id="g"></div>
+</div>
+<script>
+Brolly.init();
+document.getElementById('g').innerHTML=Brolly.iconNames.map(function(n){return '<div class="br-glass br-glass--sm c">'+Brolly.icon(n,'br-icon--lg')+'<span class="br-caption">'+n+'</span></div>';}).join('');
+</script>
+</body></html>

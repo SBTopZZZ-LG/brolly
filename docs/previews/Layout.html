@@ -1,0 +1,25 @@
+<!-- @dsCard group="Layout" height=560 subtitle="Desktop-first shell: rail, bento tiles, detail column" -->
+<!doctype html>
+<html><head>
+<link rel="stylesheet" href="../../dist/brolly.css">
+<script src="../../dist/brolly.js"></script>
+<script>try{var t=new URLSearchParams(location.search).get('theme');if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script><meta charset="utf-8"><style>html,body{margin:0}.t{display:flex;flex-direction:column;justify-content:space-between;min-height:120px}.t b{font:var(--br-data)}</style></head>
+<body>
+<div class="br-stage" style="min-height:100vh">
+  <div class="br-app">
+    <nav class="br-rail" aria-label="Main"><div class="br-rail__brand"><span class="br-orb-mini"></span><span class="br-rail__label">Brolly</span></div><button class="br-rail__item" aria-current="page"><svg class="br-icon" viewBox="0 0 24 24"><path d="M4 11l8-7 8 7"/><path d="M6 10v9h12v-9"/><path d="M10 19v-5h4v5"/></svg><span class="br-rail__label">Today</span></button><button class="br-rail__item"><svg class="br-icon" viewBox="0 0 24 24"><rect x="4" y="5.5" width="16" height="14.5" rx="3"/><path d="M4 10h16"/></svg><span class="br-rail__label">Planner</span></button></nav>
+    <main class="br-main" style="padding-top:8px">
+      <div class="br-label" style="margin-bottom:10px">12-column bento · 16px gutter · tiles span 3, 4, 5, 6, 7, 8 or 12</div>
+      <div class="br-bento">
+        <section class="br-tile br-span-8 t"><span class="br-caption">span 8 · hero</span><span class="br-h2">Greeting and the day's headline</span></section>
+        <section class="br-tile br-span-4 t"><span class="br-caption">span 4</span><b>Ring or stat</b></section>
+        <section class="br-tile br-span-4 t"><span class="br-caption">span 4</span><b>Rows</b></section>
+        <section class="br-tile br-span-4 t"><span class="br-caption">span 4</span><b>Chart</b></section>
+        <section class="br-tile br-span-4 t"><span class="br-caption">span 4</span><b>Orb · status</b></section>
+        <section class="br-tile br-span-12 t" style="min-height:72px"><span class="br-caption">span 12 · below 1100px tiles reflow to 6 columns; below 720px the rail drops to the bottom</span></section>
+      </div>
+    </main>
+  </div>
+</div>
+<script>Brolly.init();</script>
+</body></html>

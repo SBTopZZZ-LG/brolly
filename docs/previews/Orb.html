@@ -1,0 +1,16 @@
+<!-- @dsCard group="Feedback" height=300 subtitle="A breathing orb with commentary, in three sizes" -->
+<!doctype html>
+<html><head>
+<link rel="stylesheet" href="../../dist/brolly.css">
+<script src="../../dist/brolly.js"></script>
+<script>try{var t=new URLSearchParams(location.search).get('theme');if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script><meta charset="utf-8"><style>html,body{margin:0}.row{display:flex;gap:60px;align-items:flex-end;flex-wrap:wrap}</style></head>
+<body>
+<div class="br-stage" style="min-height:100vh;padding:44px 40px">
+  <div class="row">
+    <div class="br-orb br-orb--sm" data-br="orb" data-lines="Fetching…|Still fetching…"></div>
+    <div class="br-orb" data-br="orb"></div>
+    <div class="br-orb br-orb--lg" data-br="orb" data-lines="Putting the kettle on…|Warming the pot…|Waiting for the right moment…"></div>
+  </div>
+</div>
+<script>Brolly.init();</script>
+</body></html>

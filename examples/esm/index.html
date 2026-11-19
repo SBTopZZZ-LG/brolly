@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Brolly — ESM example</title>
+<link rel="stylesheet" href="../../dist/brolly.css">
+<style>html,body{margin:0}.wrap{max-width:720px;margin:0 auto;padding:48px 24px}</style>
+</head>
+<body>
+<div class="br-stage" style="min-height:100vh">
+  <main class="wrap">
+    <p class="br-label">ESM example</p>
+    <h1 class="br-h1" style="margin:8px 0 8px">Same kit, imported.</h1>
+    <p class="br-small" style="margin:0 0 24px">Serve this over HTTP: ES modules do not load from <code>file://</code>.</p>
+    <div id="out"></div>
+    <button class="br-btn br-btn--primary" id="go" style="margin-top:20px">Say something dry</button>
+  </main>
+</div>
+<script type="module">
+import Brolly from '../../dist/brolly.esm.js';
+
+document.getElementById('out').innerHTML = Brolly.Rows.html({
+  id: 'one',
+  title: 'Imported from an ES module',
+  meta: 'No bundler required, though one will do.',
+  gem: Brolly.Gem.html('Working', 'success', 'check')
+});
+document.getElementById('go').addEventListener('click', () => Brolly.toast('done'));
+Brolly.init();
+window.__esm = true;
+</script>
+</body>
+</html>

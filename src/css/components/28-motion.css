@@ -1,0 +1,6 @@
+@media (prefers-reduced-motion:reduce){
+  .br-stage *,.br-stage *::before,.br-stage *::after{animation-duration:1ms!important;animation-iteration-count:1!important;transition-duration:1ms!important;scroll-behavior:auto!important}
+  .br-aurora__blob i{animation:none!important}
+}
+[data-br-motion="off"] .br-stage *,[data-br-motion="off"] .br-stage *::before,[data-br-motion="off"] .br-stage *::after{animation-duration:1ms!important;animation-iteration-count:1!important;transition-duration:1ms!important}
+[data-br-motion="off"] .br-aurora__blob i{animation:none!important}

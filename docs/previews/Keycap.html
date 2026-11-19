@@ -1,0 +1,19 @@
+<!-- @dsCard group="Display" height=170 subtitle="Shortcut hints that look like keys" -->
+<!doctype html>
+<html><head>
+<link rel="stylesheet" href="../../dist/brolly.css">
+<script src="../../dist/brolly.js"></script>
+<script>try{var t=new URLSearchParams(location.search).get('theme');if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script><meta charset="utf-8"><style>html,body{margin:0}.row{display:flex;gap:26px;flex-wrap:wrap;align-items:center}.row span.br-small{margin-left:8px}</style></head>
+<body>
+<div class="br-stage" style="min-height:100vh;padding:36px 32px">
+  <div class="row" id="k"></div>
+</div>
+<script>
+Brolly.init();var K=Brolly.Keycap;
+document.getElementById('k').innerHTML=
+ '<div>'+K.html('⌘ K')+'<span class="br-small">command bar</span></div>'+
+ '<div>'+K.html('F')+'<span class="br-small">hints</span></div>'+
+ '<div>'+K.html('Alt ↑')+'<span class="br-small">move row up</span></div>'+
+ '<div>'+K.html('Esc')+'<span class="br-small">leave, politely</span></div>';
+</script>
+</body></html>

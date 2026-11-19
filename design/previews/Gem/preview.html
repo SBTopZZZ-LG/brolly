@@ -1,0 +1,15 @@
+<!-- @dsCard group="Display" height=230 subtitle="Faceted status chips: always a word and an icon" -->
+<!doctype html>
+<html><head><meta charset="utf-8"><style>html,body{margin:0}.row{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:20px}</style></head>
+<body>
+<div class="br-stage" style="min-height:100vh;padding:34px 32px">
+  <div class="row" id="a"></div>
+  <div class="row" id="b"></div>
+  <p class="br-wit" style="margin:0">Hover one for a glint. Colour never works alone: every gem carries a word.</p>
+</div>
+<script>
+Brolly.init();var G=Brolly.Gem;
+document.getElementById('a').innerHTML=G.html('Done','success','check')+G.html('Due soon','warning','alert')+G.html('Overdue','danger','x')+G.html('FYI','info','info');
+document.getElementById('b').innerHTML=G.html('Pinned','violet','pin')+G.html('Starred','rose','star')+G.html('Draft')+'<span class="br-gem" data-tone="success" data-live="true"><span class="br-gem__dot"></span>Live</span>';
+</script>
+</body></html>

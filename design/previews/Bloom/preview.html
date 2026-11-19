@@ -1,0 +1,22 @@
+<!-- @dsCard group="Overlays" height=360 subtitle="Dialogs, menus and popovers grow out of what you pressed" -->
+<!doctype html>
+<html><head><meta charset="utf-8"><style>html,body{margin:0}.row{display:flex;gap:14px;flex-wrap:wrap;margin-top:22px}</style></head>
+<body>
+<div class="br-stage" style="min-height:100vh;padding:36px 32px">
+  <p class="br-body-lg" style="margin:0">Press one and notice where it comes from. It goes back there, too.</p>
+  <div class="row">
+    <button class="br-btn br-btn--primary" id="d">Dialog</button>
+    <button class="br-btn" id="m">Menu</button>
+    <button class="br-btn" id="p">Popover</button>
+    <button class="br-btn br-btn--ghost" id="c">Ask first</button>
+  </div>
+</div>
+<script>
+Brolly.init();
+var $=function(i){return document.getElementById(i);};
+$('d').onclick=function(e){Brolly.Bloom.open({kind:'dialog',trigger:e.currentTarget,panel:'<div><h2 class="br-h2 br-bloom__title">Rename project</h2><p class="br-small" style="margin:0 0 16px">Something descriptive. "Stuff" does not count.</p><label class="br-field"><input class="br-field__input" placeholder=" " value="Stuff" autofocus/><span class="br-field__label">Name</span></label><div class="br-bloom__actions"><button class="br-btn br-btn--ghost" data-br-close>Cancel</button><button class="br-btn br-btn--primary" data-br-close>Save</button></div></div>'});};
+$('m').onclick=function(e){Brolly.Bloom.menu(e.currentTarget,[{id:'e',icon:'edit',label:'Edit',keys:'E'},{id:'c',icon:'copy',label:'Duplicate',keys:'⌘ D'},{id:'p',icon:'pin',label:'Pin to top'},'-',{id:'d',icon:'trash',label:'Delete…',tone:'danger'}]).then(function(r){if(r)Brolly.toast({title:'Chose: '+r,tone:'info'});});};
+$('p').onclick=function(e){Brolly.Bloom.open({kind:'pop',trigger:e.currentTarget,panel:'<div><div class="br-label">Due</div><p class="br-body" style="margin:6px 0 0">Friday, 20 Nov</p><p class="br-wit" style="margin:4px 0 0">Which is, regrettably, soon.</p></div>'});};
+$('c').onclick=function(e){Brolly.Bloom.confirm({trigger:e.currentTarget,title:'Archive everything?',body:'All 14 tasks will be tidied away. They can be fetched back, grudgingly.',confirm:'Archive',cancel:'Not today'}).then(function(y){Brolly.toast({title:y?'Archived.':'Left well alone.',tone:y?'success':'info'});});};
+</script>
+</body></html>

@@ -1,0 +1,22 @@
+<!-- @dsCard group="Inputs" height=640 subtitle="Floating labels that glide into the border" -->
+<!doctype html>
+<html><head>
+<link rel="stylesheet" href="../../dist/brolly.css">
+<script src="../../dist/brolly.js"></script>
+<script>try{var t=new URLSearchParams(location.search).get('theme');if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script><meta charset="utf-8">
+<style>html,body{margin:0}.g{display:grid;grid-template-columns:1fr 1fr;gap:30px 24px;max-width:760px}.full{grid-column:1/-1}</style></head>
+<body>
+<div class="br-stage" style="min-height:100vh;padding:40px 32px">
+  <div class="g">
+    <label class="br-field"><input class="br-field__input" placeholder=" "/><span class="br-field__label">Task title</span><span class="br-field__msg">Short and honest works best.</span></label>
+    <label class="br-field"><input class="br-field__input" placeholder=" " value="Write the thing"/><span class="br-field__label">Filled</span></label>
+    <label class="br-field" data-invalid="true"><input class="br-field__input" placeholder=" " value="tuesday-ish"/><span class="br-field__label">Due date</span><span class="br-field__msg"><svg class="br-icon br-icon--sm" viewBox="0 0 24 24"><path d="M12 4.5l8.5 15h-17z"/><path d="M12 10v4.5M12 17v.01"/></svg><span>"Ish" is not a unit of time.</span></span></label>
+    <label class="br-field" data-valid="true"><input class="br-field__input" placeholder=" " value="hello@example.com"/><span class="br-field__label">Email</span><span class="br-field__msg"><svg class="br-icon br-icon--sm" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>Looks right.</span></span></label>
+    <label class="br-field br-field--select"><select class="br-field__input br-field--static-select"><option>Today</option><option>This week</option><option>Someday, allegedly</option></select><span class="br-field__label" style="transform:translate(-4px,-24px) scale(.72);padding:0 8px;border-radius:8px;background:var(--glass-strong);color:var(--ink-soft);font-family:var(--font-mono)">When</span></label>
+    <label class="br-field br-field--search"><svg class="br-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4 4"/></svg><input class="br-field__input" placeholder=" "/><span class="br-field__label">Search everything</span><kbd class="br-key">/</kbd></label>
+    <label class="br-field full"><textarea class="br-field__input" placeholder=" "></textarea><span class="br-field__label">Notes</span></label>
+    <label class="br-field"><input class="br-field__input" placeholder=" " disabled value="Disabled"/><span class="br-field__label">Locked</span></label>
+  </div>
+</div>
+<script>Brolly.init();</script>
+</body></html>

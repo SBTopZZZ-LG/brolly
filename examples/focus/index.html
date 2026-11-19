@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Focus — Brolly example</title>
+<link rel="stylesheet" href="../../dist/brolly.css">
+<link rel="stylesheet" href="../_shared.css">
+<style>
+  .focus-wrap { max-width: 1080px; margin: 0 auto; padding: var(--space-8) var(--space-6) var(--space-16); }
+  .focus-timer { display: flex; flex-direction: column; align-items: center; gap: var(--space-5); text-align: center; }
+  .focus-dial { position: relative; display: grid; place-items: center; width: 280px; height: 280px; margin: var(--space-2) 0; }
+  .focus-dial .br-ring { width: 240px; height: 240px; }
+  .focus-dial .br-ring circle { stroke-width: 4.5; }
+  .focus-dial .br-ring b { font: 380 58px/1 var(--font-display); letter-spacing: -.03em; }
+  .focus-dial .br-ring .f { transition: stroke-dashoffset 300ms linear; filter: drop-shadow(0 0 8px color-mix(in srgb, var(--grad-end) 55%, transparent)); }
+  .focus-actions { display: flex; gap: var(--space-2); align-items: center; flex-wrap: wrap; justify-content: center; }
+  .focus-task { width: min(520px, 100%); }
+  .focus-side { display: flex; flex-direction: column; gap: var(--space-4); }
+  .focus-stat { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--line); }
+  .focus-stat:last-child { border-bottom: 0; }
+  .session { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--line); }
+  .session:last-child { border-bottom: 0; }
+  .focus-hint { font: var(--br-caption); color: var(--ink-muted); }
+  @media (max-width: 720px) { .focus-dial { width: 220px; height: 220px; } .focus-dial .br-ring { width: 190px; height: 190px; } .focus-dial .br-ring b { font-size: 44px; } }
+</style>
+</head>
+<body>
+<div class="br-stage">
+  <div class="focus-wrap">
+    <header class="ex-bar">
+      <div>
+        <a class="br-btn br-btn--ghost br-btn--sm ex-back" href="../index.html">← Examples</a>
+        <span class="ex-label" style="display:block;margin-top:12px">One thing at a time</span>
+        <h1 class="br-display" style="margin:6px 0 0">Focus.</h1>
+      </div>
+      <div class="ex-actions">
+        <button class="br-btn br-btn--ghost br-btn--icon br-btn--sm" id="mute" aria-label="Mute sounds" aria-pressed="false"></button>
+        <button class="br-btn br-btn--ghost br-btn--icon br-btn--sm" data-ex-theme aria-label="Change theme"></button>
+      </div>
+    </header>
+
+    <div class="br-bento">
+      <section class="br-tile br-span-8 focus-timer">
+        <div class="br-tabs" id="length" data-br="tabs" aria-label="Session length">
+          <button class="br-tabs__tab" data-id="25" aria-selected="true">25 min</button>
+          <button class="br-tabs__tab" data-id="45">45 min</button>
+          <button class="br-tabs__tab" data-id="60">60 min</button>
+        </div>
+        <div class="focus-dial" id="dial"></div>
+        <div class="focus-actions">
+          <button class="br-btn br-btn--primary br-btn--lg" id="start">Start</button>
+          <button class="br-btn br-btn--ghost" id="reset">Reset</button>
+        </div>
+        <label class="br-field focus-task">
+          <input class="br-field__input" id="task" placeholder=" " autocomplete="off">
+          <span class="br-field__label">What are you focusing on?</span>
+        </label>
+        <p class="focus-hint" id="hint">Space starts and pauses. R resets. The kettle is not a task.</p>
+      </section>
+
+      <section class="br-tile br-span-4 focus-side">
+        <span class="ex-label">Today</span>
+        <div>
+          <div class="ex-kpi" id="today-min">0</div>
+          <div class="ex-wit">minutes of actual concentration</div>
+        </div>
+        <div class="focus-stat"><span class="br-caption">Sessions</span><span class="br-gem" data-tone="success" id="today-count">0</span></div>
+        <div class="focus-stat"><span class="br-caption">This week</span><span class="br-gem" data-tone="info" id="week-total">0 min</span></div>
+        <div class="focus-stat"><span class="br-caption">Longest today</span><span class="br-gem" data-tone="violet" id="longest">—</span></div>
+        <div class="ex-label" style="margin-top:4px">Recent</div>
+        <div id="sessions"></div>
+      </section>
+
+      <section class="br-tile br-span-12" style="padding-bottom:0;overflow:hidden">
+        <div id="chart" style="margin:calc(var(--space-5) * -1)"></div>
+      </section>
+    </div>
+  </div>
+</div>
+<script src="../../dist/brolly.js"></script>
+<script src="../_shared.js"></script>
+<script>
+var minutes = EX.load('focus.minutes', 25);
+var task = EX.load('focus.task', 'Write the thing');
+var sessions = EX.load('focus.sessions', null);
+var remaining = minutes * 60;
+var running = false;
+var endAt = 0;
+var ticker = 0;
+
+if (!sessions) {
+  sessions = [];
+  var samples = [[1, 25, 'Edit the draft'], [2, 45, 'Deep work'], [4, 25, 'Read the paper'], [6, 50, 'Plan the week']];
+  samples.forEach(function (s) {
+    var d = EX.addDays(new Date(), -s[0]);
+    sessions.push({ id: EX.uid(), date: EX.iso(d), minutes: s[1], task: s[2], at: d.getTime() });
+  });
+  EX.save('focus.sessions', sessions);
+}
+
+function fmt(sec) { var m = Math.floor(sec / 60), s = sec % 60; return m + ':' + String(s).padStart(2, '0'); }
+function pct() { return Math.round((1 - remaining / (minutes * 60)) * 100); }
+function paintDial() {
+  var dial = EX.byId('dial');
+  if (!dial.querySelector('.br-ring')) {
+    dial.innerHTML = Brolly.Progress.ring(0);
+    dial.querySelector('.br-ring').setAttribute('aria-label', 'Session progress');
+  }
+  var ring = dial.querySelector('.br-ring');
+  ring.style.setProperty('--p', (pct() / 100).toFixed(4));
+  ring.setAttribute('aria-valuenow', pct());
+  ring.querySelector('b').textContent = fmt(remaining);
+  EX.byId('start').textContent = running ? 'Pause' : (remaining < minutes * 60 ? 'Resume' : 'Start');
+  document.title = (running ? fmt(remaining) + ' · ' : '') + 'Focus — Brolly example';
+  EX.byId('hint').textContent = running ? 'Working. Do not open another tab. You will.' : 'Space starts and pauses. R resets. The kettle is not a task.';
+}
+function stats() {
+  var today = EX.iso(new Date());
+  var todays = sessions.filter(function (s) { return s.date === today; });
+  var total = todays.reduce(function (n, s) { return n + s.minutes; }, 0);
+  EX.byId('today-min').textContent = total;
+  EX.byId('today-count').textContent = todays.length;
+  EX.byId('longest').textContent = todays.length ? Math.max.apply(null, todays.map(function (s) { return s.minutes; })) + ' min' : '—';
+  var week = sessions.filter(function (s) { var d = EX.fromISO(s.date); return d >= EX.addDays(new Date(), -6); });
+  EX.byId('week-total').textContent = week.reduce(function (n, s) { return n + s.minutes; }, 0) + ' min';
+  var recent = sessions.slice().sort(function (a, b) { return b.at - a.at; }).slice(0, 4);
+  EX.byId('sessions').innerHTML = recent.length ? recent.map(function (s) {
+    return '<div class="session"><div><div class="br-caption">' + EX.shortDate(EX.fromISO(s.date)) + '</div><div class="br-small">' + EX.esc(s.task || 'Untitled') + '</div></div><span class="br-gem" data-tone="info">' + s.minutes + 'm</span></div>';
+  }).join('') : '<p class="ex-wit" style="margin:0">Nothing yet. The day is a blank page, which is the problem.</p>';
+  var labels = [], values = [];
+  for (var i = 6; i >= 0; i--) {
+    var d = EX.iso(EX.addDays(new Date(), -i));
+    labels.push(new Intl.DateTimeFormat('en-GB', { weekday: 'short' }).format(EX.fromISO(d)));
+    values.push(sessions.filter(function (s) { return s.date === d; }).reduce(function (n, s) { return n + s.minutes; }, 0));
+  }
+  Brolly.Chart.line(EX.byId('chart'), { title: 'Minutes focused', subtitle: 'Last seven days', labels: labels, series: [{ name: 'Minutes', values: values }], format: function (v) { return v + 'm'; } });
+}
+function start() {
+  if (running) { remaining = Math.max(0, Math.round((endAt - Date.now()) / 1000)); running = false; clearInterval(ticker); paintDial(); Brolly.sound.play('tick'); return; }
+  if (remaining <= 0) remaining = minutes * 60;
+  running = true; endAt = Date.now() + remaining * 1000;
+  clearInterval(ticker);
+  ticker = setInterval(function () {
+    remaining = Math.max(0, Math.round((endAt - Date.now()) / 1000));
+    paintDial();
+    if (remaining <= 0) finish();
+  }, 250);
+  paintDial(); Brolly.sound.play('open');
+}
+function finish() {
+  clearInterval(ticker); running = false; remaining = 0; paintDial();
+  Brolly.sound.play('success');
+  Brolly.celebrate.burst();
+  sessions.push({ id: EX.uid(), date: EX.iso(new Date()), minutes: minutes, task: task, at: Date.now() });
+  EX.save('focus.sessions', sessions);
+  stats();
+  Brolly.toast({ title: 'Done. ' + minutes + ' minutes.', detail: 'Gold star. Not literally.', tone: 'success' });
+  remaining = minutes * 60; paintDial();
+}
+function reset() {
+  running = false; clearInterval(ticker); remaining = minutes * 60; paintDial(); Brolly.sound.play('close');
+}
+function setLength(mins, silent) {
+  minutes = mins; EX.save('focus.minutes', minutes);
+  running = false; clearInterval(ticker);
+  remaining = minutes * 60; paintDial();
+  if (!silent) Brolly.toast({ title: minutes + ' minutes.', detail: 'Ambitious.', tone: 'info' });
+}
+var booting = true;
+
+EX.byId('start').addEventListener('click', start);
+EX.byId('reset').addEventListener('click', reset);
+EX.byId('length').addEventListener('br-tab', function (e) { setLength(+e.detail.id, booting); });
+EX.byId('task').value = task;
+EX.byId('task').addEventListener('input', function () { task = this.value; EX.save('focus.task', task); });
+EX.byId('mute').addEventListener('click', function (e) {
+  var on = !Brolly.config.sound;
+  Brolly.sound.mute(!on);
+  this.setAttribute('aria-pressed', String(!on));
+  this.innerHTML = Brolly.icon(!on ? 'mute' : 'sound');
+  Brolly.toast({ title: !on ? 'Muted.' : 'Sound on.', tone: 'info' });
+});
+
+EX.mountTheme();
+Brolly.init();
+EX.byId('mute').innerHTML = Brolly.icon(Brolly.config.sound ? 'sound' : 'mute');
+EX.byId('mute').setAttribute('aria-pressed', String(!Brolly.config.sound));
+var savedTab = document.querySelector('#length [data-id="' + minutes + '"]');
+if (savedTab && savedTab.getAttribute('aria-selected') !== 'true') savedTab.click();
+booting = false;
+remaining = minutes * 60;
+paintDial();
+stats();
+
+var notControl = function (e) { return !/^(BUTTON|A|SELECT|TEXTAREA|INPUT)$/.test(e.target.tagName); };
+Brolly.Keys.on(' ', function (e) { e.preventDefault(); start(); }, { when: notControl });
+Brolly.Keys.on('r', function () { reset(); }, { when: notControl });
+Brolly.Keys.on('mod+enter', function () { start(); }, { inInputs: true });
+
+EX.cmd([
+  { id: 'start', group: 'Focus', icon: 'clock', title: 'Start or pause', keys: 'Space', run: start },
+  { id: 'reset', group: 'Focus', icon: 'undo', title: 'Reset the timer', keys: 'R', run: reset },
+  { id: '25', group: 'Focus', icon: 'clock', title: 'Set 25 minutes', run: function () { setLength(25); } },
+  { id: '45', group: 'Focus', icon: 'clock', title: 'Set 45 minutes', run: function () { setLength(45); } },
+  { id: '60', group: 'Focus', icon: 'clock', title: 'Set 60 minutes', run: function () { setLength(60); } },
+  { id: 'mute', group: 'Focus', icon: 'mute', title: 'Toggle sound', run: function () { EX.byId('mute').click(); } }
+].concat(EX.themeCommands()));
+</script>
+</body>
+</html>

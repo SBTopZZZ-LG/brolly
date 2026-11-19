@@ -1,0 +1,21 @@
+<!-- @dsCard group="Navigation" height=200 subtitle="Segmented control with a sliding glass thumb" -->
+<!doctype html>
+<html><head>
+<link rel="stylesheet" href="../../dist/brolly.css">
+<script src="../../dist/brolly.js"></script>
+<script>try{var t=new URLSearchParams(location.search).get('theme');if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script><meta charset="utf-8"><style>html,body{margin:0}</style></head>
+<body>
+<div class="br-stage" style="min-height:100vh;padding:36px 32px">
+  <div class="br-tabs" data-br="tabs" id="t">
+    <button class="br-tabs__tab" aria-selected="true">Today</button>
+    <button class="br-tabs__tab">This week</button>
+    <button class="br-tabs__tab">Someday</button>
+    <button class="br-tabs__tab">Never</button>
+  </div>
+  <p class="br-wit" id="o" style="margin-top:20px">Arrow keys move between tabs; Home and End jump to the ends.</p>
+</div>
+<script>
+Brolly.init();
+document.getElementById('t').addEventListener('br-tab',function(e){document.getElementById('o').textContent='Showing: '+e.detail.id+'. A bold choice.';});
+</script>
+</body></html>

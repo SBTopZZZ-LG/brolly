@@ -1,0 +1,35 @@
+<!-- @dsCard group="Actions" height=460 subtitle="Glowing gradient pill, glass, ghost, danger; magnetic" -->
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>html,body{margin:0}.row{display:flex;gap:14px;flex-wrap:wrap;align-items:center;margin-bottom:22px}.l{margin:0 0 10px}</style></head>
+<body>
+<div class="br-stage" style="min-height:100vh;padding:32px">
+  <p class="br-label l">Variants</p>
+  <div class="row">
+    <button class="br-btn br-btn--primary">Add a task</button>
+    <button class="br-btn">Glass</button>
+    <button class="br-btn br-btn--ghost">Ghost</button>
+    <button class="br-btn br-btn--danger">Danger</button>
+    <button class="br-btn" disabled>Disabled</button>
+  </div>
+  <p class="br-label l">Sizes</p>
+  <div class="row">
+    <button class="br-btn br-btn--primary br-btn--sm">Small</button>
+    <button class="br-btn br-btn--primary">Default</button>
+    <button class="br-btn br-btn--primary br-btn--lg">Large, if you insist</button>
+  </div>
+  <p class="br-label l">With icons · icon-only · busy</p>
+  <div class="row" id="ic"></div>
+  <p class="br-small" style="margin:0">Hover with a mouse: buttons lean toward the cursor and squish when pressed.</p>
+</div>
+<script>
+Brolly.init();
+var B=Brolly;
+document.getElementById('ic').innerHTML=
+ B.Button.html({variant:'primary',icon:'plus',label:'New'})+
+ B.Button.html({icon:'calendar',label:'Schedule'})+
+ B.Button.html({iconOnly:true,icon:'settings',label:'Settings'})+
+ B.Button.html({variant:'ghost',iconOnly:true,icon:'search',label:'Search'})+
+ '<button class="br-btn br-btn--primary" aria-busy="true"><span>Saving</span></button>';
+</script>
+</body></html>

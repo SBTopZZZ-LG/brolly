@@ -1,0 +1,34 @@
+<!-- @dsCard group="Motion" height=520 subtitle="Greetings with opinions, celebrations, idle antics" -->
+<!doctype html>
+<html><head>
+<link rel="stylesheet" href="../../dist/brolly.css">
+<script src="../../dist/brolly.js"></script>
+<script>try{var t=new URLSearchParams(location.search).get('theme');if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script><meta charset="utf-8"><style>html,body{margin:0}.row{display:flex;gap:12px;flex-wrap:wrap;margin-top:16px}</style></head>
+<body>
+<div class="br-stage" style="min-height:100vh;padding:32px">
+  <div class="br-glass br-glass--xl br-glass--pad" style="max-width:700px">
+    <div id="g"></div>
+    <div class="row">
+      <button class="br-btn" id="re">Another greeting</button>
+      <button class="br-btn" id="t0">0 tasks left</button>
+      <button class="br-btn" id="t9">14 tasks left</button>
+    </div>
+  </div>
+  <div class="row" style="margin-top:26px">
+    <button class="br-btn br-btn--primary" id="cel">Finish something big</button>
+    <button class="br-btn" id="idle">Simulate being ignored</button>
+  </div>
+  <p class="br-wit" style="margin-top:14px;max-width:560px">Celebration is a quick burst of pastel glass and an aurora flare. The idle simulation is sped up: leave the mouse alone for a few seconds.</p>
+</div>
+<script>
+Brolly.init();
+var g=document.getElementById('g'),n='Reader';
+function sg(o){g.innerHTML=Brolly.Delight.greeting(n,o);}
+sg();
+document.getElementById('re').onclick=function(){sg();};
+document.getElementById('t0').onclick=function(){sg({left:0});};
+document.getElementById('t9').onclick=function(){sg({left:14});};
+document.getElementById('cel').onclick=function(e){Brolly.celebrate.done(e.currentTarget);};
+document.getElementById('idle').onclick=function(){Brolly.idle.start({scale:0.08});Brolly.toast({title:'Idle watch on.',detail:'Stop moving. Go on.',tone:'info'});};
+</script>
+</body></html>

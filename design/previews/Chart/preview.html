@@ -1,0 +1,16 @@
+<!-- @dsCard group="Data" height=460 subtitle="Glow lines on glass. Hover, or use the arrow keys." -->
+<!doctype html>
+<html><head><meta charset="utf-8"><style>html,body{margin:0}</style></head>
+<body>
+<div class="br-stage" style="min-height:100vh;padding:28px 32px">
+  <div id="c" style="max-width:760px"></div>
+</div>
+<script>
+Brolly.init();
+Brolly.Chart.line(document.getElementById('c'),{
+ title:'Tasks finished per week',subtitle:'Last ten weeks, give or take a holiday',xLabel:'Week',
+ labels:['W36','W37','W38','W39','W40','W41','W42','W43','W44','W45'],
+ series:[{name:'Done',values:[14,18,16,22,25,21,28,31,27,34]},{name:'Added',values:[20,19,24,21,26,30,27,29,33,31]},{name:'Snoozed',values:[4,6,5,9,7,8,6,10,8,7]}]
+});
+</script>
+</body></html>

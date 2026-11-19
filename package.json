@@ -1,0 +1,37 @@
+{
+  "name": "brolly",
+  "version": "1.0.0",
+  "description": "UI kit for productivity tools: aurora glass, Fraunces + DM Mono, keyboard-first, vanilla CSS/JS.",
+  "type": "module",
+  "main": "dist/brolly.js",
+  "exports": {
+    ".": "./dist/brolly.js",
+    "./esm": "./dist/brolly.esm.js",
+    "./css": "./dist/brolly.css",
+    "./components": "./dist/components.json"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "node build.mjs",
+    "preview": "python3 -m http.server 4173 -d .",
+    "test": "python3 tests/smoke.py && python3 tests/interactions.py && python3 tests/esm.py && python3 tests/examples.py"
+  },
+  "keywords": [
+    "ui-kit",
+    "design-system",
+    "vanilla-js",
+    "css"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SBTopZZZ-LG/brolly.git"
+  },
+  "homepage": "https://github.com/SBTopZZZ-LG/brolly#readme",
+  "bugs": {
+    "url": "https://github.com/SBTopZZZ-LG/brolly/issues"
+  }
+}

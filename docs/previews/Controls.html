@@ -1,0 +1,30 @@
+<!-- @dsCard group="Inputs" height=420 subtitle="Glass beads: switch, checkbox, radio, slider" -->
+<!doctype html>
+<html><head>
+<link rel="stylesheet" href="../../dist/brolly.css">
+<script src="../../dist/brolly.js"></script>
+<script>try{var t=new URLSearchParams(location.search).get('theme');if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script><meta charset="utf-8">
+<style>html,body{margin:0}.g{display:grid;grid-template-columns:1fr 1fr;gap:28px 40px;max-width:720px}.col{display:flex;flex-direction:column;gap:18px}</style></head>
+<body>
+<div class="br-stage" style="min-height:100vh;padding:36px 32px">
+  <div class="g">
+    <div class="col">
+      <p class="br-label" style="margin:0">Switch</p>
+      <label class="br-switch"><input type="checkbox" role="switch" checked/><span class="br-switch__track"><span class="br-switch__bead"></span></span><span>Follow the sun</span></label>
+      <label class="br-switch"><input type="checkbox" role="switch"/><span class="br-switch__track"><span class="br-switch__bead"></span></span><span>Passive-aggressive idle remarks</span></label>
+      <p class="br-label" style="margin:10px 0 0">Checkbox</p>
+      <label class="br-check"><input type="checkbox" checked/><span class="br-check__box"><svg viewBox="0 0 16 16"><path d="M3 8.5l3.2 3.2L13 4.8"/></svg></span><span>Done, allegedly</span></label>
+      <label class="br-check"><input type="checkbox"/><span class="br-check__box"><svg viewBox="0 0 16 16"><path d="M3 8.5l3.2 3.2L13 4.8"/></svg></span><span>Not yet</span></label>
+    </div>
+    <div class="col">
+      <p class="br-label" style="margin:0">Radio</p>
+      <label class="br-radio"><input type="radio" name="r" checked/><span class="br-radio__dot"></span><span>Airy</span></label>
+      <label class="br-radio"><input type="radio" name="r"/><span class="br-radio__dot"></span><span>Comfortable</span></label>
+      <label class="br-radio"><input type="radio" name="r"/><span class="br-radio__dot"></span><span>Compact</span></label>
+      <p class="br-label" style="margin:10px 0 0">Slider</p>
+      <label class="br-slider"><span class="br-slider__top"><span>Aurora strength</span><output></output></span><input type="range" min="0" max="100" value="62" data-unit="%"/></label>
+    </div>
+  </div>
+</div>
+<script>Brolly.init();</script>
+</body></html>

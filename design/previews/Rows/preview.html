@@ -1,0 +1,18 @@
+<!-- @dsCard group="Lists" height=440 subtitle="Floating glass rows: rest, selected, done" -->
+<!doctype html>
+<html><head><meta charset="utf-8"><style>html,body{margin:0}</style></head>
+<body>
+<div class="br-stage" style="min-height:100vh;padding:32px">
+  <ul class="br-rows" style="max-width:640px" id="l"></ul>
+  <p class="br-wit" style="max-width:640px;margin:18px 0 0">Rows are separate strips with gaps, not table lines. Each can hold a gem and any number of regrets.</p>
+</div>
+<script>
+Brolly.init();var R=Brolly.Rows,G=Brolly.Gem;
+var l=document.getElementById('l');
+l.innerHTML=R.html({id:'1',title:'Write the thing',meta:'Due Friday, which is soon',gem:G.html('Due soon','warning','alert')})+
+ R.html({id:'2',title:'Reply to the email',meta:'Third time of asking',gem:G.html('Overdue','danger','x')})+
+ R.html({id:'3',title:'Book the dentist',meta:'Done. Teeth, one assumes, are fine.',done:true,gem:G.html('Done','success','check')})+
+ R.html({id:'4',title:'Think about lunch',meta:'Pinned by popular demand',gem:G.html('Pinned','violet','pin')});
+l.children[1].setAttribute('aria-selected','true');
+</script>
+</body></html>

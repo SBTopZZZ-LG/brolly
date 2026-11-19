@@ -1,0 +1,21 @@
+<!-- @dsCard group="Feedback" height=300 subtitle="Bar, indeterminate bar and ring" -->
+<!doctype html>
+<html><head><meta charset="utf-8"><style>html,body{margin:0}.g{display:grid;grid-template-columns:1fr auto;gap:36px;align-items:center;max-width:680px}</style></head>
+<body>
+<div class="br-stage" style="min-height:100vh;padding:36px 32px">
+  <div class="g">
+    <div style="display:flex;flex-direction:column;gap:26px">
+      <div id="b"></div>
+      <div class="br-progress" data-indeterminate role="progressbar" aria-label="Working"><div class="br-progress__top"><span>Working, quietly</span></div><div class="br-progress__track"><span class="br-progress__fill"></span></div></div>
+      <label class="br-slider"><span class="br-slider__top"><span>Scrub it</span><output></output></span><input id="s" type="range" min="0" max="100" value="64" data-unit="%"/></label>
+    </div>
+    <div id="r"></div>
+  </div>
+</div>
+<script>
+Brolly.init();
+var b=document.getElementById('b'),r=document.getElementById('r');
+b.innerHTML=Brolly.Progress.bar('Weekly tasks',64);r.innerHTML=Brolly.Progress.ring(64);
+document.getElementById('s').addEventListener('input',function(e){var v=+e.target.value;Brolly.Progress.set(b.firstElementChild,v);Brolly.Progress.set(r.firstElementChild,v);});
+</script>
+</body></html>

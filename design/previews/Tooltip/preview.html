@@ -1,0 +1,14 @@
+<!-- @dsCard group="Display" height=280 subtitle="Dry wit second, real information first" -->
+<!doctype html>
+<html><head><meta charset="utf-8"><style>html,body{margin:0}.row{display:flex;gap:16px;flex-wrap:wrap;margin-top:70px}</style></head>
+<body>
+<div class="br-stage" style="min-height:100vh;padding:32px">
+  <p class="br-small" style="margin:0">Hover or focus a button. Tooltips wait a beat, then arrive; the next one is quicker.</p>
+  <div class="row" id="r"></div>
+</div>
+<script>
+Brolly.init();var T=Brolly.voice.tips,h='';
+function t(k,ic,l){var x=T[k];return '<button class="br-btn br-btn--icon" aria-label="'+l+'" data-br-tip="'+x[0]+'" data-br-wit="'+x[1]+'"'+(x[2]?' data-br-keys="'+x[2]+'"':'')+'>'+Brolly.icon(ic)+'</button>';}
+document.getElementById('r').innerHTML=t('save','check','Save')+t('palette','search','Command bar')+t('hints','keyboard','Hints')+t('theme','sun','Theme')+t('delete','trash','Delete')+t('undo','undo','Undo');
+</script>
+</body></html>

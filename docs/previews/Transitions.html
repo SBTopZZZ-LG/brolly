@@ -1,0 +1,29 @@
+<!-- @dsCard group="Motion" height=480 subtitle="Morph for drill-ins; depth push between peers" -->
+<!doctype html>
+<html><head>
+<link rel="stylesheet" href="../../dist/brolly.css">
+<script src="../../dist/brolly.js"></script>
+<script>try{var t=new URLSearchParams(location.search).get('theme');if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script><meta charset="utf-8">
+<style>html,body{margin:0}.pg{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.card{cursor:pointer;text-align:left;border:0;color:inherit;font:inherit;padding:20px}.det{padding:28px;max-width:560px}</style></head>
+<body>
+<div class="br-stage" style="min-height:100vh;padding:28px 32px">
+  <div class="br-tabs" data-br="tabs" id="t"><button class="br-tabs__tab" aria-selected="true" data-id="a">Projects</button><button class="br-tabs__tab" data-id="b">People</button><button class="br-tabs__tab" data-id="c">Archive</button></div>
+  <p class="br-caption" style="margin:14px 0 18px" id="cap">Tabs are peers: they push in with a focus pull. Cards drill down: they morph into the next view.</p>
+  <div id="host"></div>
+</div>
+<script>
+Brolly.init();
+var host=document.getElementById('host'),cur='a';
+var DATA={a:['Kitchen refit','Tax, again','The novel'],b:['Priya','Marcus','Dee'],c:['2024','2023','Before']};
+function list(k){var d=document.createElement('div');d.className='pg';d.innerHTML=DATA[k].map(function(n,i){return '<button class="br-glass br-glass--lift card" data-i="'+i+'"><div class="br-label">'+k.toUpperCase()+'</div><h3 class="br-h3" style="margin-top:6px">'+n+'</h3><p class="br-small" style="margin:6px 0 0">Open it</p></button>';}).join('');return d;}
+function detail(n){var d=document.createElement('div');d.className='br-glass br-glass--xl det';d.innerHTML='<button class="br-btn br-btn--ghost br-btn--sm" data-back>'+Brolly.icon('chevron-left','br-icon--sm')+'Back</button><h2 class="br-display" style="margin:14px 0 8px">'+n+'</h2><p class="br-wit br-body-lg" style="margin:0">The card grew into this. Press Back and it shrinks home again.</p>';return d;}
+host.appendChild(list('a'));
+document.getElementById('t').addEventListener('br-tab',function(e){cur=e.detail.id;Brolly.view.swap(host,list(cur),{kind:'push'});});
+var from=null;
+host.addEventListener('click',function(e){
+  var c=e.target.closest('.card');
+  if(c){from=c;var n=c.querySelector('h3').textContent;var nd=detail(n);Brolly.view.go(function(){host.replaceChildren(nd);},{kind:'morph',source:c,target:nd});return;}
+  if(e.target.closest('[data-back]')){var l=list(cur);Brolly.view.go(function(){host.replaceChildren(l);},{kind:'morph',source:host.firstElementChild,target:function(){return l.children[+(from&&from.getAttribute('data-i')||0)];}});}
+});
+</script>
+</body></html>

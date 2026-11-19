@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Library — Brolly example</title>
+<link rel="stylesheet" href="../../dist/brolly.css">
+<link rel="stylesheet" href="../_shared.css">
+<style>
+  .lib-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: var(--space-4); }
+  .lib-card { display: flex; flex-direction: column; gap: 10px; min-height: 200px; }
+  .lib-card h2 { margin: 4px 0 0; }
+  .lib-card__domain { font: var(--br-caption); color: var(--ink-muted); }
+  .lib-card__note { margin: 0; flex: 1; }
+  .lib-card__foot { display: flex; align-items: center; gap: 6px; justify-content: space-between; }
+  .lib-card[data-done="true"] h2 { color: var(--ink-soft); }
+  .lib-card[data-done="true"] { opacity: .78; }
+  .lib-card__open { text-decoration: none; }
+  .lib-empty { grid-column: 1 / -1; }
+  .lib-stats { display: flex; gap: var(--space-6); flex-wrap: wrap; }
+</style>
+</head>
+<body>
+<div class="br-stage">
+  <div class="ex-shell">
+    <header class="ex-bar">
+      <div>
+        <a class="br-btn br-btn--ghost br-btn--sm ex-back" href="../index.html">← Examples</a>
+        <span class="ex-label" style="display:block;margin-top:12px">Read later, eventually</span>
+        <h1 class="br-display" style="margin:6px 0 0">Library.</h1>
+      </div>
+      <div class="ex-actions">
+        <div class="lib-stats">
+          <div><div class="br-caption">Unread</div><div class="br-h2" id="unread-count">0</div></div>
+          <div><div class="br-caption">Finished</div><div class="br-h2" id="read-count">0</div></div>
+        </div>
+        <button class="br-btn br-btn--primary br-btn--sm" id="add">Add a link</button>
+        <button class="br-btn br-btn--ghost br-btn--icon br-btn--sm" data-ex-theme aria-label="Change theme"></button>
+      </div>
+    </header>
+
+    <div class="ex-bar" style="align-items:center;margin-bottom:var(--space-4)">
+      <label class="br-field br-field--search" style="max-width:420px">
+        <svg class="br-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4 4"/></svg>
+        <input class="br-field__input" id="q" placeholder=" " autocomplete="off">
+        <span class="br-field__label">Search the pile</span>
+        <kbd class="br-key">/</kbd>
+      </label>
+      <div class="br-tabs" id="filter" data-br="tabs" aria-label="Filter">
+        <button class="br-tabs__tab" data-id="all" aria-selected="true">All</button>
+        <button class="br-tabs__tab" data-id="unread">Unread</button>
+        <button class="br-tabs__tab" data-id="read">Read</button>
+      </div>
+    </div>
+
+    <div class="lib-grid" id="grid"></div>
+  </div>
+</div>
+<script src="../../dist/brolly.js"></script>
+<script src="../_shared.js"></script>
+<script>
+var TAGS = {
+  Design: ['violet', 'sparkle'],
+  Engineering: ['info', 'layers'],
+  Reading: ['success', 'tag'],
+  Health: ['rose', 'cup'],
+  Finance: ['warning', 'chart'],
+  Other: ['info', 'link']
+};
+var SEED = [
+  { id: 'l1', title: 'The Grug Brained Developer', url: 'https://grugbrain.dev/', tag: 'Engineering', note: 'Complexity bad. Grug like simple code.', added: Date.now() - 864e5 * 3, read: false },
+  { id: 'l2', title: 'The Design of Everyday Things', url: 'https://en.wikipedia.org/wiki/The_Design_of_Everyday_Things', tag: 'Design', note: 'Doors. It is always doors.', added: Date.now() - 864e5 * 8, read: false },
+  { id: 'l3', title: 'How to Do Great Work', url: 'https://paulgraham.com/greatwork.html', tag: 'Reading', note: 'Read the first half. Cite the whole thing.', added: Date.now() - 864e5 * 12, read: true },
+  { id: 'l4', title: 'MDN: Fetch API', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API', tag: 'Engineering', note: 'For the fourth time.', added: Date.now() - 864e5 * 2, read: false },
+  { id: 'l5', title: 'The 4-Hour Body, probably', url: 'https://en.wikipedia.org/wiki/The_4-Hour_Body', tag: 'Health', note: 'Skeptical, but the title is efficient.', added: Date.now() - 864e5 * 20, read: true },
+  { id: 'l6', title: 'A random walk down Wall Street', url: 'https://en.wikipedia.org/wiki/A_Random_Walk_Down_Wall_Street', tag: 'Finance', note: 'Buy the index. Close the tab.', added: Date.now() - 864e5 * 5, read: false }
+];
+var items = EX.load('library.items', SEED);
+var filter = 'all';
+var query = '';
+
+function host(url) { try { return new URL(url).hostname.replace(/^www\./, ''); } catch (e) { return url; } }
+function filtered() {
+  var q = query.toLowerCase();
+  return items.filter(function (it) {
+    if (filter === 'read' && !it.read) return false;
+    if (filter === 'unread' && it.read) return false;
+    return !q || (it.title + ' ' + it.note + ' ' + it.tag + ' ' + it.url).toLowerCase().indexOf(q) >= 0;
+  });
+}
+function paint() {
+  var shown = filtered();
+  EX.byId('unread-count').textContent = items.filter(function (i) { return !i.read; }).length;
+  EX.byId('read-count').textContent = items.filter(function (i) { return i.read; }).length;
+  EX.byId('grid').innerHTML = shown.map(function (it) {
+    var t = TAGS[it.tag] || TAGS.Other;
+    return '<article class="lib-card br-glass br-glass--pad br-glass--lift" data-done="' + it.read + '" data-id="' + it.id + '">' +
+      '<div class="ex-row" style="justify-content:space-between">' +
+        '<span class="br-gem" data-tone="' + t[0] + '">' + Brolly.icon(t[1]) + EX.esc(it.tag) + '</span>' +
+        '<span class="br-caption">' + EX.shortDate(new Date(it.added)) + '</span>' +
+      '</div>' +
+      '<h2 class="br-h3">' + EX.esc(it.title) + '</h2>' +
+      '<div class="lib-card__domain">' + EX.esc(host(it.url)) + '</div>' +
+      '<p class="br-small lib-card__note">' + EX.esc(it.note || 'No note. Intriguing.') + '</p>' +
+      '<div class="lib-card__foot">' +
+        '<a class="br-btn br-btn--ghost br-btn--sm lib-card__open" href="' + EX.esc(it.url) + '" target="_blank" rel="noopener">Open ' + Brolly.icon('arrow-right') + '</a>' +
+        '<span class="ex-row" style="gap:4px">' +
+          '<button class="br-btn br-btn--ghost br-btn--sm" data-toggle="' + it.id + '">' + (it.read ? 'Unread' : 'Finished') + '</button>' +
+          '<button class="br-btn br-btn--ghost br-btn--icon br-btn--sm" data-del="' + it.id + '" aria-label="Delete link">' + Brolly.icon('trash') + '</button>' +
+        '</span>' +
+      '</div></article>';
+  }).join('');
+  if (!shown.length) {
+    EX.byId('grid').innerHTML = '<div class="lib-empty">' + Brolly.EmptyState.html(query ? 'search' : 'inbox', {
+      title: query ? undefined : (filter === 'read' ? 'Nothing finished. Bold.' : filter === 'unread' ? 'Nothing unread. Suspicious.' : undefined),
+      wit: query ? 'Try fewer words. Or more. We are not fussy.' : (filter === 'read' ? 'A library of intentions.' : undefined),
+      action: query ? 'Clear the search' : 'Add a link',
+      noAction: false
+    }) + '</div>';
+    var b = EX.byId('grid').querySelector('[data-br-act="empty"]');
+    if (b) b.addEventListener('click', function () { if (query) { query = ''; EX.byId('q').value = ''; paint(); } else addItem(); });
+  }
+}
+function addItem() {
+  var options = Object.keys(TAGS).map(function (t) { return '<option value="' + t + '">' + t + '</option>'; }).join('');
+  var panel = EX.el('<div><h2 class="br-h2 br-bloom__title">Add a link</h2><p class="br-small" style="margin:0 0 16px">The pile is not going to grow itself.</p>' +
+    '<div class="ex-stack">' +
+    '<label class="br-field"><input class="br-field__input" data-k="title" placeholder=" " autofocus/><span class="br-field__label">Title</span><span class="br-field__msg"></span></label>' +
+    '<label class="br-field"><input class="br-field__input" data-k="url" placeholder=" " inputmode="url"/><span class="br-field__label">URL</span><span class="br-field__msg"></span></label>' +
+    '<label class="br-field br-field--select"><select class="br-field__input" data-k="tag">' + options + '</select><span class="br-field__label">Tag</span></label>' +
+    '<label class="br-field"><input class="br-field__input" data-k="note" placeholder=" "/><span class="br-field__label">Why keep it?</span></label>' +
+    '</div><div class="br-bloom__actions"><button class="br-btn br-btn--ghost" data-br-close>Never mind</button><button class="br-btn br-btn--primary" id="lib-save">Keep it</button></div></div>');
+  var h = Brolly.Bloom.open({ panel: panel, trigger: EX.byId('add') });
+  var get = function (k) { return panel.querySelector('[data-k="' + k + '"]').value.trim(); };
+  panel.querySelector('#lib-save').addEventListener('click', function () {
+    var title = get('title'), url = get('url');
+    var titleField = panel.querySelector('[data-k="title"]').closest('.br-field');
+    var urlField = panel.querySelector('[data-k="url"]').closest('.br-field');
+    Brolly.Field.setInvalid(titleField, '');
+    Brolly.Field.setInvalid(urlField, '');
+    if (!title) { Brolly.Field.setInvalid(titleField, 'It needs a title.'); panel.querySelector('[data-k="title"]').focus(); return; }
+    if (!url) { Brolly.Field.setInvalid(urlField, 'And a URL, ideally.'); panel.querySelector('[data-k="url"]').focus(); return; }
+    if (!/^https?:\/\//i.test(url)) url = 'https://' + url;
+    try { new URL(url); } catch (e) { Brolly.Field.setInvalid(urlField, 'That is not a URL.'); return; }
+    items.unshift({ id: EX.uid(), title: title, url: url, tag: get('tag') || 'Other', note: get('note'), added: Date.now(), read: false });
+    EX.save('library.items', items);
+    h.close();
+    if (filter !== 'all') { filter = 'all'; var allTab = EX.byId('filter').querySelector('[data-id="all"]'); if (allTab) allTab.click(); }
+    paint();
+    Brolly.toast({ title: 'Kept.', detail: 'For later. Allegedly.', tone: 'success' });
+  });
+  setTimeout(function () { var i = panel.querySelector('[data-k="title"]'); if (i) i.focus(); }, 80);
+}
+function toggleRead(id) {
+  var it = items.filter(function (x) { return x.id === id; })[0]; if (!it) return;
+  it.read = !it.read; EX.save('library.items', items); paint();
+  Brolly.sound.play(it.read ? 'success' : 'tick');
+  if (it.read) Brolly.celebrate.burst({ count: 18 });
+}
+function remove(id) {
+  var it = items.filter(function (x) { return x.id === id; })[0]; if (!it) return;
+  EX.confirm('“' + it.title + '” will leave the pile.', 'Delete this link?').then(function (yes) {
+    if (!yes) return;
+    items = items.filter(function (x) { return x.id !== id; });
+    EX.save('library.items', items); paint();
+    Brolly.toast({ title: 'Deleted.', detail: 'One fewer intention.', tone: 'info' });
+  });
+}
+
+EX.on(EX.byId('grid'), '[data-toggle]', 'click', function (e, b) { toggleRead(b.dataset.toggle); });
+EX.on(EX.byId('grid'), '[data-del]', 'click', function (e, b) { remove(b.dataset.del); });
+EX.byId('add').addEventListener('click', addItem);
+EX.byId('q').addEventListener('input', function () { query = this.value.trim(); paint(); });
+EX.byId('filter').addEventListener('br-tab', function (e) { filter = e.detail.id; paint(); });
+
+EX.mountTheme();
+Brolly.init();
+paint();
+
+EX.cmd([
+  { id: 'add', group: 'Library', icon: 'plus', title: 'Add a link', keys: 'N', run: addItem },
+  { id: 'search', group: 'Library', icon: 'search', title: 'Search the pile', keys: '/', run: function () { EX.byId('q').focus(); } },
+  { id: 'all', group: 'Library', icon: 'layers', title: 'Show everything', run: function () { filter = 'all'; EX.byId('filter').querySelector('[data-id="all"]').click(); } },
+  { id: 'unread', group: 'Library', icon: 'inbox', title: 'Show unread', run: function () { filter = 'unread'; EX.byId('filter').querySelector('[data-id="unread"]').click(); } }
+].concat(EX.themeCommands()));
+Brolly.Keys.on('/', function (e) { e.preventDefault(); EX.byId('q').focus(); });
+Brolly.Keys.on('n', function () { addItem(); });
+</script>
+</body>
+</html>
